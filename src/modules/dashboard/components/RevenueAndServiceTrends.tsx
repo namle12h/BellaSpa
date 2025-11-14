@@ -47,7 +47,7 @@ const ServiceItem = ({ name, appointments, revenue, change, up }: any) => {
   );
 };
 
-export default function RevenueAndServiceTrends({ mode, year }: RevenueStatsProps) {
+export default function RevenueAndServiceTrends({  year }: RevenueStatsProps) {
   const { data, isLoading } = useRevenueStats("month", year);
 
   if (isLoading) return <div>Loading...</div>;

@@ -6,7 +6,6 @@ import {
     Space,
     Table,
     Modal,
-    Tag,
 } from "antd";
 import {
     EditOutlined,

@@ -1,4 +1,3 @@
-import React from "react";
 import { Tabs, Rate, Progress } from "antd";
 
 export default function ProductTabs() {

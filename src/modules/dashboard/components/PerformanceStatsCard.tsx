@@ -44,7 +44,7 @@ const formatCurrency = (value: string) => {
 };
 
 export default function PerformanceStatsCard({ startDate, endDate }: PerformanceStatsProps) {
-    const [period, setPeriod] = useState("last_30_days");
+    const [period] = useState("last_30_days");
     const { data, isLoading } = usePerformanceStats(
         startDate.format('YYYY-MM-DD'),
         endDate.format('YYYY-MM-DD'),

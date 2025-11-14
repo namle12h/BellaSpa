@@ -90,7 +90,7 @@ export default function DashboardPage() {
   // const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   const [startDate, setStartDate] = useState<Dayjs>(dayjs()); // Khởi tạo bằng dayjs
   const [endDate, setEndDate] = useState<Dayjs>(dayjs());
-  const [period, setPeriod] = useState("last_30_days");
+  const [period] = useState("last_30_days");
   // const { data, isLoading } = useOverviewStats(startDate, endDate, period);
   //  const { data, isLoading } = useOverviewStats(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'), period);
   const { data, isLoading } = useOverviewStats(

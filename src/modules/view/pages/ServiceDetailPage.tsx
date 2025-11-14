@@ -6,7 +6,6 @@ import HeadServiceDetail from "../components/HeadServiceDetail";
 import ImportantNotes from "../components/ImportantNotes";
 import ProcessSteps from "../components/ProcessStep";
 import UsedProducts from "../components/UsedProducts";
-import BookingButton from "../components/ButtonBooking";
 import BookingModal from "../components/BookingModal";
 import { useState } from "react";
 import BookingButtonFixed from "../components/ButtonBooking";

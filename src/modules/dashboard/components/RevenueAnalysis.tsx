@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowUp, ArrowDown } from 'lucide-react';
 import { UserOutlined, DollarOutlined, ScheduleOutlined, SmileOutlined } from '@ant-design/icons'; // Sử dụng Ant Design Icons cho khối chính
 import { CustomerOverviewCard, RecentCustomersCard, ServiceStatsCard } from './CustomerOverviewCard';
@@ -108,90 +108,6 @@ interface TrendCardItem {
     changeAmount: number; // Chỉ dùng cho khối chi tiết
 }
 
-interface AnalysisData {
-    title: string;
-    icon: React.ReactNode;
-    iconColor: string;
-    trendCards: TrendCardItem[];
-    detailComparison: TrendCardItem[];
-    unit: string;
-}
-
-// Dữ liệu cho các loại phân tích (Doanh thu, Khách hàng, Lịch hẹn, Hài lòng)
-const analysisDatasets: Record<string, AnalysisData> = {
-    revenue: {
-        title: "Doanh thu",
-        icon: <DollarOutlined className="w-4 h-4" />,
-        iconColor: "bg-teal-500",
-        trendCards: [
-            { period: "Hôm nay", currentValue: "2.9M₫", prevValue: "2.6M₫", changePercent: 7.5, isUp: true, changeAmount: 0.2 },
-            { period: "Tuần này", currentValue: "18.5M₫", prevValue: "16.2M₫", changePercent: 14.2, isUp: true, changeAmount: 2.3 },
-            { period: "Tháng này", currentValue: "125.8M₫", prevValue: "108.9M₫", changePercent: 15.5, isUp: true, changeAmount: 16.9 },
-            { period: "Quý này", currentValue: "365.4M₫", prevValue: "312.8M₫", changePercent: 16.8, isUp: true, changeAmount: 52.6 },
-        ],
-        detailComparison: [
-            { period: "Hôm nay", currentValue: "2.9M₫", prevValue: "2.6M₫", changePercent: 7.5, isUp: true, changeAmount: 0.2 },
-            { period: "Tuần này", currentValue: "18.5M₫", prevValue: "16.2M₫", changePercent: 14.2, isUp: true, changeAmount: 2.3 },
-            { period: "Tháng này", currentValue: "125.8M₫", prevValue: "108.9M₫", changePercent: 15.5, isUp: true, changeAmount: 16.9 },
-            { period: "Quý này", currentValue: "365.4M₫", prevValue: "312.8M₫", changePercent: 16.8, isUp: true, changeAmount: 52.6 },
-        ],
-        unit: 'M₫'
-    },
-    customer: {
-        title: "Khách hàng",
-        icon: <UserOutlined className="w-4 h-4" />,
-        iconColor: "bg-green-500",
-        trendCards: [
-            { period: "Hôm nay", currentValue: "45", prevValue: "38", changePercent: 18.4, isUp: true, changeAmount: 7 },
-            { period: "Tuần này", currentValue: "287", prevValue: "251", changePercent: 14.3, isUp: true, changeAmount: 36 },
-            { period: "Tháng này", currentValue: "1.247", prevValue: "1.089", changePercent: 14.5, isUp: true, changeAmount: 158 },
-            { period: "Quý này", currentValue: "3.654", prevValue: "3.128", changePercent: 16.8, isUp: true, changeAmount: 526 },
-        ],
-        detailComparison: [
-            { period: "Hôm nay", currentValue: "45", prevValue: "38", changePercent: 18.4, isUp: true, changeAmount: 7 },
-            { period: "Tuần này", currentValue: "287", prevValue: "251", changePercent: 14.3, isUp: true, changeAmount: 36 },
-            { period: "Tháng này", currentValue: "1.247", prevValue: "1.089", changePercent: 14.5, isUp: true, changeAmount: 158 },
-            { period: "Quý này", currentValue: "3.654", prevValue: "3.128", changePercent: 16.8, isUp: true, changeAmount: 526 },
-        ],
-        unit: '' // Không có đơn vị cho Khách hàng
-    },
-    appointment: {
-        title: "Lịch hẹn",
-        icon: <ScheduleOutlined className="w-4 h-4" />,
-        iconColor: "bg-blue-500",
-        trendCards: [
-            { period: "Hôm nay", currentValue: "52", prevValue: "40", changePercent: 30, isUp: true, changeAmount: 12 },
-            { period: "Tuần này", currentValue: "350", prevValue: "320", changePercent: 9.3, isUp: true, changeAmount: 30 },
-            { period: "Tháng này", currentValue: "1.450", prevValue: "1.300", changePercent: 11.5, isUp: true, changeAmount: 150 },
-            { period: "Quý này", currentValue: "4.500", prevValue: "4.100", changePercent: 9.7, isUp: true, changeAmount: 400 },
-        ],
-        detailComparison: [
-            { period: "Hôm nay", currentValue: "52", prevValue: "40", changePercent: 30, isUp: true, changeAmount: 12 },
-            { period: "Tuần này", currentValue: "350", prevValue: "320", changePercent: 9.3, isUp: true, changeAmount: 30 },
-            { period: "Tháng này", currentValue: "1.450", prevValue: "1.300", changePercent: 11.5, isUp: true, changeAmount: 150 },
-            { period: "Quý này", currentValue: "4.500", prevValue: "4.100", changePercent: 9.7, isUp: true, changeAmount: 400 },
-        ],
-        unit: ''
-    },
-    product: {
-        title: "Sản Phẩm ",
-        icon: <SmileOutlined className="w-4 h-4" />,
-        iconColor: "bg-purple-500",
-        trendCards: [
-            { period: "Hôm nay", currentValue: "95%", prevValue: "92%", changePercent: 3.2, isUp: true, changeAmount: 3 },
-            { period: "Tuần này", currentValue: "93%", prevValue: "95%", changePercent: 2.1, isUp: false, changeAmount: 2 },
-            { period: "Tháng này", currentValue: "94%", prevValue: "96%", changePercent: 2.0, isUp: false, changeAmount: 2 },
-            { period: "Quý này", currentValue: "96%", prevValue: "97%", changePercent: 1.0, isUp: false, changeAmount: 1 },
-        ],
-        detailComparison: [
-            { period: "Hôm nay", currentValue: "95%", prevValue: "92%", changePercent: 3.2, isUp: true, changeAmount: 3 },
-            { period: "Tuần này", currentValue: "93%", prevValue: "95%", changePercent: 2.1, isUp: false, changeAmount: 2 },
-            { period: "Tháng này", currentValue: "94%", prevValue: "96%", changePercent: 2.0, isUp: false, changeAmount: 2 },
-            { period: "Quý này", currentValue: "96%", prevValue: "97%", changePercent: 1.0, isUp: false, changeAmount: 1 },
-        ],
-        unit: '%'
-    }
-};
 
 
 

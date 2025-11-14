@@ -11,7 +11,7 @@ const PaymentReturnPage = () => {
 
   useEffect(() => {
     const responseCode = searchParams.get("vnp_ResponseCode");
-    const txnRef = searchParams.get("vnp_TxnRef");
+    // const txnRef = searchParams.get("vnp_TxnRef");
 
     if (responseCode === "00") {
       setStatus("success");

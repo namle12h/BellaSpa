@@ -3,11 +3,7 @@ import { axiosClient } from "../lib/axiosClient";
 import { message } from "antd";
 
 
-type AddSectionItemParams = {
-    serviceId: number;
-    type: string;
-    data: any;
-};
+
 export const fetchServices = async (page = 1, limit = 5) => {
     const response = await axiosClient.get(`/services`, {
         params: { page, limit },

@@ -32,7 +32,7 @@ export default function ProductReviewSection({
   serviceId,
 }: ProductReviewSectionProps) {
   const [showForm, setShowForm] = useState(false);
-  const [selectedStar, setSelectedStar] = useState<number | null>(null);
+  const [selectedStar] = useState<number | null>(null);
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState("");
   const [fileList, setFileList] = useState<any[]>([]);

@@ -1,10 +1,9 @@
-import { Menu, Input, Button, Dropdown, Badge, message } from "antd";
+import { Menu, Input, Button, Dropdown, Badge } from "antd";
 import { BellOutlined, SearchOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { MdSpa } from "react-icons/md";
 import UserInfo from "./UserInfo";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
-import { useSearchParams } from "react-router-dom";
 import { useServices } from "../services/serviceApi";
 import { useEffect, useRef, useState } from "react";
 import NotificationPanel from "./NotificationPanel";
@@ -12,7 +11,6 @@ import { getNotifications } from "../services/notificationApi";
 import { useCart } from "../context/CartContext";
 
 export default function Header() {
-  const [searchParams] = useSearchParams();
   const { user } = useAuthStore();
   const navigate = useNavigate();
   const { data: services = [] } = useServices(1, 10);

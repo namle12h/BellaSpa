@@ -122,11 +122,7 @@ export default function CheckoutPage() {
         }
     };
 
-    // ✅ Helper: Lấy tên từ id location (Giữ nguyên)
-    const getLocationNameById = (list: Location[], id: number): string => {
-        const item = list.find((loc) => loc.id === id);
-        return item ? item.full_name : "";
-    };
+
 
     // 🆕 Gọi API tạo thanh toán VNPay và xử lý redirect
     const createPaymentUrl = async (orderId: string, amount: number) => {
@@ -240,10 +236,7 @@ export default function CheckoutPage() {
             .validateFields()
             .then(async (values) => {
 
-                // ... (Logic tạo orderData giữ nguyên)
-                const cityName = getLocationNameById(cities, values.city);
-                const districtName = getLocationNameById(districts, values.district);
-                const communeName = getLocationNameById(communes, values.commune);
+
 
                 const orderData = {
                     receiverName: values.receiverName,

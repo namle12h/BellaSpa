@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useServiceStats } from "../../../shared/services/statsApi"; // Import hook từ API
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import type { Dayjs } from "dayjs";
@@ -20,7 +20,7 @@ interface ServiceStatsProps {
 export default function ServiceStats({ startDate, endDate }: ServiceStatsProps) {
     // const [startDate, setStartDate] = useState<Dayjs>(dayjs()); // Khởi tạo bằng dayjs
     // const [endDate, setEndDate] = useState<Dayjs>(dayjs());
-    const [period, setPeriod] = useState("last_30_days");
+    const [period] = useState("last_30_days");
     const { data, isLoading } = useServiceStats(
         startDate.format('YYYY-MM-DD'), // Định dạng ngày là YYYY-MM-DD
         endDate.format('YYYY-MM-DD'),   // Định dạng ngày là YYYY-MM-DD

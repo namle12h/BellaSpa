@@ -14,8 +14,7 @@ import {
   DeleteOutlined,
   ClockCircleOutlined,
 } from "@ant-design/icons";
-import { useAddServiceSectionItem, useServiceById, useServices } from "../../../shared/services/serviceApi"
-import { useParams } from "react-router-dom";
+import { useAddServiceSectionItem, useServiceById } from "../../../shared/services/serviceApi"
 import ServiceBenefitForm from "./benefit";
 import ImportantNotesForm from "./ImportantNotesForm";
 import ServiceProductForm from "./ServiceProductForm";
@@ -40,8 +39,7 @@ export default function ServiceProcessForm({ serviceId }: ServiceProcessFormProp
   const [form] = Form.useForm();
   const [steps, setSteps] = useState<StepItem[]>([]);
   const [imageBase64, setImageBase64] = useState<string | undefined>(undefined);
-  const { id } = useParams<{ id: string }>(); // Lấy id service từ URL
-  const { mutate: addSectionItem, isPending } = useAddServiceSectionItem();
+  const { mutate: addSectionItem } = useAddServiceSectionItem();
  const { data: service } = useServiceById(serviceId);
 
   // ✅ Thêm state lưu tab hiện tại

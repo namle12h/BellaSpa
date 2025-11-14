@@ -9,7 +9,7 @@ interface RevenueStatsProps {
 }
 
 
-export default function StatsChart({ mode, year }: RevenueStatsProps) {
+export default function StatsChart({  year }: RevenueStatsProps) {
 
 
   const { data, isLoading } = useRevenueStats("month", year);

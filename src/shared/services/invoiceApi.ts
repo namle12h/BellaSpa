@@ -3,8 +3,7 @@ import { axiosClient } from "../lib/axiosClient";
 import { message } from "antd";
 import type {
   ApiInvoice,
-  InvoiceCreateRequest,
-  ApiInvoiceItem
+
 } from "../../shared/types/type";
 
 export const createInvoice = async (data: any) => {

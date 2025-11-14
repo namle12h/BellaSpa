@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { Button, Divider, Modal, Steps } from "antd";
 import {
   CheckCircleFilled,
   HomeOutlined,
-  ShoppingOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useSearchParams } from "react-router-dom";
 

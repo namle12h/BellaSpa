@@ -17,7 +17,7 @@ interface AppoimentStatsProps {
 
 export default function AppointmentStats({ startDate, endDate }: AppoimentStatsProps) {
   
-    const [period, setPeriod] = useState("");
+    const [period] = useState("");
 
     // API hook gọi sau khi các state được khởi tạo
      const { data, isLoading } = useServiceStats(
