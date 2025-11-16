@@ -17,7 +17,8 @@ export default function Header() {
 
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-
+  const [menuOpen, setMenuOpen] = useState(false); // Để mở/đóng menu trên di động
+  const [openServiceMenu, setOpenServiceMenu] = useState(false);
   const notificationSound = useRef(new Audio("/sounds/news-ting-6832.mp3"));
   const prevLatestId = useRef<number | null>(null);
   const firstLoad = useRef(true);
@@ -42,11 +43,9 @@ export default function Header() {
       setNotifications(sorted);
       setUnreadCount(sorted.filter((n: any) => !n.read).length);
 
-      // ✅ Kiểm tra xem có thông báo mới không
       const latestId = sorted[0]?.id;
 
       if (firstLoad.current) {
-        // lần đầu load -> không phát âm thanh
         firstLoad.current = false;
         prevLatestId.current = latestId;
         return;
@@ -57,7 +56,6 @@ export default function Header() {
         prevLatestId.current &&
         latestId !== prevLatestId.current
       ) {
-        // 🧩 Chỉ phát âm thanh nếu tab đang active
         if (document.visibilityState === "visible") {
           notificationSound.current.play().catch(() => { });
         }
@@ -89,28 +87,95 @@ export default function Header() {
       })),
     },
     { key: "product", label: "Sản Phẩm", onClick: () => navigate(`/products`) },
-    { key: "booking", label: "Đặt Lịch" },
-    { key: "about", label: "Về Chúng Tôi" },
-    { key: "contact", label: "Liên Hệ" },
+    { key: "about", label: "Về Chúng Tôi" , onClick: () => navigate(`/about`)},
+    { key: "contact", label: "Liên Hệ", onClick: () => navigate(`/contacts`) },
+    { key: "promotion", label: "Chương Trình", onClick: () => navigate(`/promotions`) },
   ];
 
   return (
     <header className="fixed w-full z-30 bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
         {/* Logo */}
-        <div
-          onClick={() => navigate("/")}
-          className="flex items-center cursor-pointer"
-        >
+        <div onClick={() => navigate("/")} className="flex items-center cursor-pointer">
           <MdSpa className="text-pink-500 text-2xl m-2" />
           <div className="font-bold text-pink-600 text-xl">Bella Spa</div>
         </div>
 
+        {/* Menu for larger screens */}
         <Menu
           mode="horizontal"
-          className="hidden md:flex flex-1 justify-center border-none"
+          // Menu sẽ ẩn trên điện thoại (màn hình nhỏ) và chỉ hiển thị khi màn hình lớn hơn md
+          className=" menu hidden md:flex flex-1 justify-center border-none text-sm sm:text-base md:text-lg py-2 px-4 sm:py-2 sm:px-6"
           items={menuItems}
         />
+
+
+
+
+        {/* Mobile menu toggle button */}
+        <div className="md:hidden flex items-center">
+          <Button onClick={() => setMenuOpen(!menuOpen)} className="text-xl p-2">
+            &#9776;
+          </Button>
+        </div>
+
+        {/* Menu items for mobile */}
+        {menuOpen && (
+          <div className="md:hidden absolute p-2 top-16 left-0 w-full bg-white shadow-lg">
+            <div
+              className="py-2  cursor-pointer"
+              onClick={() => {
+                navigate("/home");
+                setMenuOpen(false);
+              }}
+            >
+              Trang Chủ
+            </div>
+
+            {/* Dịch Vụ */}
+            <div
+              className="py-2  cursor-pointer flex justify-between items-center"
+              onClick={() => setOpenServiceMenu(!openServiceMenu)}
+            >
+              <span>Dịch Vụ</span>
+              <span>{openServiceMenu ? "▲" : "▼"}</span>
+            </div>
+
+            {/* Submenu dịch vụ */}
+            {openServiceMenu && (
+              <div className="pl-4 bg-gray-50">
+                {services.map((s: any) => (
+                  <div
+                    key={s.id}
+                    className="py-2  cursor-pointer"
+                    onClick={() => {
+                      navigate(`/services/${s.id}`);
+                      setMenuOpen(false);
+                      setOpenServiceMenu(false);
+                    }}
+                  >
+                    {s.name}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Các menu còn lại */}
+            <div
+              className="py-2  cursor-pointer"
+              onClick={() => {
+                navigate("/products");
+                setMenuOpen(false);
+              }}
+            >
+              Sản Phẩm
+            </div>
+
+            <div className="py-2  cursor-pointer">Đặt Lịch</div>
+            <div className="py-2  cursor-pointer">Về Chúng Tôi</div>
+            <div className="py-2  cursor-pointer">Liên Hệ</div>
+          </div>
+        )}
 
         <div className="flex items-center gap-3">
           <Input
@@ -119,7 +184,7 @@ export default function Header() {
             className="hidden md:block w-60"
           />
 
-          {/* 🔔 Dropdown thông báo */}
+          {/* Notification Dropdown */}
           <Dropdown
             overlay={
               <NotificationPanel
@@ -138,7 +203,6 @@ export default function Header() {
             </Badge>
           </Dropdown>
 
-
           {user && (
             <Badge
               count={cart.reduce((sum, item) => sum + item.quantity, 0)}
@@ -151,9 +215,7 @@ export default function Header() {
                 className="!text-2xl cursor-pointer !text-orange-600 hover:!text-orange-500"
               />
             </Badge>
-
           )}
-
 
           {user ? (
             <UserInfo />

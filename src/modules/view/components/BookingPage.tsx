@@ -43,7 +43,6 @@ export default function BookingForm({ onSuccess }: BookingFormProps) {
             payload.phone = values.phone;
         }
 
-        console.log("Payload gửi đi:", payload);
         mutationBooking.mutate(payload);
     };
 

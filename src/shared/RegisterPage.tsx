@@ -1,49 +1,72 @@
 import { useState } from "react";
 import { Form, Input, Button, Checkbox, Typography, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  UserOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  LockOutlined,
-} from "@ant-design/icons";
-import axios from "axios";
+import { UserOutlined, MailOutlined, PhoneOutlined, LockOutlined } from "@ant-design/icons";
+import { useCreateCustomer } from "./services/customerApi";
 
 const { Title, Text } = Typography;
 
-const RegisterPage = () => {
+interface RegisterFormProps {
+  onSuccess?: () => void;
+}
+
+const RegisterPage = ({ onSuccess }: RegisterFormProps) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [form] = Form.useForm();
 
-  const onFinish = async (values:any) => {
-    setLoading(true);
-    try {
-      // ✅ Gọi API đăng ký
-      const res = await axios.post("http://localhost:8080/api/customers", {
-        name: values.name,
-        email: values.email,
-        phone: values.phone,
-        password: values.password,
-      });
+  // Use the custom hook to create customer
+  const mutationBooking = useCreateCustomer({
+    onSuccess: () => {
+      if (onSuccess) onSuccess(); // Gọi callback (nếu có)
+      message.success("🎉 Đăng ký thành công! Vui lòng đăng nhập.");
+      navigate("/login");
+    },
+  });
+ const onFinish = async (values: any) => {
+  setLoading(true);
+  try {
+    const payload = {
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      password: values.password,
+    };
 
-      // ✅ Kiểm tra phản hồi
-      if (res.status === 201 || res.data.success) {
-        message.success("🎉 Đăng ký thành công! Vui lòng đăng nhập.");
-        navigate("/login");
+    // Gọi mutation để tạo khách hàng
+    await mutationBooking.mutateAsync(payload);
+
+    // Thành công, chuyển hướng về trang đăng nhập
+
+  } catch (error: any) {
+    console.error("Register error:", error);
+
+    // Kiểm tra lỗi trả về từ backend
+    if (error?.response?.data?.error) {
+      const errorMessage = error?.response?.data?.error;
+
+      // Nếu lỗi là "Email đã được đăng ký", hiển thị dưới trường email
+      if (errorMessage === "Email đã được đăng ký") {
+        form.setFields([
+          {
+            name: "email",
+            errors: ["Email này đã được đăng ký. Vui lòng sử dụng email khác."],
+          },
+        ]);
       } else {
-        message.warning(res.data.message || "Có lỗi xảy ra, vui lòng thử lại!");
+        message.error(errorMessage || "Đã có lỗi xảy ra. Vui lòng thử lại.");
       }
-    } catch (error:any) {
-      // ✅ Xử lý lỗi API
-      console.error("Register error:", error);
-      const errMsg =
-        error.response?.data?.message ||
-        "Đăng ký thất bại. Vui lòng thử lại!";
-      message.error(errMsg);
-    } finally {
-      setLoading(false);
+    } else {
+      message.error("Đã có lỗi xảy ra. Vui lòng thử lại.");
     }
-  };
+
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
 
   return (
     <div
@@ -87,9 +110,8 @@ const RegisterPage = () => {
             />
           </Form.Item>
 
-          {/* Email */}
           <Form.Item
-            name="email"
+            name="email"  // Tên trường phải khớp với name trong setFields
             label="Email"
             rules={[
               { required: true, message: "Vui lòng nhập email!" },
@@ -102,6 +124,7 @@ const RegisterPage = () => {
               className="h-11 rounded-lg"
             />
           </Form.Item>
+
 
           {/* Số điện thoại */}
           <Form.Item
@@ -180,8 +203,8 @@ const RegisterPage = () => {
                   value
                     ? Promise.resolve()
                     : Promise.reject(
-                        new Error("Bạn phải đồng ý với điều khoản!")
-                      ),
+                      new Error("Bạn phải đồng ý với điều khoản!")
+                    ),
               },
             ]}
           >

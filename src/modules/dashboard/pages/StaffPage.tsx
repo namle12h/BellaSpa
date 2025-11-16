@@ -110,8 +110,11 @@ export default function StaffPage() {
                     onChange: (newPage, newSize) => {
                         setPage(newPage);
                         setPageSize(newSize);
-                    }
+                    },
+                   
                 }}
+                scroll={{ x: 'max-content' }} // Cho phép cuộn ngang
+                className="w-full"
             />
 
             <Modal

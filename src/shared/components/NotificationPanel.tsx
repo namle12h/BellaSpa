@@ -28,6 +28,8 @@ export default function NotificationPanel({
   const navigate = useNavigate();
 
 
+
+
   // ✅ Đánh dấu 1 thông báo đã đọc
   const handleMarkRead = async (id: number) => {
     try {
@@ -122,18 +124,32 @@ export default function NotificationPanel({
 
   const unread = notifications.filter((n) => !n.read).length;
 
-  return (
-    <div className="w-[380px] max-h-[500px] overflow-y-auto bg-white rounded-xl shadow-xl border border-gray-100 p-3">
+   return (
+    <div
+      className="
+        w-[380px]
+        max-w-[90vw]
+        max-h-[500px]
+        overflow-y-auto
+        bg-white
+        rounded-xl
+        shadow-xl
+        border border-gray-100
+        p-3
+      "
+    >
       {/* Header */}
       <div className="flex justify-between items-center mb-2">
         <h3 className="font-semibold text-base">Thông báo</h3>
+
         <div className="space-x-3 text-sm">
           <button
             onClick={handleMarkAllRead}
             className="text-blue-600 hover:underline"
           >
-            Đánh dấu tất cả đã đọc
+            Đánh dấu tất cả
           </button>
+
           <button
             onClick={handleDeleteAll}
             className="text-red-500 hover:underline"
@@ -147,6 +163,7 @@ export default function NotificationPanel({
         Bạn có <b>{unread}</b> thông báo chưa đọc
       </Text>
 
+      {/* List */}
       {notifications.length === 0 ? (
         <div className="text-center text-gray-400 py-6">
           Không có thông báo nào
@@ -158,14 +175,16 @@ export default function NotificationPanel({
             <List.Item
               key={item.id}
               onClick={() => handleNotificationClick(item)}
-              className={`rounded-lg p-3 mb-2 ${item.read ? "bg-gray-50" : "bg-blue-50"
-                }`}
+              className={`rounded-lg p-3 mb-2 transition cursor-pointer ${
+                item.read ? "bg-gray-50" : "bg-blue-50"
+              }`}
             >
               <List.Item.Meta
                 avatar={getIcon(item.type)}
                 title={
                   <div className="flex justify-between items-center">
                     <span className="font-medium">{item.title}</span>
+
                     {!item.read && (
                       <button
                         onClick={() => handleMarkRead(item.id)}
@@ -180,9 +199,7 @@ export default function NotificationPanel({
                   <div>
                     <p className="text-gray-600">{item.message}</p>
                     <p className="text-xs text-gray-400 mt-1">
-                      {item.updatedAt
-                        ? new Date(item.updatedAt).toLocaleString("vi-VN")
-                        : ""}
+                      {new Date(item.updatedAt).toLocaleString("vi-VN")}
                     </p>
                   </div>
                 }

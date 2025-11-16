@@ -244,13 +244,7 @@ export default function ProductsPage() {
         </Button>
       }
     >
-      {/* <Table<DataType>
-        columns={columns}
-        dataSource={products ?? []}
-        rowKey="id"
-        loading={isLoading}
-        pagination={false}
-      /> */}
+ 
 
       <Table<DataType>
         
@@ -260,6 +254,7 @@ export default function ProductsPage() {
         rowKey="id"
         loading={isLoading}
         pagination={false}
+         scroll={{ x: "max-content" }}
       />
 
       <Pagination

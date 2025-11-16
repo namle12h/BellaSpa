@@ -1,4 +1,4 @@
-.ant-table-thead > tr > th {
+.ant-table-thead>tr>th {
   font-weight: bold !important;
   opacity: 0.85;
 }
@@ -8,4 +8,104 @@
 .recharts-pie-sector {
   stroke: none !important;
   outline: none !important;
+}
+
+
+/* Ẩn menu trên màn hình nhỏ và hiển thị khi màn hình đủ lớn */
+.menu {
+  display: none;
+  /* Ẩn trên tất cả các màn hình */
+}
+
+@media (min-width: 768px) {
+  .menu {
+    display: flex;
+    /* Hiển thị trên màn hình có kích thước lớn hơn 768px */
+  }
+}
+
+/* Điều chỉnh kích thước và padding cho modal */
+.ant-modal {
+  width: 80%; /* Đặt modal rộng hơn để tránh bị hẹp */
+  max-width: 1000px; /* Giới hạn độ rộng modal */
+  /* padding: 20px; */
+  border-radius: 12px; /* Bo tròn góc modal */
+  border: none !important;
+}
+
+/* Đảm bảo nội dung trong modal có thể cuộn nếu dài */
+.ant-modal-body {
+  /* padding: 16px; */
+  overflow-y: auto; /* Cuộn dọc khi nội dung dài */
+  max-height: 75vh; /* Giới hạn chiều cao modal */
+}
+
+/* Điều chỉnh các tab cho phù hợp với modal */
+.ant-tabs {
+  margin-top: 10px;
+  border: none; /* Xóa viền dưới tab nếu không cần thiết */
+}
+
+.ant-tabs-tab {
+  padding: 10px; /* Cải thiện padding tab */
+}
+
+.ant-tabs-content {
+  margin-top: 20px;
+}
+
+/* Điều chỉnh các phần nội dung bên trong modal để tránh bị thừa padding */
+/* Remove padding in modal */
+.ant-modal-body {
+  padding: 0 !important; /* Removes the default padding */
+}
+
+
+
+/* Cải thiện bố cục các tab */
+.ant-tabs-content {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+    border: none !important;
+  background-color: #f5f5f5;
+}
+
+/* Tối ưu hóa các tab nội dung */
+.ant-tabs-tab-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Cải thiện form và các phần tử trong modal */
+.ant-form-item {
+  margin-bottom: 20px; /* Khoảng cách giữa các item trong form */
+}
+
+.ant-form-item-label {
+  font-weight: bold;
+}
+
+.ant-input, .ant-textarea {
+  padding: 12px;
+  font-size: 14px;
+}
+
+
+@media (max-width: 768px) {
+  .ant-modal {
+    width: 90vw; /* Chiều rộng modal khi màn hình nhỏ */
+    max-width: 90%; /* Đảm bảo không tràn ra ngoài */
+  }
+
+  .ant-modal-body {
+    max-height: 70vh; /* Chiều cao tối đa cho modal trên màn hình nhỏ */
+  }
+}
+/* Giới hạn chiều cao và thêm khả năng cuộn */
+.ant-modal-body {
+  overflow-y: auto;
+  max-height: 75vh;
+  padding: 20px;
 }

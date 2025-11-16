@@ -40,6 +40,9 @@ import { CartProvider } from './shared/context/CartContext';
 import OrderDetailsPage from './modules/view/components/OrderDetailPage';
 import OrderProductPage from './modules/dashboard/pages/OrderProductPage';
 import StaffPage from './modules/dashboard/pages/StaffPage';
+import SerenitySpa from './modules/view/pages/About';
+import ContactPage from './modules/view/pages/Contact';
+import PromotionsPage from './modules/view/components/promotion';
 
 
 
@@ -105,7 +108,16 @@ function App() {
               <Route path="/products" element={<EmptyLayout />} >
                 <Route index element={<ProductPageView />} />
               </Route>
-               <Route path="/orderpage" element={<EmptyLayout />} >
+              <Route path="/about" element={<EmptyLayout />} >
+                <Route index element={<SerenitySpa />} />
+              </Route>
+              <Route path="/contacts" element={<EmptyLayout />} >
+                <Route index element={<ContactPage />} />
+              </Route>
+              <Route path="/promotions" element={<EmptyLayout />} >
+                <Route index element={<PromotionsPage />} />
+              </Route>
+              <Route path="/orderpage" element={<EmptyLayout />} >
                 <Route index element={<OrderDetailsPage />} />
               </Route>
               <Route path="*" element={<NoPage />} />

@@ -95,7 +95,7 @@ export default function ServiceProcessForm({ serviceId }: ServiceProcessFormProp
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className=" bg-gray-100 min-h-screen">
       <Card className="max-w-5xl mx-auto shadow-lg rounded-2xl border border-gray-200">
         <Title level={3} className="text-center text-blue-600 mb-6">
           Chi tiết dịch vụ :

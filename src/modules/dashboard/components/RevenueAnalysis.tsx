@@ -123,29 +123,29 @@ const TrendCard = ({ item }: { item: TrendCardItem }) => {
     const arrowIcon = item.isUp ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />;
 
     return (
-        <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100 flex flex-col justify-between">
+        <div className="bg-white p-4 sm:p-5 rounded-xl shadow-md border border-gray-100 flex flex-col justify-between">
             <div className="flex justify-between items-center mb-2">
-                <p className="text-sm font-semibold text-gray-800">{item.period}</p>
-                <span className={`flex items-center text-xs font-semibold ${changeColor}`}>
+                <p className="text-xs sm:text-sm font-semibold text-gray-800">{item.period}</p>
+                <span className={`flex items-center text-[11px] sm:text-xs font-semibold ${changeColor}`}>
                     {arrowIcon}
-                    {item.changePercent}%
+                    <span className="ml-1">{item.changePercent}%</span>
                 </span>
             </div>
-            <h4 className="text-2xl font-bold text-gray-900 mb-1">{item.currentValue}</h4>
-            <p className="text-xs text-gray-500">Trước: {item.prevValue}</p>
+            <h4 className="text-lg sm:text-2xl font-bold text-gray-900 mb-1">
+                {item.currentValue}
+            </h4>
+            <p className="text-[11px] sm:text-xs text-gray-500">
+                Trước: {item.prevValue}
+            </p>
         </div>
     );
 };
 
-// ===================================================
-// KHỐI CHÍNH: PHÂN TÍCH DOANH THU & SO SÁNH
-// ===================================================
 
 const RevenueComparisonBlock = ({ dataCategory, setDataCategory, categoryOptions, analysisDatasets }: any) => {
 
     const data = analysisDatasets[dataCategory];
 
-    // Đảm bảo không hiển thị khi dữ liệu rỗng
     if (!data) return null;
 
     return (
@@ -171,7 +171,7 @@ const RevenueComparisonBlock = ({ dataCategory, setDataCategory, categoryOptions
                         ))}
                     </select>
 
-                  
+
                 </div>
 
 

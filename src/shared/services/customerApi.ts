@@ -16,20 +16,41 @@ export const fetchCustomerById = async (id: number) => {
   return res.data;
 };
 
-// ✅ Tạo mới
 export const createCustomer = async (data: any) => {
-  const res = await axiosClient.post(`/customers`, data, {
-    headers: { "Content-Type": "application/json" },
-  });
-  return res.data;
+  try {
+    const res = await axiosClient.post(`/customers`, data, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.log("error", error);
+
+    // Kiểm tra xem có lỗi trả về từ API không
+    if (error?.response?.status === 400) {
+      // Lỗi từ API, hiển thị thông báo chi tiết
+    } else {
+      // Nếu lỗi không phải từ API, có thể là lỗi mạng, v.v.
+      message.error("Không thể kết nối đến server. Vui lòng thử lại.");
+    }
+
+    // Ném lỗi ra để `useMutation` có thể bắt được
+    throw error;
+  }
 };
 
 // ✅ Cập nhật
 export const updateCustomer = async (id: number, data: any) => {
-  const res = await axiosClient.put(`/customers/${id}`, data, {
-    headers: { "Content-Type": "application/json" },
-  });
-  return res.data;
+  try {
+    const res = await axiosClient.put(`/customers/${id}`, data, {
+      headers: { "Content-Type": "application/json" },
+    })
+    return res.data;
+
+  } catch (error) {
+    message.error
+    console.log("error", error)
+  }
+
 };
 
 // ✅ Hook
@@ -40,15 +61,29 @@ export const useCustomers = (page = 1, limit = 5) =>
     staleTime: 1000 * 60 * 5,
   });
 
-export const useCreateCustomer = () => {
-  const queryClient = useQueryClient();
+export const useCreateCustomer = (options?: { onSuccess?: () => void }) => {
+  const queryClient = useQueryClient(); // Dùng để invalidate các queries liên quan đến khách hàng
+
   return useMutation({
-    mutationFn: createCustomer,
+    mutationFn: createCustomer,  // Hàm thực hiện gửi request đến API
     onSuccess: () => {
-      message.success("Thêm khách hàng thành công!");
+      if (options?.onSuccess) options.onSuccess();  // Nếu có callback thì gọi nó (ví dụ: đóng modal)
       queryClient.invalidateQueries({ queryKey: ["customers"] });
     },
-    onError: () => message.error("Lỗi khi thêm khách hàng"),
+    onError: (error: any) => {
+      // Kiểm tra lỗi trả về từ backend
+      if (error?.response?.data?.error) {
+        const errorMessage = error?.response?.data?.error;
+
+        // Nếu lỗi là "Email đã được đăng ký", hiển thị dưới trường email
+        if (errorMessage === "Email đã được đăng ký") {
+          message.error("Email đã được đăng ký. Vui lòng thử lại.");
+
+        }
+      } else {
+        message.error("Đã có lỗi xảy ra. Vui lòng thử lại.");
+      }
+    },
   });
 };
 

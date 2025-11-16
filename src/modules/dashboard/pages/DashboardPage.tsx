@@ -27,47 +27,39 @@ function TabNavigation({ children, activeTab, setActiveTab, startDate,
     children: React.ReactNode, activeTab: string, setActiveTab: (tab: string) => void, startDate: Dayjs,  // Thêm startDate vào kiểu props
     endDate: Dayjs
   }) {
-  return (
+    return (
     <div className="w-full">
-      {/* Thanh Tab Navigation */}
-      <div className="flex border-b border-gray-200 mb-6 bg-white rounded-t-xl shadow-sm">
+      {/* NAVIGATION */}
+      <div className="flex flex-wrap items-center border-b border-gray-200 mb-4 bg-white rounded-t-xl shadow-sm">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`
-                            px-4 py-3 text-sm font-medium transition-colors relative
-                            ${activeTab === tab.id
-                ? 'text-pink-600'
-                : 'text-gray-500 hover:text-gray-700'
-              }
-                        `}
+              px-4 py-3 text-sm font-medium transition-colors relative
+              ${activeTab === tab.id ? "text-pink-600" : "text-gray-500 hover:text-gray-700"}
+            `}
           >
             {tab.label}
-            {/* Thanh gạch chân màu hồng khi tab được chọn */}
+
             {activeTab === tab.id && (
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-pink-600 transition-all duration-200"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-pink-600"></span>
             )}
           </button>
         ))}
       </div>
 
-      {/* Nội dung Tab */}
+      {/* CONTENT */}
       <div className="p-0">
-        {activeTab === 'overview' && <div className="space-y-6">{children}</div>}
-        {activeTab === 'performance' && (
+        {activeTab === "overview" && <div className="space-y-6">{children}</div>}
+        {activeTab === "performance" && (
           <div className="space-y-6">
-            <PerformanceStatsCard
-              // startDate={dayjs("2025-10-30")} // Chuyển chuỗi thành Dayjs
-              // endDate={dayjs("2025-11-12")} // Chuyển chuỗi thành Dayjs
-              startDate={startDate}
-              endDate={endDate}
-            />
+            <PerformanceStatsCard startDate={startDate} endDate={endDate} />
             <PerformanceKPIs />
             <RevenueAndServiceTrends mode="month" year={2025} />
           </div>
         )}
-        {activeTab === 'analysis' && (
+        {activeTab === "analysis" && (
           <div className="space-y-6">
             <RevenueAnalysis />
           </div>
@@ -78,9 +70,6 @@ function TabNavigation({ children, activeTab, setActiveTab, startDate,
 }
 
 
-// ===================================================
-// II. MAIN COMPONENT (DashboardPage)
-// ===================================================
 
 export default function DashboardPage() {
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
@@ -166,114 +155,84 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-pink-50 p-6">
-
-      {/* HEADER - KHÔNG THAY ĐỔI */}
-      <div className="bg-white p-4 rounded-xl shadow-lg mb-6 flex justify-between items-center">
+    <div className="w-full min-h-screen bg-pink-50 p-3 sm:p-6">
+      {/* HEADER */}
+      <div className="bg-white p-4 rounded-xl shadow-lg mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-gray-800">Thống Kê Spa</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Thống Kê Spa</h2>
           <p className="text-gray-500">Tổng quan hiệu suất và doanh thu</p>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <div className="relative">
-            <select className="p-2 border border-gray-300 rounded-lg text-sm text-gray-700 appearance-none bg-white pr-8 shadow-sm">
+            <select className="p-2 border border-gray-300 rounded-lg text-sm pr-8 appearance-none bg-white shadow-sm">
               <option>30 ngày qua</option>
               <option>7 ngày qua</option>
               <option>Hôm nay</option>
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
           </div>
 
           <button
             onClick={toggleFilters}
-            className={`flex items-center space-x-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors shadow-sm border ${isFiltersVisible
-              ? 'bg-pink-600 text-white border-pink-600'
-              : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
-              }`}
+            className={`flex items-center px-4 py-2 text-sm font-semibold rounded-lg shadow-sm border transition-colors
+              ${isFiltersVisible ? "bg-pink-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"}`}
           >
-            <Filter className="w-4 h-4" />
-            <span>Bộ lọc</span>
+            <Filter className="w-4 h-4 mr-2" />
+            Bộ lọc
           </button>
 
-          <button className="bg-pink-600 text-white px-4 py-2 rounded-lg shadow hover:bg-pink-700 transition flex items-center gap-2">
+          <button className="bg-pink-600 text-white px-4 py-2 rounded-lg shadow hover:bg-pink-700 flex items-center gap-2">
             <ArrowDownToLine className="w-4 h-4" />
-            **Xuất báo cáo**
+            Xuất báo cáo
           </button>
         </div>
       </div>
 
-      {/* BỘ LỌC NÂNG CAO - HIỂN THỊ TRÊN CÁC TAB */}
+      {/* FILTER */}
       {isFiltersVisible && (
         <div className="mb-6">
-          {/* <AdvancedFilters />
-           */}
-          <AdvancedFilters
-            startDate={startDate}
-            endDate={endDate}
-            onDateChange={handleDateChange}
-          />
+          <AdvancedFilters startDate={startDate} endDate={endDate} onDateChange={handleDateChange} />
         </div>
       )}
 
-      {/* 👈 BỌC NỘI DUNG CHÍNH BẰNG TAB NAVIGATION */}
-      <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} startDate={startDate} // Truyền startDate
-        endDate={endDate} >
-
-        {/* Nội dung Tab TỔNG QUAN (Chỉ hiển thị khi activeTab='overview') */}
-
-        {/* Cards - SỬ DỤNG BỐ CỤC 4 CỘT HIỆN ĐẠI */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* CONTENT WITH TABS */}
+      <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} startDate={startDate} endDate={endDate}>
+        {/* OVERVIEW CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((item, index) => (
-            <div
-              key={index}
-              className="bg-white p-6 rounded-xl shadow-md border border-gray-100" // Loại bỏ hover:shadow-lg
-            >
-              {/* BỐ CỤC CHÍNH: Title và Icon nằm trên cùng một hàng */}
-              <div className="flex justify-between items-center">
+            <div key={index} className="bg-white p-5 rounded-xl shadow border border-gray-100 flex justify-between">
+              <div>
+                <p className="text-sm text-gray-500">{item.title}</p>
+                <h3 className="text-2xl font-bold text-gray-900 mt-2">{item.value}</h3>
+                <p className={`text-xs font-semibold mt-1 ${item.percentColor}`}>{item.percent}</p>
+              </div>
 
-                {/* Cột Trái: Title, Value, Percent */}
-                <div>
-                  <p className="text-sm text-left  font-medium text-gray-500 mb-2">
-                    {item.title}
-                  </p>
-
-                  {/* Value */}
-                  <h3 className="text-2xl text-left font-bold text-gray-900 mb-2">
-                    {item.value}
-                  </h3>
-
-                  {/* Percent Tag */}
-                  <p className={`text-xs text-left  font-semibold ${item.percentColor || "text-green-600"}`}>
-                    {item.percent}
-                  </p>
-                </div>
-
-                {/* Cột Phải: Icon */}
-                <div className={`w-10 h-10  rounded-lg flex items-center justify-center  text-white text-xl shadow-lg ${item.iconColor || item.iconBg}`}>
-                  {item.icon}
-                </div>
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white text-xl ${item.iconColor}`}>
+                {item.icon}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Charts và Phân tích */}
+        {/* CHARTS */}
         <div className="mt-6 space-y-6">
-
-          {/* Hàng 1: Biểu đồ lớn (Chart) và Biểu đồ tròn (Donut/Pie) */}
+          {/* Biểu đồ lớn + Pie */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2"><StatsChart mode='month' year={2025} /></div>
-            <div className="lg:col-span-1">  <ServiceStats startDate={startDate} endDate={endDate} /></div>
+            <div className="lg:col-span-2">
+              <StatsChart mode="month" year={2025} />
+            </div>
+            <div className="lg:col-span-1">
+              <ServiceStats startDate={startDate} endDate={endDate} />
+            </div>
           </div>
 
-          {/* Hàng 2: Phân tích Khách hàng và Lịch hẹn (Chia đều 2 cột) */}
+          {/* Analysis Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <CustomerAnalysis startDate={startDate} endDate={endDate} />
             <AppointmentStats startDate={startDate} endDate={endDate} />
           </div>
         </div>
-
       </TabNavigation>
     </div>
   );

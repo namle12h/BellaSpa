@@ -122,7 +122,8 @@ export default function CustomerPage() {
             setPageSize(newSize);
           }
         }}
-      />
+        scroll={{ x: 'max-content' }} // Cho phép cuộn ngang
+        className="w-full" />
 
       <Modal
         open={isModalOpen}

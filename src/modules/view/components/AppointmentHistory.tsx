@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { axiosClient } from "../../../shared/lib/axiosClient";
-import { Table, Tag, message, Popconfirm, Button } from "antd";
+import { Table, Tag, message, Popconfirm, Button, Pagination } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 interface Appointment {
@@ -15,7 +15,14 @@ interface Appointment {
 export default function AppointmentHistory() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 3;
 
+  // danh sách theo trang
+  const paginatedAppointments = appointments.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
   // 🟩 Lấy danh sách lịch hẹn
   const fetchAppointments = async () => {
     try {
@@ -86,18 +93,18 @@ export default function AppointmentHistory() {
           status === "Completed"
             ? "green"
             : status === "Pending"
-            ? "orange"
-            : status === "Cancelled"
-            ? "red"
-            : "blue";
+              ? "orange"
+              : status === "Cancelled"
+                ? "red"
+                : "blue";
         const label =
           status === "Pending"
             ? "Chờ xác nhận"
             : status === "Completed"
-            ? "Hoàn thành"
-            : status === "Cancelled"
-            ? "Đã hủy"
-            : status;
+              ? "Hoàn thành"
+              : status === "Cancelled"
+                ? "Đã hủy"
+                : status;
         return <Tag color={color}>{label}</Tag>;
       },
     },
@@ -127,14 +134,99 @@ export default function AppointmentHistory() {
     <div className="bg-white rounded-2xl shadow-sm p-8">
       <h2 className="text-xl font-semibold mb-6">🕒 Lịch sử đặt dịch vụ</h2>
 
-      <Table
-        columns={columns}
-        dataSource={appointments}
-        loading={loading}
-        rowKey="id"
-        pagination={{ pageSize: 5, showSizeChanger: false }}
-        className="rounded-lg overflow-hidden"
-      />
+      <div className="hidden md:block">
+        <Table
+          columns={columns}
+          dataSource={appointments}
+          loading={loading}
+          rowKey="id"
+          pagination={{ pageSize: 5, showSizeChanger: false }}
+          className="rounded-lg overflow-hidden"
+        />
+      </div>
+
+      {/* 🟩 MOBILE CARD LIST */}
+      <div className="md:hidden space-y-4">
+        {paginatedAppointments.map((item) => (
+          <div
+            key={item.id}
+            className="rounded-xl border border-gray-200 p-4 shadow-sm bg-white"
+          >
+            <div className="font-semibold text-base mb-1">{item.serviceName}</div>
+
+            <div className="text-sm text-gray-600">
+              <strong>Ngày:</strong>{" "}
+              {new Date(item.startAt).toLocaleString("vi-VN", {
+                hour: "2-digit",
+                minute: "2-digit",
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })}
+            </div>
+
+            <div className="text-sm text-gray-600">
+              <strong>Phòng:</strong> {item.roomName || "Chưa sắp xếp"}
+            </div>
+
+            <div className="text-sm text-gray-600">
+              <strong>Nhân viên:</strong> {item.staffName || "Đang phân công"}
+            </div>
+
+            <div className="mt-2">
+              <Tag
+                color={
+                  item.status === "Completed"
+                    ? "green"
+                    : item.status === "Pending"
+                      ? "orange"
+                      : item.status === "Cancelled"
+                        ? "red"
+                        : "blue"
+                }
+              >
+                {item.status === "Pending"
+                  ? "Chờ xác nhận"
+                  : item.status === "Completed"
+                    ? "Hoàn thành"
+                    : item.status === "Cancelled"
+                      ? "Đã hủy"
+                      : item.status}
+              </Tag>
+            </div>
+
+            {(item.status === "Pending" || item.status === "Confirmed") && (
+              <div className="mt-3">
+                <Popconfirm
+                  title="Xác nhận hủy lịch?"
+                  okText="Đồng ý"
+                  cancelText="Không"
+                  onConfirm={() => handleCancel(item.id)}
+                >
+                  <Button danger size="small" block>
+                    Hủy lịch
+                  </Button>
+                </Popconfirm>
+              </div>
+            )}
+          </div>
+        ))}
+
+        {/* Phân trang */}
+        <div className="flex justify-center mt-4">
+          <Pagination
+            current={currentPage}
+            total={appointments.length}
+            pageSize={pageSize}
+            onChange={(page) => setCurrentPage(page)}
+          />
+        </div>
+
+        {appointments.length === 0 && !loading && (
+          <p className="text-center text-gray-400">Không có lịch hẹn nào</p>
+        )}
+      </div>
+
     </div>
   );
 }

@@ -4,15 +4,13 @@ import {
     PlusOutlined,
     FileExcelOutlined,
     FilterOutlined,
-    ScheduleOutlined,
     CheckCircleOutlined,
-    ClockCircleOutlined,
-    CheckCircleTwoTone,
     CloseCircleOutlined,
     EditOutlined,
     DeleteOutlined,
     DollarCircleOutlined,
     DollarOutlined,
+    BarsOutlined,
 } from "@ant-design/icons";
 import EditAppointment from "../components/ApoinmentForm";
 import { useAppointments } from "../../../shared/services/appointmentApi";
@@ -52,24 +50,23 @@ const AppointmentManager = () => {
             }
         },
         {
-            title: "Dịch vụ", dataIndex: "serviceName", key: "serviceName"
-            , render: (serviceName: string) => {
-                return <span className="font-semibold ">{serviceName}</span>;
+            title: "Dịch vụ", dataIndex: "serviceName", key: "serviceName",
+            render: (serviceName: string) => {
+                return <span className="font-semibold">{serviceName}</span>;
             }
         },
         {
             title: "Nhân viên", dataIndex: "staffName", key: "staffName", render: (staffName: string) => {
-                return <span className="font-semibold ">{staffName}</span>;
+                return <span className="font-semibold">{staffName}</span>;
             }
         },
         {
             title: "Phòng", dataIndex: "roomName", key: "roomName", render: (roomName: string) => {
-                return <span className="font-semibold ">{roomName}</span>;
+                return <span className="font-semibold">{roomName}</span>;
             }
         },
         {
-            title: "Trạng thái", dataIndex: "status", key: "status"
-            ,
+            title: "Trạng thái", dataIndex: "status", key: "status",
             render: (status: string) => {
                 let color = "gray";
                 switch (status) {
@@ -98,65 +95,7 @@ const AppointmentManager = () => {
             render: (val: string) => dayjs(val).format("HH:mm DD/MM/YYYY"),
         },
         { title: "Ghi chú", dataIndex: "notes", key: "notes" },
-        // {
-        //     title: "Hành động",
-        //     key: "action",
 
-        //     render: (_: any, record: any) => (
-        //         <Space>
-        //             {record.status !== "PAID" && record.status !== "Cancelled" ? (
-        //                 <Button
-        //                     type="link"
-        //                     icon={<EditOutlined />}
-        //                     onClick={() => handleEdit(record)}
-        //                 />
-        //             ) : null}
-
-        //             {/* 🗑️ Nút Xóa (nếu cần) */}
-        //             <Button type="link" icon={<DeleteOutlined />} />
-
-        //             {/* 💰 Nút Thanh toán */}
-        //             {
-        //                 // 🔹 Đơn đã hoàn thành nhưng chưa thanh toán
-        //                 record.status === "Completed" ? (
-        //                     <Button
-        //                         type="primary"
-        //                         icon={<DollarCircleOutlined />}
-        //                         onClick={() => handlePayment(record)}
-        //                     >
-        //                         Thanh toán
-        //                     </Button>
-        //                 )
-        //                     // 🔹 Đơn đã thanh toán
-        //                     : record.status === "PAID" ? (
-        //                         <Button
-        //                             type="default"
-        //                             icon={<CheckCircleOutlined style={{ color: "white" }} />}
-        //                             disabled
-        //                             className="!bg-green-400"
-        //                         >
-        //                             <p className="text-white">Đã thanh toán</p>
-        //                         </Button>
-        //                     )
-        //                         // 🔹 Đơn đã hủy
-        //                         : record.status === "Cancelled" ? (
-        //                             <Button
-        //                                 type="default"
-        //                                 disabled
-        //                                 icon={<CloseCircleOutlined style={{ color: "red" }} />}
-        //                             >
-        //                                 <span style={{ color: "red" }}>Đã hủy</span>
-        //                             </Button>
-        //                         )
-        //                             // 🔹 Các trạng thái khác (Confirmed, Pending, v.v.)
-        //                             : null
-        //             }
-
-
-        //         </Space>
-        //     ),
-
-        // },
         {
             title: "Hành động",
             key: "action",
@@ -216,58 +155,28 @@ const AppointmentManager = () => {
                 </Space>
             ),
         },
-
-
     ];
+
 
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRecord, setSelectedRecord] = useState<any>(null);
     const appointments = Array.isArray(data?.content) ? data.content : [];
-
+    const [isVisible, setIsVisible] = useState(false);
     const [dateRange, setDateRange] = useState<[any, any] | null>(null);
     const [statusFilter, setStatusFilter] = useState<string | null>(null);
     const [staffFilter, setStaffFilter] = useState<string | null>(null);
     const [searchText, setSearchText] = useState<string>("");
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
     const handleEdit = (record: any) => {
         setSelectedRecord(record);
         setIsModalOpen(true);
     };
+    const toggleFilter = () => {
+        setIsFilterVisible(!isFilterVisible);
+    };
 
-
-    // const handleRepay = async (record: any) => {
-    //     try {
-    //         const res = await axios.get(
-    //             `http://localhost:8080/api/invoices/appointment/${record.id}`
-    //         );
-    //         const invoice = res.data;
-
-    //         if (invoice?.status === "PENDING" && invoice?.paymentUrl) {
-    //             Modal.confirm({
-    //                 title: "Thanh toán lại hóa đơn",
-    //                 content: (
-    //                     <>
-    //                         <p>
-    //                             Hóa đơn <b>{invoice.txnRef}</b> đang chờ thanh toán.
-    //                         </p>
-    //                         <p>Bạn có muốn tiếp tục thanh toán không?</p>
-    //                     </>
-    //                 ),
-    //                 okText: "Tiếp tục",
-    //                 cancelText: "Hủy",
-    //                 onOk: () => {
-    //                     window.location.href = invoice.paymentUrl;
-    //                 },
-    //             });
-    //         } else {
-    //             message.warning("Không tìm thấy hóa đơn đang chờ thanh toán.");
-    //         }
-    //     } catch (err) {
-    //         console.error(err);
-    //         message.error("Không thể kiểm tra hóa đơn cũ.");
-    //     }
-    // };
     const handleRepay = async (record: any) => {
         try {
             // ✅ Lấy txnRef từ record (FE phải có hoặc BE đã trả về)
@@ -375,183 +284,218 @@ const AppointmentManager = () => {
     });
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
-            {/* Header Stats */}
-            <div className="grid grid-cols-7 gap-4 mb-6">
-                <Card className="text-center shadow rounded-2xl"
-                    onClick={() => {
-                        setStatusFilter(null);
-                        setDateRange(null);
-                    }}>
-                    <p className="font-bold text-xl">{total}</p>
-                    <div className="flex flex-col items-center justify-center">
-                        <ScheduleOutlined className="!text-blue-500 text-lg" />
-                        <p>Tất cả lịch hẹn</p>
-                    </div>
-                </Card>
-                <Card
-                    className="text-center shadow rounded-2xl cursor-pointer hover:shadow-lg transition"
-                    onClick={() => {
-                        const today = dayjs();
 
-                        setDateRange([today.startOf("day"), today.endOf("day")]);
-                    }}
+        <>
+            <div className="md:hidden flex items-center">
+                <Button
+                    className="mb-4 block sm:hidden" // hiển thị icon trên màn hình nhỏ, ẩn trên màn hình lớn
+                    icon={<BarsOutlined />}
+                    onClick={() => setIsVisible(!isVisible)} // Toggle khi nhấn vào icon
                 >
-                    <p className="font-bold text-xl text-purple-600">{todayAppointments}</p>
-                    <div className="flex flex-col items-center justify-center">
-                        <ScheduleOutlined className="!text-purple-500 text-lg" />
-                        <p>Lịch hẹn hôm nay</p>
+                    {isVisible ? "Ẩn thống kê" : "Xem thống kê"}
+                </Button></div>
+            <div className="p-6 bg-gray-50 min-h-screen">
+                {/* Header Stats */}
+                {isVisible && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4 mb-6">
+                        <Card
+                            className="text-center shadow rounded-2xl"
+                            onClick={() => {
+                                setStatusFilter(null);
+                                setDateRange(null);
+                            }}
+                        >
+                            <p className="font-bold text-xl">{total}</p>
+                            <div className="flex flex-col items-center justify-center">
+                                <BarsOutlined className="!text-blue-500 text-lg" />
+                                <p>Tất cả lịch hẹn</p>
+                            </div>
+                        </Card>
+                        <Card
+                            className="text-center shadow rounded-2xl cursor-pointer hover:shadow-lg transition"
+                            onClick={() => {
+                                const today = dayjs();
+                                setDateRange([today.startOf("day"), today.endOf("day")]);
+                            }}
+                        >
+                            <p className="font-bold text-xl text-purple-600">{todayAppointments}</p>
+                            <div className="flex flex-col items-center justify-center">
+                                <BarsOutlined className="!text-purple-500 text-lg" />
+                                <p>Lịch hẹn hôm nay</p>
+                            </div>
+                        </Card>
+                        <Card
+                            className="text-center shadow rounded-2xl"
+                            onClick={() => {
+                                setStatusFilter("Confirmed");
+                                setDateRange(null);
+                            }}
+                        >
+                            <p className="font-bold text-xl text-green-600">{confirmed}</p>
+                            <div className="flex flex-col items-center justify-center">
+                                <BarsOutlined className="!text-green-500 text-lg" />
+                                <p>Đã xác nhận</p>
+                            </div>
+                        </Card>
+                        <Card
+                            className="text-center shadow rounded-2xl"
+                            onClick={() => {
+                                setStatusFilter("PAID");
+                                setDateRange(null);
+                            }}
+                        >
+                            <p className="font-bold text-xl text-green-800">{paymented}</p>
+                            <div className="flex flex-col items-center justify-center">
+                                <BarsOutlined className="!text-green-500 text-lg" />
+                                <p>Đã Thanh Toán</p>
+                            </div>
+                        </Card>
+                        <Card
+                            className="text-center shadow rounded-2xl"
+                            onClick={() => {
+                                setStatusFilter("Pending");
+                                setDateRange(null);
+                            }}
+                        >
+                            <p className="font-bold text-xl text-yellow-600">{pending}</p>
+                            <div className="flex flex-col items-center justify-center">
+                                <BarsOutlined className="!text-yellow-500 text-lg" />
+                                <p>Đang chờ</p>
+                            </div>
+                        </Card>
+                        <Card
+                            className="text-center shadow rounded-2xl"
+                            onClick={() => {
+                                setStatusFilter("Completed");
+                                setDateRange(null);
+                            }}
+                        >
+                            <p className="font-bold text-xl text-blue-600">{completed}</p>
+                            <div className="flex flex-col items-center justify-center">
+                                <BarsOutlined className="!text-blue-500 text-lg" />
+                                <p>Hoàn thành</p>
+                            </div>
+                        </Card>
+                        <Card
+                            className="text-center shadow rounded-2xl"
+                            onClick={() => {
+                                setStatusFilter("Cancelled");
+                                setDateRange(null);
+                            }}
+                        >
+                            <p className="font-bold text-xl text-red-600">{cancelRate}</p>
+                            <div className="flex flex-col items-center justify-center">
+                                <BarsOutlined className="!text-red-500 text-lg" />
+                                <p>Tỷ lệ hủy</p>
+                            </div>
+                        </Card>
                     </div>
-                </Card>
+                )}
 
-                <Card className="text-center shadow rounded-2xl"
-                    onClick={() => {
-                        setStatusFilter("Confirmed");
-                        setDateRange(null);
-                    }}>
-                    <p className="font-bold text-xl text-green-600">{confirmed}</p>
-                    <div className="flex flex-col items-center justify-center">
-                        <CheckCircleOutlined className="!text-green-500 text-lg" />
-                        <p>Đã xác nhận</p>
-                    </div>
-                </Card>
-                <Card className="text-center shadow rounded-2xl" onClick={() => {
-                    setStatusFilter("PAID");
-                    setDateRange(null);
-                }}>
-                    <p className="font-bold text-xl text-green-800">{paymented}</p>
-                    <div className="flex flex-col items-center justify-center">
-                        <DollarOutlined className="!text-green-500 text-lg" />
-                        <p>Đã Thanh Toán</p>
-                    </div>
-                </Card>
-                <Card className="text-center shadow rounded-2xl" onClick={() => {
-                    setStatusFilter("Pending");
-                    setDateRange(null);
-                }}>
-                    <p className="font-bold text-xl text-yellow-600">{pending}</p>
-                    <div className="flex flex-col items-center justify-center">
-                        <ClockCircleOutlined className="!text-yellow-500 text-lg" />
-                        <p>Đang chờ</p>
-                    </div>
-                </Card>
-                <Card className="text-center shadow rounded-2xl" onClick={() => {
-                    setStatusFilter("Completed");
-                    setDateRange(null);
-                }}>
-                    <p className="font-bold text-xl text-blue-600">{completed}</p>
-                    <div className="flex flex-col items-center justify-center">
-                        <CheckCircleTwoTone twoToneColor="#52c41a" className="text-lg" />
-                        <p>Hoàn thành</p>
-                    </div>
-                </Card>
-                <Card className="text-center shadow rounded-2xl" onClick={() => {
-                    setStatusFilter("Cancelled");
-                    setDateRange(null);
-                }}>
-                    <p className="font-bold text-xl text-red-600">{cancelRate}%</p>
-                    <div className="flex flex-col items-center justify-center">
-                        <CloseCircleOutlined className="!text-red-500 text-lg" />
-                        <p>Tỷ lệ hủy</p>
-                    </div>
-                </Card>
-            </div>
-
-            {/* Action buttons */}
-            <div className="flex justify-between mb-4">
-                <Button type="primary" icon={<PlusOutlined />}>
-                    Thêm lịch hẹn mới
-                </Button>
-                <Space>
-                    <Button icon={<FileExcelOutlined />} className="bg-green-500 text-white">
-                        Xuất báo cáo
+                {/* Action buttons */}
+                <div className="flex flex-col sm:flex-row justify-between mb-4 w-full gap-4">
+                    <Button type="primary" icon={<PlusOutlined />} className="w-full sm:w-auto">
+                        Thêm lịch hẹn mới
                     </Button>
-                    <Button icon={<FilterOutlined />}>Lọc dữ liệu</Button>
-                </Space>
-            </div>
-
-            <Card className="mb-4 shadow rounded-2xl">
-                <div className="flex flex-wrap gap-3 items-center">
-                    <RangePicker onChange={(values) => setDateRange(values)} />
-
-                    <Select
-                        placeholder="Trạng thái"
-                        allowClear
-                        style={{ width: 150 }}
-                        onChange={(val) => setStatusFilter(val)}
-                    >
-                        <Option value="Pending">Đang chờ</Option>
-                        <Option value="Confirmed">Đã xác nhận</Option>
-                        <Option value="Completed">Hoàn thành</Option>
-                        <Option value="Cancelled">Đã hủy</Option>
-                    </Select>
-
-                    <Input
-                        placeholder="Tìm theo nhân viên..."
-                        style={{ width: 200 }}
-                        onChange={(e) => setStaffFilter(e.target.value)}
-                    />
-
-                    <Input
-                        placeholder="Tìm khách hàng..."
-                        style={{ width: 200 }}
-                        onChange={(e) => setSearchText(e.target.value)}
-                    />
+                    <Space className="w-full sm:w-auto">
+                        <Button icon={<FileExcelOutlined />} className="bg-green-500 text-white w-full sm:w-auto">
+                            Xuất báo cáo
+                        </Button>
+                        <Button icon={<FilterOutlined />} className="w-full sm:w-auto" onClick={toggleFilter}>
+                            Lọc dữ liệu
+                        </Button>
+                    </Space>
                 </div>
-            </Card>
 
-            <Table columns={columns}
-                // dataSource={data?.content || []}
-                dataSource={filteredData}
-                rowKey="id" pagination={false} bordered />
 
-            <div className="mt-4 flex justify-end">
-                <Pagination
-                    current={page}
-                    total={data?.totalElements || 0}
-                    pageSize={limit}
-                    onChange={(newPage) => setPage(newPage)}
-                    showSizeChanger={false}
+
+                {isFilterVisible && (
+                    <Card className="mb-4 shadow rounded-2xl">
+                        <div className="flex flex-wrap gap-3 items-center">
+                            <RangePicker onChange={(values) => setDateRange(values)} />
+
+                            <Select
+                                placeholder="Trạng thái"
+                                allowClear
+                                style={{ width: 150 }}
+                                onChange={(val) => setStatusFilter(val)}
+                            >
+                                <Option value="Pending">Đang chờ</Option>
+                                <Option value="Confirmed">Đã xác nhận</Option>
+                                <Option value="Completed">Hoàn thành</Option>
+                                <Option value="Cancelled">Đã hủy</Option>
+                            </Select>
+
+                            <Input
+                                placeholder="Tìm theo nhân viên..."
+                                style={{ width: 200 }}
+                                onChange={(e) => setStaffFilter(e.target.value)}
+                            />
+
+                            <Input
+                                placeholder="Tìm khách hàng..."
+                                style={{ width: 200 }}
+                                onChange={(e) => setSearchText(e.target.value)}
+                            />
+                        </div>
+                    </Card>)}
+
+                <Table columns={columns}
+                    // dataSource={data?.content || []}
+                    dataSource={filteredData}
+                    rowKey="id" pagination={false} bordered
+                    scroll={{ x: 'max-content' }} // Cho phép cuộn ngang
+                    className="w-full"
                 />
 
+                <div className="mt-4 flex justify-center sm:justify-end">
+                    <Pagination
+                        current={page}
+                        total={data?.totalElements || 0}
+                        pageSize={limit}
+                        onChange={(newPage) => setPage(newPage)}
+                        showSizeChanger={false}
+                    />
+
+                </div>
+
+                <Modal
+                    title={`Chỉnh sửa lịch hẹn #${selectedRecord?.id}`}
+                    open={isModalOpen}
+                    onCancel={() => setIsModalOpen(false)}
+                    footer={null}
+                    width={700}
+                >
+                    {selectedRecord && (
+                        <EditAppointment
+                            id={selectedRecord.id}
+                            onClose={() => setIsModalOpen(false)}
+                        />
+                    )}
+                </Modal>
+                <Modal
+                    title={`Thanh toán - ${selectedPaymentRecord?.contactName || ""}`}
+                    open={isPaymentModalOpen}
+                    onCancel={() => setIsPaymentModalOpen(false)}
+                    footer={null}
+                    width={1000}
+                >
+
+                    {selectedPaymentRecord && <OrderPage
+                        orderData={selectedPaymentRecord}
+                        onPaymentSuccess={() => {
+                            setIsPaymentModalOpen(false); // ✅ Đóng modal
+                            refetch();
+
+                        }} />}
+                </Modal>
+
+
             </div>
 
-            <Modal
-                title={`Chỉnh sửa lịch hẹn #${selectedRecord?.id}`}
-                open={isModalOpen}
-                onCancel={() => setIsModalOpen(false)}
-                footer={null}
-                width={700}
-            >
-                {selectedRecord && (
-                    <EditAppointment
-                        id={selectedRecord.id}
-                        onClose={() => setIsModalOpen(false)}
-                    />
-                )}
-            </Modal>
-            <Modal
-                title={`Thanh toán - ${selectedPaymentRecord?.contactName || ""}`}
-                open={isPaymentModalOpen}
-                onCancel={() => setIsPaymentModalOpen(false)}
-                footer={null}
-                width={1000}
-            >
-
-                {selectedPaymentRecord && <OrderPage
-                    orderData={selectedPaymentRecord}
-                    onPaymentSuccess={() => {
-                        setIsPaymentModalOpen(false); // ✅ Đóng modal
-                        refetch();
-
-                    }} />}
-            </Modal>
-
-
-        </div>
-
-
+        </>
     );
+
 };
 
 export default AppointmentManager;

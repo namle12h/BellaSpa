@@ -234,102 +234,117 @@ export default function AdvancedFilters({ startDate, endDate, onDateChange }: Ad
   };
 
   return (
-    <div className="p-4 rounded-xl border border-gray-200 bg-white/50">
-      {/* Header + Reset */}
-      <div className="flex justify-between items-center mb-5">
-        <h3 className="text-lg font-semibold text-gray-800">Bộ lọc nâng cao</h3>
-        <button
-          onClick={handleReset}
-          className="text-pink-600 text-sm hover:underline flex items-center space-x-1 font-medium"
-        >
-          <span>Xóa tất cả</span>
-        </button>
-      </div>
+  <div className="p-4 rounded-xl border border-gray-200 bg-white/50">
 
-      {/* Grid */}
-      <div className="grid grid-cols-5 gap-4">
-        {/* 1. Khoảng thời gian */}
-        <div className="col-span-2 flex flex-col space-y-2">
-          <label className="text-sm font-medium text-gray-700">Khoảng thời gian</label>
-          <div className="flex space-x-4">
-            <input
-              type="date"
-              className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700 pr-8"
-              value={startDate ? startDate.format('YYYY-MM-DD') : ''}
-              onChange={(e) => handleDateChange(dayjs(e.target.value), endDate)}
-            />
-            <input
-              type="date"
-              className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700 pr-8"
-              value={endDate ? endDate.format('YYYY-MM-DD') : ''}
-              onChange={(e) => handleDateChange(startDate, dayjs(e.target.value))}
-            />
-          </div>
-          <div className="mt-2 text-sm text-gray-600">
-            <span>{`Số ngày: ${calculateDaysDifference()}`}</span>
-          </div>
-        </div>
+    {/* Header + Reset */}
+    <div className="flex justify-between items-center mb-5 flex-wrap gap-2">
+      <h3 className="text-lg font-semibold text-gray-800">Bộ lọc nâng cao</h3>
 
-        {/* 2. Dịch vụ (Multi) */}
-        <div className="col-span-1">
-          <SelectWrapper
-            label="Dịch vụ"
-            placeholder="Chọn dịch vụ"
-            data={serviceOptions}
-            type="service"
-            isMultiSelect={true}
-            isOpen={openDropdown === 'service'}
-            onToggle={() => toggleDropdown('service')}
-            value={selectedService}
-            onChange={setSelectedService}
+      <button
+        onClick={handleReset}
+        className="text-pink-600 text-sm hover:underline flex items-center space-x-1 font-medium"
+      >
+        <span>Xóa tất cả</span>
+      </button>
+    </div>
 
+    {/* === GRID RESPONSIVE === */}
+    <div className="
+        grid 
+        grid-cols-1 
+        sm:grid-cols-2 
+        lg:grid-cols-4 
+        xl:grid-cols-5 
+        gap-4
+      "
+    >
+
+      {/* 1. Date Range — chiếm 2 cột trên desktop */}
+      <div className="col-span-1 sm:col-span-2 xl:col-span-2 flex flex-col space-y-2">
+        <label className="text-sm font-medium text-gray-700">Khoảng thời gian</label>
+
+        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+          <input
+            type="date"
+            className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700"
+            value={startDate ? startDate.format('YYYY-MM-DD') : ''}
+            onChange={(e) => handleDateChange(dayjs(e.target.value), endDate)}
+          />
+
+          <input
+            type="date"
+            className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700"
+            value={endDate ? endDate.format('YYYY-MM-DD') : ''}
+            onChange={(e) => handleDateChange(startDate, dayjs(e.target.value))}
           />
         </div>
 
-        {/* 3. Nhân viên (Multi) */}
-        <div className="col-span-1">
-          <SelectWrapper
-            label="Nhân viên"
-            placeholder="Chọn nhân viên"
-            data={staffOptions}
-            type="staff"
-            isMultiSelect={true}
-            isOpen={openDropdown === 'staff'}
-            onToggle={() => toggleDropdown('staff')}
-            value={selectedStaff}
-            onChange={setSelectedStaff}
-          />
-        </div>
-
-        {/* 4. Loại khách hàng (Single) */}
-        <div className="col-span-1">
-          <SelectWrapper
-            label="Loại khách hàng"
-            placeholder="Tất cả khách hàng"
-            data={customerTypeData}
-            type="customer"
-            isMultiSelect={false}
-            isOpen={openDropdown === 'customer'}
-            onToggle={() => toggleDropdown('customer')}
-            value={selectedCustomerType}
-            onChange={setSelectedCustomerType}
-          />
+        <div className="mt-2 text-sm text-gray-600">
+          <span>{`Số ngày: ${calculateDaysDifference()}`}</span>
         </div>
       </div>
 
-      {/* Bộ lọc nhanh */}
-      <div className="mt-6 flex items-center space-x-3">
-        <span className="text-sm font-medium text-gray-700">Bộ lọc nhanh:</span>
-        {quickFilters.map((f, i) => (
-          <button
-            key={i}
-            className={`flex items-center px-3 py-1 text-xs font-semibold rounded-full transition-colors ${f.color} hover:opacity-80`}
-          >
-            <Tag className="w-3 h-3 mr-1" />
-            {f.label}
-          </button>
-        ))}
+      {/* 2. Dịch vụ */}
+      <div className="col-span-1">
+        <SelectWrapper
+          label="Dịch vụ"
+          placeholder="Chọn dịch vụ"
+          data={serviceOptions}
+          type="service"
+          isMultiSelect={true}
+          isOpen={openDropdown === 'service'}
+          onToggle={() => toggleDropdown('service')}
+          value={selectedService}
+          onChange={setSelectedService}
+        />
+      </div>
+
+      {/* 3. Nhân viên */}
+      <div className="col-span-1">
+        <SelectWrapper
+          label="Nhân viên"
+          placeholder="Chọn nhân viên"
+          data={staffOptions}
+          type="staff"
+          isMultiSelect={true}
+          isOpen={openDropdown === 'staff'}
+          onToggle={() => toggleDropdown('staff')}
+          value={selectedStaff}
+          onChange={setSelectedStaff}
+        />
+      </div>
+
+      {/* 4. Loại khách hàng */}
+      <div className="col-span-1">
+        <SelectWrapper
+          label="Loại khách hàng"
+          placeholder="Tất cả khách hàng"
+          data={customerTypeData}
+          type="customer"
+          isMultiSelect={false}
+          isOpen={openDropdown === 'customer'}
+          onToggle={() => toggleDropdown('customer')}
+          value={selectedCustomerType}
+          onChange={setSelectedCustomerType}
+        />
       </div>
     </div>
-  );
+
+    {/* Quick filters */}
+    <div className="mt-6 flex flex-wrap items-center gap-2">
+      <span className="text-sm font-medium text-gray-700">Bộ lọc nhanh:</span>
+
+      {quickFilters.map((f, i) => (
+        <button
+          key={i}
+          className={`flex items-center px-3 py-1 text-xs font-semibold rounded-full ${f.color} hover:opacity-80`}
+        >
+          <Tag className="w-3 h-3 mr-1" />
+          {f.label}
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
 }

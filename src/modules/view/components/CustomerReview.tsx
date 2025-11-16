@@ -127,7 +127,7 @@ export default function ProductReviewSection({
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-12">
+    <div className="max-w-6xl mx-auto py-12 p-4">
       <h2 className="text-2xl font-bold mb-8">Đánh giá và bình luận</h2>
 
       {isLoading ? (

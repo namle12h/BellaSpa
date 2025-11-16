@@ -145,11 +145,13 @@ export default function ServicePage() {
             dataIndex: "id",
             key: "id",
             width: 70,
+            responsive: ["md"], // ẩn trên mobile, chỉ hiện từ md trở lên
         },
         {
             title: "Name",
             dataIndex: "name",
             key: "name",
+            ellipsis: true,           // cắt bớt text dài
         },
         {
             title: "Image",
@@ -160,16 +162,18 @@ export default function ServicePage() {
                     <img
                         src={url}
                         alt="service"
-                        style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 8 }}
+                        className="w-16 h-16 object-cover rounded-lg"
                     />
                 ) : (
-                    <span>No Image</span>
+                    <span className="text-gray-400 text-xs">No Image</span>
                 ),
         },
         {
             title: "Description",
             dataIndex: "description",
             key: "description",
+            ellipsis: true,
+            responsive: ["lg"],       // chỉ hiện trên màn lớn (lg trở lên)
         },
         {
             title: "Price (VNĐ)",
@@ -187,23 +191,26 @@ export default function ServicePage() {
             dataIndex: "durationMin",
             key: "durationMin",
             align: "center",
+            responsive: ["md"],       // ẩn trên mobile nhỏ
         },
         {
             title: "Status",
-            dataIndex: "active", // ✅ BE trả về "active"
+            dataIndex: "active",
             key: "status",
+            responsive: ["md"],       // ẩn trên mobile nhỏ
             render: (active: boolean) =>
                 active ? <Tag color="green">Active</Tag> : <Tag color="red">Inactive</Tag>,
         },
         {
             title: "Actions",
             key: "actions",
+            fixed: "right",
             render: (_, record) => (
-                <Space>
+                <Space size="small">
                     <Button
                         icon={<EditOutlined />}
                         type="link"
-                        // onClick={() => setEditingService(record)}
+                        size="small"
                         onClick={() => {
                             const user = JSON.parse(localStorage.getItem("user") || "{}");
                             if (user?.role === "ADMIN") {
@@ -221,30 +228,27 @@ export default function ServicePage() {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button icon={<DeleteOutlined />} danger />
-                    </Popconfirm >
-
-
-                    {/* <Button icon={<FolderAddTwoTone />} className="!border-blue-600" /> */}
+                        <Button icon={<DeleteOutlined />} danger size="small" />
+                    </Popconfirm>
                     <Button
                         icon={<FolderAddTwoTone />}
                         className="!border-blue-600"
+                        size="small"
                         onClick={() => {
                             setSelectedServiceId(record.id);
                             setIsDetailModalOpen(true);
                         }}
                     />
-
                 </Space>
             ),
         },
     ];
 
+
     // ================= Render =================
     return (
 
         <Card
-
 
 
             title="Service List"
