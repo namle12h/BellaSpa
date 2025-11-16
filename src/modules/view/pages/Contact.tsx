@@ -221,7 +221,7 @@ const ContactPage = () => {
             {/* Banner Section - Liên hệ với chúng tôi */}
             <div className="relative w-full h-[35vh] md:h-[45vh] overflow-hidden">
                 <img
-                    src="public/upload/contact.jpg"
+                    src="upload/contact.jpg"
                     alt="Serenity Spa Contact Banner"
                     className="w-full h-full object-cover brightness-75"
                     onError={(e: any) => { e.target.onerror = null; e.target.src = "https://placehold.co/1920x600/D0D8D5/54A99B?text=Spa+Reception+Desk"; }}

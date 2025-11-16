@@ -16,7 +16,7 @@ const allPrograms = [
         duration: '90 phút',
         oldPrice: '1.000.000đ',
         newPrice: '500.000đ',
-        img: 'public/upload/8af94b862c2b684d29bee575c59f9c81.jpg',
+        img: 'upload/8af94b862c2b684d29bee575c59f9c81.jpg',
         color: 'bg-red-500',
     },
     {
@@ -28,7 +28,7 @@ const allPrograms = [
         duration: '120 phút',
         oldPrice: '3.000.000đ',
         newPrice: '2.500.000đ',
-        img: 'public/upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg',
+        img: 'upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg',
         color: 'bg-teal-500',
     },
     {
@@ -40,7 +40,7 @@ const allPrograms = [
         duration: '2 ngày',
         oldPrice: '',
         newPrice: '1.800.000đ',
-        img: 'public/upload/95332035d47d4f05e4ab35c79bd8cde9.jpg',
+        img: 'upload/95332035d47d4f05e4ab35c79bd8cde9.jpg',
 
         color: 'bg-purple-600',
     },
@@ -54,7 +54,7 @@ const allPrograms = [
         duration: '60 phút',
         oldPrice: '1.200.000đ',
         newPrice: '936.000đ',
-        img: 'public/upload/8714beed03fd62887b73582017df0bc0.jpg',
+        img: 'upload/8714beed03fd62887b73582017df0bc0.jpg',
         color: 'bg-red-500',
     },
     {
@@ -67,7 +67,7 @@ const allPrograms = [
         duration: '120 phút',
         oldPrice: '2.500.000đ',
         newPrice: '1.500.000đ',
-        img: 'public/upload/b4180f7148c7f688eb4e74fb26cc23d9.jpg',
+        img: 'upload/b4180f7148c7f688eb4e74fb26cc23d9.jpg',
         color: 'bg-green-600',
     },
     {
@@ -79,7 +79,7 @@ const allPrograms = [
         duration: '90 phút',
         oldPrice: '',
         newPrice: '850.000đ',
-        img: 'public/upload/efbd042cf6a7b54937abae2e5fd49c4f.jpg',
+        img: 'upload/efbd042cf6a7b54937abae2e5fd49c4f.jpg',
         color: 'bg-teal-500',
     },
 ];
@@ -131,7 +131,7 @@ interface ProgramCardProps {
                     src={program.img} 
                     alt={program.title} 
                     className="w-full h-full object-cover" 
-                    onError={(e:any) => { e.target.onerror = null; e.target.src = "public/upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg"; }}
+                    onError={(e:any) => { e.target.onerror = null; e.target.src = "upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg"; }}
                 />
                 
                 {/* Discount Tag */}
@@ -192,7 +192,7 @@ interface ProgramCardProps {
             {/* Banner Section - Chương Trình & Ưu Đãi */}
             <div className="relative w-full h-[40vh] md:h-[55vh] overflow-hidden">
                 <img 
-                    src="public/upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg" 
+                    src="upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg" 
                     alt="Promotion Banner" 
                     className="w-full h-full object-cover brightness-75" 
                     onError={(e:any) => { e.target.onerror = null; e.target.src = "https://placehold.co/1920x800/E8F2F0/54A99B?text=Spa+Promotion+Background"; }}

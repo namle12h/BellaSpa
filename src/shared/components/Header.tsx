@@ -87,7 +87,7 @@ export default function Header() {
       })),
     },
     { key: "product", label: "Sản Phẩm", onClick: () => navigate(`/products`) },
-    { key: "about", label: "Về Chúng Tôi" , onClick: () => navigate(`/about`)},
+    { key: "about", label: "Về Chúng Tôi", onClick: () => navigate(`/about`) },
     { key: "contact", label: "Liên Hệ", onClick: () => navigate(`/contacts`) },
     { key: "promotion", label: "Chương Trình", onClick: () => navigate(`/promotions`) },
   ];
@@ -171,9 +171,18 @@ export default function Header() {
               Sản Phẩm
             </div>
 
-            <div className="py-2  cursor-pointer">Đặt Lịch</div>
-            <div className="py-2  cursor-pointer">Về Chúng Tôi</div>
-            <div className="py-2  cursor-pointer">Liên Hệ</div>
+            <div className="py-2  cursor-pointer" onClick={() => {
+              navigate("/about");
+              setMenuOpen(false);
+            }}>Về Chúng Tôi</div>
+            <div className="py-2  cursor-pointer" onClick={() => {
+              navigate("/contacts");
+              setMenuOpen(false);
+            }}>Liên Hệ</div>
+            <div className="py-2  cursor-pointer" onClick={() => {
+              navigate("/promotions");
+              setMenuOpen(false);
+            }}>Chương Trình</div>
           </div>
         )}
 
