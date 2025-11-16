@@ -45,7 +45,7 @@ const SerenitySpa = () => {
                         {/* Hình ảnh (phải/dưới) - Bắt chước hiệu ứng khung viền và ánh sáng ấm áp */}
                         <div className="md:w-1/2 w-full order-1 md:order-2">
                             <img
-                                src="public/upload/about.jpg"
+                                src="upload/about.jpg"
                                 alt="Phòng thư giãn Serenity Spa"
                                 className="w-full h-auto rounded-xl shadow-2xl border-4 border-white object-cover transform hover:scale-[1.01] transition-transform duration-300"
                             />
@@ -149,10 +149,10 @@ const SerenitySpa = () => {
             <div className="relative w-full h-[45vh] md:h-[60vh] overflow-hidden">
                 {/* Hình nền (dùng placeholder thay cho ảnh local) */}
                 <img
-                    src="public/upload/about.jpg"
+                    src="upload/about.jpg"
                     alt="Serenity Spa Banner"
                     className="w-full h-full object-cover brightness-75"
-                    onError={(e: any) => { e.target.onerror = null; e.target.src = "public/upload/about.jpg"; }}
+                    onError={(e: any) => { e.target.onerror = null; e.target.src = "upload/about.jpg"; }}
                 />
 
                 {/* Lớp phủ văn bản */}
