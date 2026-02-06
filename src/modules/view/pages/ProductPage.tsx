@@ -2,21 +2,18 @@ import { useProducts } from "../../../shared/services/productApi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "../../../shared/components/Header";
 import Footer from "../../../shared/components/Footer";
-import BookingModal from "../components/BookingModal";
-import BookingButtonFixed from "../components/ButtonBooking";
-import { useState } from "react";
 import { Button, Card, Pagination, Rate, Spin, Tag } from "antd";
 import FeaturedProducts from "../components/FeaturedProducts";
-import ProductCategories from "../components/ProductCategories";
 import { useCart } from "../../../shared/context/CartContext";
+import PromoBanner from "../components/PromoBanner";
+import CollectionBanner from "../components/CollectionBanner";
 
 export default function ProductPageView() {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1");
-  const limit = parseInt(searchParams.get("limit") || "6");
+  const limit = parseInt(searchParams.get("limit") || "8");
   const category = searchParams.get("category") || "all";
   const sort = searchParams.get("sort") || "new";
 
@@ -43,7 +40,7 @@ export default function ProductPageView() {
     setSearchParams({ category: value, sort, page: "1" });
   };
 
-  
+
 
 
 
@@ -74,16 +71,17 @@ export default function ProductPageView() {
     <div>
       <Header />
 
+      <CollectionBanner />
 
+
+      <FeaturedProducts />
 
       <section className="py-16">
         <div className="container mx-auto px-4 max-w-[1200px]">
           {/* Tiêu đề */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-semibold">Bộ sưu tập</h1>
-            <p className="text-gray-500 mt-2">
-              Khám phá toàn bộ sản phẩm thời trang của chúng tôi
-            </p>
+          <div className="text-left mb-8">
+            <h1 className="text-3xl font-playfair-display text-gray-700">Tất Cả Sản Phẩm</h1>
+
           </div>
 
           {/* Filter */}
@@ -105,11 +103,12 @@ export default function ProductPageView() {
           </div>
 
           {/* Danh sách sản phẩm */}
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {productList.map((p: any) => (
               <Card
                 key={p.id}
                 hoverable
+
                 onClick={() => navigate(`/products/${p.id}`)}
                 cover={
                   <div className="relative">
@@ -136,8 +135,9 @@ export default function ProductPageView() {
                     )}
                   </div>
                 }
-                className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
-                styles={{ body: { padding: "16px" } }}
+
+              className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-full"
+              styles={{ body: { padding: "16px" } }}
               >
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   {p.name}
@@ -154,27 +154,40 @@ export default function ProductPageView() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-pink-600 font-bold text-lg">
+                <div className="mt-auto">
+                  {/* Giá */}
+                  <span className="block mb-3 text-red-600 font-semibold text-base">
                     {p.salePrice?.toLocaleString()} VND
                   </span>
-                  <div className="flex gap-2">
-                    <Button type="primary" className="!bg-pink-600 hover:!bg-pink-700"
+
+                  {/* Buttons */}
+                  <div className="flex gap-2 w-full min-w-0">
+                    <Button
+                      type="primary"
+                      size="small"
+                      className="flex-1 min-w-0 !bg-pink-600 hover:!bg-pink-700 truncate"
                       onClick={(e) => {
                         e.stopPropagation();
                         addToCart(p);
-                      }}>
+                      }}
+                    >
                       Thêm vào giỏ
-
                     </Button>
+
                     <Button
                       type="default"
-                      className="border-pink-500 text-pink-500 hover:bg-pink-50"
+                      size="small"
+                      className="flex-1 min-w-0 border-pink-500 text-pink-500 truncate hover:bg-pink-50"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/products/${p.id}`);
+                      }}
                     >
-                      Xem Chi Tiết
+                      Xem chi tiết
                     </Button>
                   </div>
                 </div>
+
               </Card>
             ))}
           </div>
@@ -192,11 +205,10 @@ export default function ProductPageView() {
         </div>
       </section>
 
-      <FeaturedProducts />
-      <ProductCategories />
+      {/* <ProductCategories /> */}
+      <PromoBanner />
 
-      <BookingModal open={open} onClose={() => setOpen(false)} />
-      <BookingButtonFixed onClick={() => setOpen(true)} />
+
       <Footer />
     </div>
   );

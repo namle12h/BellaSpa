@@ -1,18 +1,20 @@
 import Footer from "../../../shared/components/Footer";
 import Header from "../../../shared/components/Header";
 import ProductDetailHead from "../components/ProductDetailHead";
-import ProductTabs from "../components/ProductTabs";
+import ProductDetailInfo from "../components/ProductDetailInfo";
 import RelatedProducts from "../components/RalatedProducts";
-import ViewedProducts from "../components/viewedProducts";
+
 
 export default function ProductDetailPage() {
   return (
     <div>
         <Header/>
         <ProductDetailHead/>
-        <ProductTabs/>
+        {/* <ProductTabs/> */}
+        {/* <ViewedProducts/> */}
+        <ProductDetailInfo/>
         <RelatedProducts/>
-        <ViewedProducts/>
+
         <Footer/>
     </div>
   )

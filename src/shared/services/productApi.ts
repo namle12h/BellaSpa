@@ -115,3 +115,17 @@ export const useCreateProduct = () => {
 };
 
 
+// 🔍 Lấy chi tiết sản phẩm theo ID
+export const fetchProductDetail = async (id: number) => {
+  const res = await axiosClient.get(`/products/${id}`);
+  return res.data;
+};
+
+export const useProductDetail = (id: number) => {
+  return useQuery({
+    queryKey: ["product-detail", id],
+    queryFn: () => fetchProductDetail(id),
+    enabled: !!id, // ⭐ rất quan trọng
+    staleTime: 5 * 60 * 1000, // cache 5 phút
+  });
+};

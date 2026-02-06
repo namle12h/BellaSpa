@@ -1,163 +1,77 @@
-// import  { useState } from "react";
-// import { Rate, InputNumber, Button, Tag } from "antd";
-// import { HeartOutlined, ShareAltOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { Breadcrumb, Button, message, Rate, Spin, Tag } from "antd";
+import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { useProductDetail } from "../../../shared/services/productApi";
+import { useParams } from "react-router-dom";
+import { useCart } from "../../../shared/context/CartContext";
 
-// export default function ProductDetailHead() {
-//   const [quantity, setQuantity] = useState(1);
-//   const [selectedImg, setSelectedImg] = useState(0);
+type ProductImage = {
+  id: number;
+  imageUrl: string;
+  isPrimary: boolean;
+  sortOrder: number;
+};
 
-//   const product = {
-//     name: "Serum Vitamin C Skinceuticals CE Ferulic",
-//     desc: "Serum chống oxy hóa cao cấp với 15% L-Ascorbic Acid",
-//     price: 2450000,
-//     oldPrice: 2650000,
-//     stock: 25,
-//     rating: 4,
-//     reviews: 89,
-//     images: [
-//       "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760625819/spring_services/g0dcj3uwierac5rx7m5o.jpg",
-//       "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760615488/spring_services/npbeco6aewh3vmqmgaea.jpg",
-//       "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760625636/spring_services/axb5qppulsmnm6todl79.jpg",
-//       "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760625819/spring_services/g0dcj3uwierac5rx7m5o.jpg",
+export interface Product {
+  id: number;
+  name: string;
+  imageUrl: string;
+  images: ProductImage[];
+  salePrice?: number;
+  oldPrice?: number;
+  stockQty?: number;
+  description?: string;
+  category?: string;
+}
 
-//     ],
-//   };
 
-//   const formatVND = (v:any) =>
-//     v.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 
-//   return (
-//     <div className="container mx-auto py-10 px-6 grid lg:grid-cols-2 gap-10 pt-25">
-//       {/* LEFT IMAGE */}
-//       <div>
-//         <div className="relative">
-//           <img
-//             src={product.images[selectedImg]}
-//             alt={product.name}
-//             className="rounded-lg shadow-md shadow-gray-700 w-auto h-130 object-contain"
-//           />
-//           <Tag color="purple" className="absolute top-3 right-3">
-//             Premium
-//           </Tag>
-//         </div>
 
-//         <div className="flex gap-3 mt-4">
-//           {product.images.map((img, index) => (
-//             <div
-//               key={index}
-//               className={`cursor-pointer border-2 rounded-md ${
-//                 selectedImg === index
-//                   ? "border-pink-500"
-//                   : "border-transparent hover:border-gray-300"
-//               }`}
-//               onClick={() => setSelectedImg(index)}
-//             >
-//               <img
-//                 src={img}
-//                 alt=""
-//                 className="w-20 h-20 object-cover rounded-md"
-//               />
-//             </div>
-//           ))}
-//         </div>
-//       </div>
+export default function ProductDetailView() {
+  const { id } = useParams<{ id: string }>();
 
-//       {/* RIGHT DETAILS */}
-//       <div>
-//         <h1 className="text-2xl font-bold text-gray-800 mb-1">{product.name}</h1>
-//         <p className="text-gray-500 mb-3">{product.desc}</p>
-//         <div className="flex items-center gap-2 mb-4">
-//           <Rate disabled defaultValue={product.rating} />
-//           <span className="text-gray-600 text-sm">
-//             ({product.reviews} đánh giá)
-//           </span>
-//         </div>
-
-//         <div className="flex items-end gap-3 mb-4">
-//           <p className="text-pink-600 text-2xl font-bold">
-//             {formatVND(product.price)}
-//           </p>
-//           <p className="line-through text-gray-400">
-//             {formatVND(product.oldPrice)}
-//           </p>
-//           <Tag color="red">Tiết kiệm {formatVND(product.oldPrice - product.price)}</Tag>
-//         </div>
-
-//         <div className="flex items-center gap-3 mb-6">
-//           <p className="text-gray-700">Số lượng:</p>
-//           <InputNumber
-//             min={1}
-//             max={product.stock}
-//             value={quantity}
-//             // onChange={setQuantity}
-//           />
-//           <p className="text-gray-400 text-sm">
-//             Còn lại: {product.stock} sản phẩm
-//           </p>
-//         </div>
-
-//         <div className="flex gap-3 mb-6">
-//           <Button
-//             type="primary"
-//             size="large"
-//             icon={<ShoppingCartOutlined />}
-//             className="bg-pink-500 hover:bg-pink-600 border-none"
-//           >
-//             Thêm vào giỏ
-//           </Button>
-//           <Button size="large" className="border-pink-500 text-pink-500 hover:bg-pink-50">
-//             Xem chi tiết
-//           </Button>
-//         </div>
-
-//         <div className="flex gap-3 mb-8">
-//           <Button icon={<HeartOutlined />} className="border-gray-300">
-//             Yêu thích
-//           </Button>
-//           <Button icon={<ShareAltOutlined />} className="border-gray-300">
-//             Chia sẻ
-//           </Button>
-//         </div>
-
-//         <div className="bg-gray-50 p-4 rounded-xl text-gray-600 space-y-2 text-sm">
-//           <p>🚚 Miễn phí vận chuyển cho đơn hàng trên 500.000 VND</p>
-//           <p>🔄 Đổi trả trong 30 ngày</p>
-//           <p>✅ Sản phẩm chính hãng 100%</p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-import { useState } from "react";
-import { Rate, InputNumber, Button, Tag, message } from "antd";
-import { HeartOutlined, ShareAltOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-
-export default function ProductDetailHead() {
+  const { data: product, isLoading } = useProductDetail(Number(id));
   const [quantity, setQuantity] = useState(1);
-  const [selectedImg, setSelectedImg] = useState(0);
+  const [size, setSize] = useState("M");
+  const [color, setColor] = useState("white");
+  const [mainImage, setMainImage] = useState<string>("");
 
-  const product = {
-    id: 40,
-    name: "Serum Vitamin C Skinceuticals CE Ferulic",
-    desc: "Serum chống oxy hóa cao cấp với 15% L-Ascorbic Acid",
-    price: 2450000,
-    oldPrice: 2650000,
-    stock: 25,
-    rating: 4,
-    reviews: 89,
-    imageUrl:
-      "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760625819/spring_services/g0dcj3uwierac5rx7m5o.jpg",
-    images: [
-      "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760625819/spring_services/g0dcj3uwierac5rx7m5o.jpg",
-      "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760615488/spring_services/npbeco6aewh3vmqmgaea.jpg",
-      "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760625636/spring_services/axb5qppulsmnm6todl79.jpg",
-      "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760625819/spring_services/g0dcj3uwierac5rx7m5o.jpg",
-    ],
-  };
+    const { addToCart } = useCart();
 
-  const formatVND = (v: any) =>
-    v.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+  // const images: ProductImage[] = product?.images ?? [];
+  const images: ProductImage[] = Array.isArray(product?.images)
+  ? product.images
+  : [];
+
+
+  const sortedImages = [...images].sort(
+    (a, b) => a.sortOrder - b.sortOrder
+  );
+
+useEffect(() => {
+  if (!product) return;
+
+  const primary = sortedImages.find(i => i.isPrimary)?.imageUrl;
+  setMainImage(primary || product.imageUrl || "");
+}, [product, sortedImages]);
+
+
+useEffect(() => {
+  console.log("IMAGES:", product?.images);
+}, [product]);
+
+
+  // const primaryThumbnail = sortedImages.find(img => img.isPrimary)?.imageUrl;
+
+   if (isLoading) {
+    return (
+      <div className="flex justify-center py-20">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  if (!product) return null;
 
   // 🛒 Hàm thêm vào giỏ hàng
   const handleAddToCart = () => {
@@ -190,100 +104,193 @@ export default function ProductDetailHead() {
     }
   };
 
+  const COLORS = [
+    { label: "Trắng", value: "white" },
+    { label: "Đen", value: "black" },
+    { label: "Be", value: "beige" },
+    { label: "Hồng", value: "pink" },
+  ];
+
+  const SIZES = ["XS", "S", "M", "L", "XL"];
+
+
   return (
-    <div className="container mx-auto py-10 px-6 grid lg:grid-cols-2 gap-10 pt-25">
-      {/* LEFT IMAGE */}
-      <div>
-        <div className="relative">
-          <img
-            src={product.images[selectedImg]}
-            alt={product.name}
-            className="rounded-lg shadow-md shadow-gray-700 w-auto h-130 object-contain"
-          />
-          <Tag color="purple" className="absolute top-3 right-3">
-            Premium
-          </Tag>
+    <div className="container mx-auto max-w-[1200px] px-4 py-20">
+      {/* Breadcrumb */}
+      <Breadcrumb
+        items={[
+          { title: "Trang chủ" },
+          { title: "Bộ sưu tập" },
+          { title: product.name },
+        ]}
+        className="mb-6"
+      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 py-4">
+        {/* LEFT: IMAGE */}
+        <div>
+          <div className="relative rounded-xl overflow-hidden bg-gray-100">
+            <img
+              src={mainImage || product.imageUrl || "/upload/product-default.jpg"}
+              className="w-full h-[520px] object-cover"
+              alt={product.name}
+            />
+
+            {product.discount && (
+              <Tag color="red" className="absolute top-4 right-4 text-sm">
+                -{product.discount}%
+              </Tag>
+            )}
+          </div>
+
+          {/* Thumbnails */}
+          <div className="flex gap-3 mt-4">
+            {sortedImages.map((img) => (
+              <img
+                key={img.id}
+                src={img.imageUrl}
+                onClick={() => setMainImage(img.imageUrl)}
+                className={`w-20 h-20 object-cover rounded-lg border cursor-pointer
+                ${mainImage === img.imageUrl
+                    ? "border-emerald-500"
+                    : "border-gray-300 hover:border-emerald-400"
+                  }`}
+              />
+
+            ))
+            }
+          </div>
+
         </div>
 
-        <div className="flex gap-3 mt-4">
-          {product.images.map((img, index) => (
-            <div
-              key={index}
-              className={`cursor-pointer border-2 rounded-md ${
-                selectedImg === index
-                  ? "border-pink-500"
-                  : "border-transparent hover:border-gray-300"
-              }`}
-              onClick={() => setSelectedImg(index)}
-            >
-              <img src={img} alt="" className="w-20 h-20 object-cover rounded-md" />
+        {/* RIGHT: INFO */}
+        <div>
+          <span className="text-emerald-600 text-sm font-medium">
+            {product.category}
+          </span>
+          <h1 className="text-3xl font-playfair-display font-semibold mt-1 break-words">
+            {product.name}
+          </h1>
+
+          {/* Rating */}
+          <div className="flex items-center gap-3 mt-2">
+            <Rate disabled defaultValue={5} />
+            <span className="text-sm text-gray-500"> ({product.reviewCount || 0} đánh giá)</span>
+            <span className="text-sm text-gray-500">| | Đã bán {product.sold || 0}</span>
+          </div>
+
+          {/* Price */}
+          <div className="flex items-center gap-3 mt-4">
+            <span className="text-3xl font-bold text-emerald-600">
+              {product.salePrice?.toLocaleString()}đ
+            </span>
+            {product.oldPrice && (
+              <span className="text-gray-400 line-through">
+                {product.oldPrice.toLocaleString()}đ
+              </span>
+            )}
+          </div>
+
+          {/* Description */}
+          <p className="text-gray-600 mt-4 leading-relaxed">
+            {product.description}
+          </p>
+
+
+          {/* Color */}
+          <div className="mt-6">
+            <p className="font-medium mb-2">
+              Màu sắc: {COLORS.find(c => c.value === color)?.label}
+            </p>
+
+            <div className="flex gap-3">
+              {COLORS.map((c) => (
+                <button
+                  key={c.value}
+                  onClick={() => setColor(c.value)}
+                  className={`w-9 h-9 rounded-full border-2 transition ${color === c.value
+                    ? "border-emerald-500 scale-110"
+                    : "border-gray-300"
+                    }`}
+                  style={{ backgroundColor: c.value }}
+                />
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* RIGHT DETAILS */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-800 mb-1">{product.name}</h1>
-        <p className="text-gray-500 mb-3">{product.desc}</p>
-        <div className="flex items-center gap-2 mb-4">
-          <Rate disabled defaultValue={product.rating} />
-          <span className="text-gray-600 text-sm">({product.reviews} đánh giá)</span>
-        </div>
 
-        <div className="flex items-end gap-3 mb-4">
-          <p className="text-pink-600 text-2xl font-bold">
-            {formatVND(product.price)}
-          </p>
-          <p className="line-through text-gray-400">
-            {formatVND(product.oldPrice)}
-          </p>
-          <Tag color="red">
-            Tiết kiệm {formatVND(product.oldPrice - product.price)}
-          </Tag>
-        </div>
 
-        <div className="flex items-center gap-3 mb-6">
-          <p className="text-gray-700">Số lượng:</p>
-          <InputNumber
-            min={1}
-            max={product.stock}
-            value={quantity}
-            onChange={(val) => setQuantity(val || 1)}
-          />
-          <p className="text-gray-400 text-sm">
-            Còn lại: {product.stock} sản phẩm
-          </p>
-        </div>
+          {/* Size */}
+          <div className="mt-6">
+            <p className="font-medium mb-2">
+              Kích thước: {size}
+            </p>
 
-        <div className="flex gap-3 mb-6">
-          <Button
-            type="primary"
-            size="large"
-            icon={<ShoppingCartOutlined />}
-            className="bg-pink-500 hover:bg-pink-600 border-none"
-            onClick={handleAddToCart}
-          >
-            Thêm vào giỏ
-          </Button>
-          <Button size="large" className="border-pink-500 text-pink-500 hover:bg-pink-50">
-            Xem chi tiết
-          </Button>
-        </div>
+            <div className="flex gap-2">
+              {SIZES.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setSize(s)}
+                  className={`px-4 py-2 rounded-md border text-sm transition ${size === s
+                    ? "bg-emerald-500 text-white border-emerald-500"
+                    : "bg-white border-gray-300 hover:border-emerald-400"
+                    }`}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
 
-        <div className="flex gap-3 mb-8">
-          <Button icon={<HeartOutlined />} className="border-gray-300">
-            Yêu thích
-          </Button>
-          <Button icon={<ShareAltOutlined />} className="border-gray-300">
-            Chia sẻ
-          </Button>
-        </div>
 
-        <div className="bg-gray-50 p-4 rounded-xl text-gray-600 space-y-2 text-sm">
-          <p>🚚 Miễn phí vận chuyển cho đơn hàng trên 500.000 VND</p>
-          <p>🔄 Đổi trả trong 30 ngày</p>
-          <p>✅ Sản phẩm chính hãng 100%</p>
+
+          {/* Quantity */}
+          <div className="mt-6">
+            <p className="font-medium mb-2">Số lượng</p>
+            <div className="flex items-center gap-3">
+              <button
+                className="w-9 h-9 border rounded"
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              >
+                -
+              </button>
+              <span>{quantity}</span>
+              <button
+                className="w-9 h-9 border rounded"
+                onClick={() => setQuantity(quantity + 1)}
+              >
+                +
+              </button>
+              <span className="text-sm text-gray-500">
+                Còn {product.stockQty} sản phẩm
+              </span>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-4 mt-8">
+            <Button
+              type="primary"
+              icon={<ShoppingCartOutlined />}
+              size="large"
+              className="flex-1 !bg-emerald-600 hover:!bg-emerald-700"
+               onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                      }}
+            >
+              Thêm vào giỏ hàng
+            </Button>
+
+            <Button size="large" icon={<HeartOutlined />} />
+          </div>
+
+          {/* Policies */}
+          <div className="bg-gray-50 rounded-xl p-4 mt-8 space-y-3 text-sm">
+            <p>🚚 Miễn phí vận chuyển cho đơn hàng từ 500.000đ</p>
+            <p>🔁 Đổi trả miễn phí trong 7 ngày</p>
+            <p>🛡️ Bảo hành chính hãng 100%</p>
+          </div>
         </div>
       </div>
     </div>

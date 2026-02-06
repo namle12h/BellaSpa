@@ -151,13 +151,13 @@ export default function Header() {
             </div>
 
             {/* Dịch Vụ */}
-            <div
+            {/* <div
               className="py-2  cursor-pointer flex justify-between items-center"
               onClick={() => setOpenServiceMenu(!openServiceMenu)}
             >
               <span>Dịch Vụ</span>
               <span>{openServiceMenu ? "▲" : "▼"}</span>
-            </div>
+            </div> */}
 
             {/* Submenu dịch vụ */}
             {openServiceMenu && (

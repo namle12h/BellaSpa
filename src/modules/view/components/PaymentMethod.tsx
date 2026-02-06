@@ -13,7 +13,7 @@ interface PaymentMethodProps {
 }
 
 const PaymentMethod: React.FC<PaymentMethodProps> = ({ paymentMethod, setPaymentMethod }) => {
-  const [paymentType, setPaymentType] = useState<string>("oneTime");
+  const [paymentType] = useState<string>("oneTime");
   const [installmentDuration, setInstallmentDuration] = useState<string>("3");
   // Thêm state cho ngân hàng trả góp
   const [installmentBank, setInstallmentBank] = useState<string | undefined>(undefined);
@@ -22,16 +22,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ paymentMethod, setPayment
     setPaymentMethod(e.target.value);
   };
 
-  const handlePaymentTypeChange = (e: RadioChangeEvent) => {
-    setPaymentType(e.target.value);
-    // Khi chuyển đổi loại thanh toán, reset các lựa chọn trả góp
-    if (e.target.value === "oneTime") {
-      setInstallmentDuration("3"); // Reset về giá trị mặc định hoặc rỗng
-      setInstallmentBank(undefined); // Reset ngân hàng
-    } else { // Khi chuyển sang trả góp, chọn mặc định thanh toán qua thẻ
-      setPaymentMethod("card");
-    }
-  };
+
 
   // Hàm xử lý thay đổi kỳ hạn trả góp (dùng cho Radio.Group)
   const handleInstallmentDurationChange = (e: RadioChangeEvent) => {
@@ -47,13 +38,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ paymentMethod, setPayment
     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
       <h2 className="text-xl font-bold mb-4">Phương thức Thanh toán</h2>
 
-      {/* Phương thức thanh toán (Thanh toán một lần hoặc trả góp) */}
-      <div className="mb-4">
-        <Radio.Group value={paymentType} onChange={handlePaymentTypeChange} className="w-full">
-          <Radio value="oneTime" className="mr-4">Thanh toán một lần</Radio>
-          <Radio value="installment" className="mr-4">Thanh toán trả góp</Radio>
-        </Radio.Group>
-      </div>
+      
 
       {/* Phương thức thanh toán một lần */}
       {paymentType === "oneTime" && (
