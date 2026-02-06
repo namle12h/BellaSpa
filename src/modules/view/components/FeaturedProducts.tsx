@@ -1,65 +1,99 @@
-import { Card, Rate } from "antd";
+import { Rate } from "antd";
+import { HeartOutlined } from "@ant-design/icons";
 
 const products = [
   {
     id: 1,
-    name: "Sữa Rửa Mặt La Roche-Posay Toleriane",
-    price: "850.000 VND",
-    image: "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760617145/spring_services/enjb84hwupmuxwu2khg5.webp", // thay bằng ảnh thật
-    rating: 4,
+    name: "Váy Hoa Nhẹ Nhàng",
+    price: 450000,
+    image: "/upload/z7504336725356_e21b4056e59afdb9a3e43509411d386d.jpg",
+    isNew: true,
+    rating: 5,
   },
   {
     id: 2,
-    name: "Serum Vitamin C Skinceuticals CE Ferulic",
-    price: "2.450.000 VND",
-    image: "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760617145/spring_services/enjb84hwupmuxwu2khg5.webp",
+    name: "Áo Sơ Mi Trắng Thanh Lịch",
+    price: 320000,
+    image: "/upload/z7504337376449_3fd70de8b702711a5c38fdbf96655231.jpg",
+    isNew: false,
     rating: 5,
   },
   {
     id: 3,
-    name: "Mặt Nạ Collagen Nhật Bản Premium",
-    price: "120.000 VND",
-    image: "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760617145/spring_services/enjb84hwupmuxwu2khg5.webp",
-    rating: 4,
+    name: "Quần Tây Công Sở",
+    price: 380000,
+    image:"/upload/z7505356921661_710487bde75057db253711b083819694.jpg",
+    isNew: true,
+    rating: 5,
   },
   {
     id: 4,
-    name: "Kem Dưỡng Ẩm Cetaphil Daily Moisturizer",
-    price: "450.000 VND",
-    image: "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760617145/spring_services/enjb84hwupmuxwu2khg5.webp",
-    rating: 4,
+    name: "Áo Khoác Dạ Mùa Đông",
+    price: 890000,
+    image: "/upload/z7505356922098_be822a3ca9ae0d9ece3bd59bfb2b8248.jpg",
+    isNew: false,
+    rating: 5,
   },
 ];
 
 export default function FeaturedProducts() {
   return (
-    <div className="  py-12 text-center">
-      <h2 className="text-black text-3xl font-bold mb-2">Sản Phẩm Nổi Bật</h2>
-      <p className="text-pink-500 mb-8">
-        Những sản phẩm được yêu thích nhất tại Bella Spa
-      </p>
+    <section className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Title */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-serif font-semibold">
+            Sản Phẩm Nổi Bật
+          </h2>
+          <p className="text-pink-500 mt-2">
+            Những sản phẩm được yêu thích nhất tại Thảo Susi Store
+          </p>
+        </div>
 
-      <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
-        {products.map((item) => (
-          <Card
-            key={item.id}
-            className="rounded-2xl shadow-md hover:shadow-lg transition-all duration-300"
-          >
-            <div className="flex flex-col items-center text-center space-y-3">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-20 h-20 object-contain rounded-full"
-              />
-              <h3 className="font-semibold text-gray-800">
-                {item.name}
-              </h3>
-              <Rate disabled defaultValue={item.rating} />
-              <p className="text-pink-600 font-bold text-lg">{item.price}</p>
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {products.map((p) => (
+            <div
+              key={p.id}
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden relative"
+            >
+              {/* Tag */}
+              {p.isNew && (
+                <span className="absolute top-4 left-4 bg-pink-500 text-white text-xs px-3 py-1 rounded-full z-10">
+                  Mới
+                </span>
+              )}
+
+              {/* Wishlist */}
+              <button className="absolute top-4 right-4 bg-white rounded-full p-2 shadow z-10 hover:text-pink-500">
+                <HeartOutlined />
+              </button>
+
+              {/* Image */}
+              <div className="h-[320px] overflow-hidden">
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  className="w-full h-full object-cover hover:scale-105 transition duration-300"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="p-5 text-center">
+                <h3 className="font-medium text-gray-800 mb-2">
+                  {p.name}
+                </h3>
+
+                <Rate disabled defaultValue={p.rating} className="text-sm" />
+
+                <p className="mt-3 text-pink-500 font-semibold">
+                  {p.price.toLocaleString()} VND
+                </p>
+              </div>
             </div>
-          </Card>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

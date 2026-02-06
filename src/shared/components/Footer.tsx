@@ -1,7 +1,6 @@
 import { Input, Button } from "antd";
 import { FacebookFilled, InstagramFilled, YoutubeFilled } from "@ant-design/icons";
 import { FaTiktok } from "react-icons/fa";
-import { MdSpa } from "react-icons/md";
 
 export default function Footer() {
     return (
@@ -10,8 +9,13 @@ export default function Footer() {
                 {/* Cột 1: Logo */}
                 <div>
                     <div className="flex items-center">
-                        <MdSpa className="text-pink-500 text-2xl mr-2" />
-                        <span className="text-xl font-bold text-pink-500">Bella Spa</span>
+                        <img
+                            src="/upload/logo.png"
+                            alt="Logo"
+                            className="h-16 w-25 object-contain"
+                        />
+                        {/* <span className="text-xl font-bold text-orange-500">Thảo Susi</span> */}
+
                     </div>
 
                     <p className="text-gray-400 mb-4">

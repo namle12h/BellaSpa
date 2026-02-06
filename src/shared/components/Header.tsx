@@ -1,6 +1,5 @@
 import { Menu, Input, Button, Dropdown, Badge } from "antd";
 import { BellOutlined, SearchOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
-import { MdSpa } from "react-icons/md";
 import UserInfo from "./UserInfo";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
@@ -67,6 +66,17 @@ export default function Header() {
     }
   };
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+
   // 🔁 Auto refresh mỗi 5s
   useEffect(() => {
     if (!user?.id) return;
@@ -77,15 +87,6 @@ export default function Header() {
 
   const menuItems = [
     { key: "home", label: "Trang Chủ", onClick: () => navigate("/home") },
-    {
-      key: "services",
-      label: "Dịch Vụ",
-      children: services.map((s: any) => ({
-        key: `service-${s.id}`,
-        label: s.name,
-        onClick: () => navigate(`/services/${s.id}`),
-      })),
-    },
     { key: "product", label: "Sản Phẩm", onClick: () => navigate(`/products`) },
     { key: "about", label: "Về Chúng Tôi", onClick: () => navigate(`/about`) },
     { key: "contact", label: "Liên Hệ", onClick: () => navigate(`/contacts`) },
@@ -93,21 +94,38 @@ export default function Header() {
   ];
 
   return (
-    <header className="fixed w-full z-30 bg-white shadow-sm">
+    // <header className="fixed top-0 left-0 w-full z-30 bg-transparent">
+    <header
+      className={`fixed w-full z-30 transition-all duration-300
+    ${scrolled
+          ? "bg-white shadow-md"
+          : "bg-transparent"
+        }`}
+    >
+
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
         {/* Logo */}
         <div onClick={() => navigate("/")} className="flex items-center cursor-pointer">
-          <MdSpa className="text-pink-500 text-2xl m-2" />
-          <div className="font-bold text-pink-600 text-xl">Bella Spa</div>
+          {/* <MdSpa className="text-pink-500 text-2xl m-2" /> */}
+          <img
+            src="/upload/logo.png"
+            alt="Logo"
+            className="h-16 w-auto object-contain"
+          />
+          {/* <div className="font-bold text-orange-600 text-xl">Thảo Susi</div> */}
         </div>
 
         {/* Menu for larger screens */}
         <Menu
           mode="horizontal"
-          // Menu sẽ ẩn trên điện thoại (màn hình nhỏ) và chỉ hiển thị khi màn hình lớn hơn md
-          className=" menu hidden md:flex flex-1 justify-center border-none text-sm sm:text-base md:text-lg py-2 px-4 sm:py-2 sm:px-6"
           items={menuItems}
+          className={`
+    menu hidden md:flex flex-1 justify-center border-none
+    ${scrolled ? "text-gray-800" : "text-white"}
+  `}
         />
+
+
 
 
 
@@ -190,8 +208,17 @@ export default function Header() {
           <Input
             prefix={<SearchOutlined />}
             placeholder="Tìm kiếm dịch vụ..."
-            className="hidden md:block w-60"
+            className={`
+    hidden md:block w-60 transition-all
+    ${scrolled
+                ? "bg-gray-100 text-gray-800"
+                : "bg-white/80 text-white placeholder-white"
+              }
+  `}
           />
+
+
+
 
           {/* Notification Dropdown */}
           <Dropdown
@@ -232,7 +259,7 @@ export default function Header() {
             <Button
               type="default"
               icon={<UserOutlined className="!text-white" />}
-              className="!bg-pink-700"
+              className="!bg-teal-700"
               onClick={() => navigate("/login")}
             >
               <span className="text-white">Đăng Nhập</span>

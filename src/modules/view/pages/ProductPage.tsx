@@ -5,8 +5,7 @@ import Footer from "../../../shared/components/Footer";
 import BookingModal from "../components/BookingModal";
 import BookingButtonFixed from "../components/ButtonBooking";
 import { useState } from "react";
-import { Button, Card, Pagination, Rate, Select, Spin, Tag } from "antd";
-import Search from "antd/es/input/Search";
+import { Button, Card, Pagination, Rate, Spin, Tag } from "antd";
 import FeaturedProducts from "../components/FeaturedProducts";
 import ProductCategories from "../components/ProductCategories";
 import { useCart } from "../../../shared/context/CartContext";
@@ -18,9 +17,9 @@ export default function ProductPageView() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "6");
-  const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
-  const [label, setLabel] = useState(searchParams.get("label") || "all");
-  const [sort, setSort] = useState(searchParams.get("sort") || "default");
+  const category = searchParams.get("category") || "all";
+  const sort = searchParams.get("sort") || "new";
+
 
   const { addToCart } = useCart();
 
@@ -31,20 +30,22 @@ export default function ProductPageView() {
   const productList = products?.content ?? [];
   const total = products?.totalElements ?? 0;
 
-  const handleSearch = (value: string) => {
-    setKeyword(value);
-    setSearchParams({ keyword: value, label, sort });
+
+  const categories = [
+    { label: "Tất cả", value: "all" },
+    { label: "Váy", value: "dress" },
+    { label: "Áo sơ mi", value: "shirt" },
+    { label: "Quần", value: "pants" },
+    { label: "Áo khoác", value: "jacket" },
+  ];
+
+  const handleCategoryChange = (value: string) => {
+    setSearchParams({ category: value, sort, page: "1" });
   };
 
-  const handleFilterChange = (value: string) => {
-    setLabel(value);
-    setSearchParams({ keyword, label: value, sort });
-  };
+  
 
-  const handleSortChange = (value: string) => {
-    setSort(value);
-    setSearchParams({ keyword, label, sort: value });
-  };
+
 
   const handlePageChange = (newPage: number) => {
     setSearchParams({ page: newPage.toString(), limit: limit.toString() });
@@ -73,48 +74,34 @@ export default function ProductPageView() {
     <div>
       <Header />
 
+
+
       <section className="py-16">
         <div className="container mx-auto px-4 max-w-[1200px]">
           {/* Tiêu đề */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800">
-              Catalog <span className="text-pink-500">Sản Phẩm</span>
-            </h2>
-            <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
-              Khám phá các sản phẩm chăm sóc da cao cấp từ những thương hiệu uy tín hàng đầu thế giới.
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-semibold">Bộ sưu tập</h1>
+            <p className="text-gray-500 mt-2">
+              Khám phá toàn bộ sản phẩm thời trang của chúng tôi
             </p>
           </div>
 
-          {/* Bộ lọc + tìm kiếm */}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="font-medium">🔍 Lọc sản phẩm:</span>
-              <Select defaultValue={label} onChange={handleFilterChange} style={{ width: 180 }}>
-                <Select.Option value="all">Tất cả sản phẩm</Select.Option>
-                <Select.Option value="premium">Premium</Select.Option>
-                <Select.Option value="sale">Giảm giá</Select.Option>
-                <Select.Option value="popular">Bán chạy</Select.Option>
-              </Select>
-
-              <Select defaultValue={sort} onChange={handleSortChange} style={{ width: 150 }}>
-                <Select.Option value="default">Mặc định</Select.Option>
-                <Select.Option value="priceAsc">Giá tăng dần</Select.Option>
-                <Select.Option value="priceDesc">Giá giảm dần</Select.Option>
-              </Select>
-
-              <Search
-                placeholder="Tìm sản phẩm..."
-                allowClear
-                enterButton
-                onSearch={handleSearch}
-                style={{ width: 240 }}
-                defaultValue={keyword}
-              />
+          {/* Filter */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div className="flex gap-2 flex-wrap">
+              {categories.map((cat) => (
+                <button
+                  key={cat.value}
+                  onClick={() => handleCategoryChange(cat.value)}
+                  className={`px-4 py-1 rounded-full border text-sm transition ${category === cat.value
+                    ? "bg-emerald-500 text-white border-emerald-500"
+                    : "bg-white text-gray-600 hover:border-emerald-500"
+                    }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
             </div>
-
-            <p className="text-gray-500 text-sm">
-              Hiển thị {productList.length} / {total} sản phẩm
-            </p>
           </div>
 
           {/* Danh sách sản phẩm */}
