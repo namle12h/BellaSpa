@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, message, Rate, Spin, Tag } from "antd";
+import { Breadcrumb, Button,  Rate, Spin, Tag } from "antd";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useProductDetail } from "../../../shared/services/productApi";
@@ -73,36 +73,7 @@ useEffect(() => {
 
   if (!product) return null;
 
-  // 🛒 Hàm thêm vào giỏ hàng
-  const handleAddToCart = () => {
-    try {
-      // Lấy giỏ hàng hiện tại từ localStorage
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-      // Kiểm tra xem sản phẩm đã có trong giỏ chưa
-      const existing = cart.find((item: any) => item.id === product.id);
-      if (existing) {
-        existing.quantity += quantity;
-      } else {
-        cart.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          imageUrl: product.imageUrl,
-          quantity,
-        });
-      }
-
-      // Lưu lại vào localStorage
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      // Hiển thị thông báo
-      message.success(`Đã thêm ${quantity} sản phẩm vào giỏ hàng 🛍️`);
-    } catch (error) {
-      console.error("Lỗi thêm giỏ hàng:", error);
-      message.error("Không thể thêm sản phẩm vào giỏ hàng ❌");
-    }
-  };
+ 
 
   const COLORS = [
     { label: "Trắng", value: "white" },

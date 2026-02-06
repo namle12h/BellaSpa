@@ -121,6 +121,8 @@ export const fetchProductDetail = async (id: number) => {
   return res.data;
 };
 
+
+
 export const useProductDetail = (id: number) => {
   return useQuery({
     queryKey: ["product-detail", id],
