@@ -13,7 +13,7 @@ const ContactInfoSection = () => (
             <EnvironmentOutlined className="text-teal-600 text-xl mt-1" />
             <div>
                 <p className="font-semibold text-lg text-gray-700">Địa chỉ</p>
-                <p className="text-gray-600">123 Đường Nguyễn Huệ, Quận 1, TP.HCM</p>
+                <p className="text-gray-600">08 Đường Số 16, Phường Bình Hưng Hòa, Quận Bình Tân, TP. Hồ Chí Minh</p>
             </div>
         </div>
 
@@ -22,7 +22,7 @@ const ContactInfoSection = () => (
             <PhoneOutlined className="text-teal-600 text-xl mt-1" />
             <div>
                 <p className="font-semibold text-lg text-gray-700">Điện thoại</p>
-                <p className="text-gray-600">+84 28 1234 5678</p>
+                <p className="text-gray-600">+84 964 980 259</p>
             </div>
         </div>
 
@@ -31,7 +31,7 @@ const ContactInfoSection = () => (
             <MailOutlined className="text-teal-600 text-xl mt-1" />
             <div>
                 <p className="font-semibold text-lg text-gray-700">Email</p>
-                <p className="text-gray-600">info@luxuryspa.vn</p>
+                <p className="text-gray-600">lienhe@thaosusi.com</p>
             </div>
         </div>
 

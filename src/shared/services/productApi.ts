@@ -6,7 +6,7 @@ import { axiosClient } from "../lib/axiosClient";
 // 🧴 Lấy danh sách sản phẩm
 export const fetchProducts = async (page: number, limit: number) => {
   const res = await axiosClient.get(`/products?page=${page}&limit=${limit}`);
-    console.log("🔥 API raw data:", res.data);
+  console.log("🔥 API raw data:", res.data);
   return res.data;
 };
 
@@ -14,7 +14,7 @@ export const useProducts = (page: number, limit: number) => {
   return useQuery({
     queryKey: ["products", page, limit],
     queryFn: () => fetchProducts(page, limit),
-    
+
     staleTime: 0, // cache 5 phút
   });
 };
@@ -129,5 +129,65 @@ export const useProductDetail = (id: number) => {
     queryFn: () => fetchProductDetail(id),
     enabled: !!id, // ⭐ rất quan trọng
     staleTime: 5 * 60 * 1000, // cache 5 phút
+  });
+};
+
+
+
+// 🔍 Lấy sản phẩm theo category (hoặc tất cả)
+export const fetchProductsByCategory = async (
+  page: number,
+  limit: number,
+  categoryId?: number
+) => {
+  // 👉 ALL
+  if (!categoryId) {
+    const res = await axiosClient.get("/products", {
+      params: { page, limit },
+    });
+    return res.data;
+  }
+
+  // 👉 THEO CATEGORY
+  const res = await axiosClient.get(`/products/by-category/${categoryId}`, {
+    params: { page, limit },
+  });
+  return res.data;
+};
+
+export const useProductsByCategory = (
+  page: number,
+  limit: number,
+  categoryId?: number
+) =>
+  useQuery({
+    queryKey: ["products", "by-category", categoryId, page, limit],
+    queryFn: () =>
+      axiosClient
+        .get("/products/by-category", {
+          params: {
+            categoryId,
+            page,
+            limit,
+          },
+        })
+        .then(res => res.data),
+    enabled: categoryId !== undefined,
+  });
+
+
+export const fetchRelatedProducts = async (productId: number, limit = 4) => {
+  const res = await axiosClient.get(
+    `/products/${productId}/related`,
+    { params: { limit } }
+  );
+  return res.data;
+};
+
+export const useRelatedProducts = (productId: number) => {
+  return useQuery({
+    queryKey: ["related-products", productId],
+    queryFn: () => fetchRelatedProducts(productId),
+    enabled: !!productId,
   });
 };

@@ -7,10 +7,12 @@ import {
   Upload,
   Card,
   DatePicker,
+  Select,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 import dayjs from "dayjs";
+import { useCategories } from "../../../shared/services/categoriesApi";
 
 interface ProductFormProps {
   initialValues?: any;
@@ -24,6 +26,8 @@ export default function ProductForm({
   loading,
 }: ProductFormProps) {
   const [form] = Form.useForm();
+  const { data: categories = [], isLoading } = useCategories();
+
 
   // ✅ Xử lý khi load dữ liệu từ backend (convert expDate -> dayjs)
   useEffect(() => {
@@ -46,13 +50,21 @@ export default function ProductForm({
       form.setFieldsValue({
         ...initialValues,
         expDate: expDate?.isValid() ? expDate : null,
+        discountStartDate: initialValues.discountStartDate
+          ? dayjs(initialValues.discountStartDate)
+          : null,
+        discountEndDate: initialValues.discountEndDate
+          ? dayjs(initialValues.discountEndDate)
+          : null,
+        size: initialValues.size?.split(",") || [],
+        color: initialValues.color?.split(",") || [],
         file: fileList,
       });
     } else {
       form.resetFields();
     }
   }, [initialValues, form]);
-console.log("expDate from API:", initialValues.expDate);
+  console.log("expDate from API:", initialValues.expDate);
 
   // ✅ Gửi form
   const handleFinish = (values: any) => {
@@ -62,10 +74,21 @@ console.log("expDate from API:", initialValues.expDate);
       name: values.name,
       sku: values.sku,
       description: values.description,
+      size: values.size?.join(",") || null,
+      color: values.color?.join(",") || null,
       salePrice: values.salePrice || 0,
       costPrice: values.costPrice || 0,
+      discountPercent: values.discountPercent || null,
+
+      discountStartDate: values.discountStartDate
+        ? values.discountStartDate.format("YYYY-MM-DD")
+        : null,
+      discountEndDate: values.discountEndDate
+        ? values.discountEndDate.format("YYYY-MM-DD")
+        : null,
       stockQty: values.stockQty || 0,
       reorderLevel: values.reorderLevel || 0,
+      categoryId: values.categoryId,
       expDate: values.expDate ? values.expDate.format("YYYY-MM-DD") : null, // ✅ convert đúng kiểu
       uom: "Chai",
       active: values.active ?? true,
@@ -95,7 +118,7 @@ console.log("expDate from API:", initialValues.expDate);
         form={form}
         layout="vertical"
         onFinish={handleFinish}
-        initialValues={{ active: true}}
+        initialValues={{ active: true }}
       >
         <Form.Item
           name="name"
@@ -109,6 +132,35 @@ console.log("expDate from API:", initialValues.expDate);
           <Input />
         </Form.Item>
 
+        <Form.Item name="size" label="Size">
+          <Select
+            mode="multiple"
+            placeholder="Chọn size"
+            options={[
+              { value: "S" },
+              { value: "M" },
+              { value: "L" },
+              { value: "XL" },
+              { value: "XXL" },
+            ]}
+          />
+        </Form.Item>
+
+        <Form.Item name="color" label="Màu sắc">
+          <Select
+            mode="multiple"
+            placeholder="Chọn màu"
+            options={[
+              { value: "Đỏ" },
+              { value: "Đen" },
+              { value: "Trắng" },
+              { value: "Xanh" },
+              { value: "Vàng" },
+            ]}
+          />
+        </Form.Item>
+
+
         <Form.Item
           name="salePrice"
           label="Giá bán (VNĐ)"
@@ -121,6 +173,24 @@ console.log("expDate from API:", initialValues.expDate);
           <InputNumber style={{ width: "100%" }} min={0} />
         </Form.Item>
 
+        <Form.Item name="discountPercent" label="Giảm giá (%)">
+          <InputNumber style={{ width: "100%" }} min={0} max={100} />
+        </Form.Item>
+
+        <Form.Item name="discountStartDate" label="Ngày bắt đầu giảm">
+          <DatePicker
+            format="DD/MM/YYYY"
+            style={{ width: "100%" }}
+          />
+        </Form.Item>
+
+        <Form.Item name="discountEndDate" label="Ngày kết thúc giảm">
+          <DatePicker
+            format="DD/MM/YYYY"
+            style={{ width: "100%" }}
+          />
+        </Form.Item>
+{/* 
         <Form.Item
           name="expDate"
           label="Hạn Sử Dụng"
@@ -131,7 +201,27 @@ console.log("expDate from API:", initialValues.expDate);
             style={{ width: "100%" }}
             placeholder="Chọn hạn sử dụng"
           />
+        </Form.Item> */}
+
+        <Form.Item
+          name="categoryId"
+          label="Danh mục"
+          rules={[{ required: true, message: "Vui lòng chọn danh mục" }]}
+        >
+          <Select
+            placeholder="Chọn danh mục"
+            loading={isLoading}
+            allowClear
+          >
+            {categories.map((c: any) => (
+              <Select.Option key={c.id} value={c.id}>
+                {c.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
+
+
 
         <Form.Item
           name="stockQty"

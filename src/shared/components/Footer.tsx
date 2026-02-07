@@ -19,9 +19,9 @@ export default function Footer() {
                     </div>
 
                     <p className="text-gray-400 mb-4">
-                        Địa chỉ làm đẹp tin cậy với dịch vụ spa chuyên nghiệp và không gian thư giãn tuyệt vời.
+                        Thương hiệu thời trang hiện đại, mang đến những thiết kế tinh tế, dễ mặc và luôn bắt kịp xu hướng.
                     </p>
-                    <div className="flex gap-4 text-pink-500 text-lg">
+                    <div className="flex gap-4 text-teal-500 text-lg">
                         <FacebookFilled />
                         <InstagramFilled />
                         <YoutubeFilled />
@@ -32,9 +32,9 @@ export default function Footer() {
                 {/* Cột 2: Thông tin liên hệ */}
                 <div>
                     <h4 className="text-lg font-semibold text-white mb-4">Thông Tin Liên Hệ</h4>
-                    <p>📍 123 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh</p>
-                    <p>📞 0901 234 567</p>
-                    <p>📧 info@bellaspa.vn</p>
+                    <p>📍 08 Đường Số 16, Phường Bình Hưng Hòa, Quận Bình Tân, TP. Hồ Chí Minh</p>
+                    <p>📞 0964980259</p>
+                    <p>📧 lienhe@thaosusi.com</p>
                 </div>
 
                 {/* Cột 3: Giờ làm việc */}
@@ -50,14 +50,14 @@ export default function Footer() {
                     <h4 className="text-lg font-semibold text-white mb-4">Nhận Ưu Đãi</h4>
                     <p className="text-gray-400 mb-4">Đăng ký để nhận thông tin khuyến mãi và ưu đãi đặc biệt</p>
                     <Input placeholder="Nhập email của bạn" className="!mb-3 bg-gray-800 border-none text-gray-200" />
-                    <Button type="primary" className="!bg-pink-600 w-full ">Đăng Ký Ngay</Button>
+                    <Button type="primary" className="!bg-teal-600 w-full ">Đăng Ký Ngay</Button>
                 </div>
             </div>
 
             <div className="border-t border-gray-700 mt-10 pt-4">
                 <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
                     {/* Bên trái */}
-                    <p>© 2024 Bella Spa. Tất cả quyền được bảo lưu.</p>
+                    <p>© 2024 Thảo Susi Store. Tất cả quyền được bảo lưu.</p>
 
                     {/* Bên phải */}
                     <div className="flex gap-4 mt-2 md:mt-0">

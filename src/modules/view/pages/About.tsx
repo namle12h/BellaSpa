@@ -32,18 +32,19 @@ const SerenitySpa = () => {
                         <div className="space-y-6 md:w-1/2 text-center md:text-left order-2 md:order-1">
                             <h2 className="text-4xl font-extrabold text-gray-800">Câu chuyện của chúng tôi</h2>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Bella Spa được thành lập vào năm 2008 với mong muốn mang đến một không gian thư giãn và chăm sóc sức khỏe toàn diện cho cộng đồng. Chúng tôi bắt đầu từ một spa nhỏ với chỉ 3 nhân viên và niềm đam mê về việc chăm sóc sắc đẹp tự nhiên.
+                                Chúng tôi bắt đầu hành trình thời trang với một niềm tin giản dị:
+quần áo không chỉ để mặc, mà còn để thể hiện con người bạn.
                             </p>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Qua 15 năm phát triển, chúng tôi đã trở thành một trong những spa uy tín nhất tại Việt Nam, phục vụ hơn 5000 khách hàng với đội ngũ chuyên gia giàu kinh nghiệm về các dịch vụ chăm sóc sức khỏe đa dạng.
+                                Ra đời từ niềm đam mê với thiết kế và chất liệu, thương hiệu được xây dựng với mong muốn mang đến những sản phẩm thời trang hiện đại, dễ ứng dụng trong đời sống hằng ngày nhưng vẫn giữ được nét tinh tế và cá tính riêng. 
                             </p>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Chúng tôi tin rằng vẻ đẹp thực sự đến từ sự cân bằng giữa cơ thể, tâm hồn và tinh thần. Đó chính là triết lý mà chúng tôi theo đuổi trong mọi dịch vụ.
+                                Chúng tôi tin rằng thời trang đẹp nhất là khi bạn cảm thấy thoải mái và tự tin là chính mình.
                             </p>
                         </div>
 
                         {/* Hình ảnh (phải/dưới) - Bắt chước hiệu ứng khung viền và ánh sáng ấm áp */}
-                        <div className="md:w-1/2 w-full order-1 md:order-2">
+                        <div className="md:w-1/2 w-full  order-1 md:order-2">
                             <img
                                 src="upload/about.jpg"
                                 alt="Phòng thư giãn Serenity Spa"
@@ -61,7 +62,7 @@ const SerenitySpa = () => {
                 <div className="bg-white p-6 md:p-12 rounded-xl shadow-lg mt-6 max-w-6xl mx-auto border border-gray-100">
                     <h2 className="text-4xl font-extrabold text-gray-800 text-center">Sứ mệnh của chúng tôi</h2>
                     <p className="text-xl text-gray-600 leading-relaxed mt-6 mb-10 text-center max-w-3xl mx-auto">
-                        Mang đến trải nghiệm chăm sóc sức khỏe và làm đẹp toàn diện, giúp khách hàng tìm lại sự cân bằng trong cuộc sống hiện đại đầy căng thẳng.
+                        Mang đến trải nghiệm thời trang hiện đại và tinh tế, giúp khách hàng tự tin thể hiện phong cách cá nhân trong nhịp sống hiện đại
                     </p>
 
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -79,8 +80,8 @@ const SerenitySpa = () => {
 
                         <div className="flex flex-col items-center text-center p-4">
                             <SafetyCertificateOutlined className="text-teal-600 text-4xl mb-3 p-3 bg-teal-50 rounded-full shadow-md" />
-                            <h3 className="text-3xl font-bold text-gray-800">50+</h3>
-                            <p className="text-base text-gray-500 mt-1">Dịch vụ chuyên nghiệp</p>
+                            <h3 className="text-3xl font-bold text-gray-800">500+</h3>
+                            <p className="text-base text-gray-500 mt-1">Sản phẩm thời trang hot trend</p>
                         </div>
 
                         <div className="flex flex-col items-center text-center p-4">
@@ -105,32 +106,36 @@ const SerenitySpa = () => {
                         <div className="flex items-start bg-pink-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow">
                             <HeartOutlined className="text-pink-500 text-4xl mr-5 mt-1" />
                             <div>
-                                <h3 className="text-2xl font-semibold text-gray-800">Chăm sóc tận tâm</h3>
-                                <p className="text-base text-gray-600 mt-1">Chúng tôi đặt sức khỏe và sự hài lòng của khách hàng lên hàng đầu với sự chăm sóc chu đáo nhất.</p>
+                                <h3 className="text-2xl font-semibold text-gray-800">Lấy khách hàng làm trung tâm</h3>
+                                <p className="text-base text-gray-600 mt-1">
+                                    Chúng tôi luôn lắng nghe và thấu hiểu nhu cầu của khách hàng để mang đến những sản phẩm phù hợp, dễ mặc và đáp ứng đúng phong cách cá nhân.
+                                    </p>
                             </div>
                         </div>
 
                         <div className="flex items-start bg-yellow-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow">
                             <StarOutlined className="text-yellow-500 text-4xl mr-5 mt-1" />
                             <div>
-                                <h3 className="text-2xl font-semibold text-gray-800">Chất lượng cao</h3>
-                                <p className="text-base text-gray-600 mt-1">Cam kết mang đến dịch vụ chất lượng cao với đội ngũ chuyên gia giàu kinh nghiệm và tay nghề.</p>
+                                <h3 className="text-2xl font-semibold text-gray-800">Chất lượng là ưu tiên hàng đầu</h3>
+                                <p className="text-base text-gray-600 mt-1">Mỗi sản phẩm được chọn lọc kỹ lưỡng từ chất liệu, phom dáng đến đường may, đảm bảo sự thoải mái, bền bỉ và tính thẩm mỹ lâu dài.</p>
                             </div>
                         </div>
 
                         <div className="flex items-start bg-teal-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow">
                             <CheckCircleOutlined className="text-teal-600 text-4xl mr-5 mt-1" />
                             <div>
-                                <h3 className="text-2xl font-semibold text-gray-800">Tự nhiên & An toàn</h3>
-                                <p className="text-base text-gray-600 mt-1">Sử dụng các sản phẩm và phương pháp hoàn toàn tự nhiên, đảm bảo an toàn tuyệt đối cho sức khỏe.</p>
+                                <h3 className="text-2xl font-semibold text-gray-800">Tinh tế & Ứng dụng cao</h3>
+                                <p className="text-base text-gray-600 mt-1">Thiết kế hướng đến sự tối giản, dễ phối và phù hợp với nhiều hoàn cảnh trong cuộc sống hằng ngày.</p>
                             </div>
                         </div>
 
                         <div className="flex items-start bg-blue-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow">
                             <SafetyCertificateOutlined className="text-blue-700 text-4xl mr-5 mt-1" />
                             <div>
-                                <h3 className="text-2xl font-semibold text-gray-800">Uy tín & Tin cậy</h3>
-                                <p className="text-base text-gray-600 mt-1">Xây dựng niềm tin vững chắc qua nhiều năm phục vụ khách hàng và luôn minh bạch trong mọi dịch vụ.</p>
+                                <h3 className="text-2xl font-semibold text-gray-800">Uy tín & Trách nhiệm</h3>
+                                <p className="text-base text-gray-600 mt-1">
+                                    Chúng tôi xây dựng thương hiệu dựa trên sự minh bạch, cam kết rõ ràng về sản phẩm và dịch vụ, đồng hành lâu dài cùng khách hàng.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -159,10 +164,10 @@ const SerenitySpa = () => {
                 <div className="absolute inset-0 flex items-center justify-center  bg-opacity-10">
                     <div className="text-center text-white p-4">
                         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight drop-shadow-lg">
-                            Về Bella Spa
+                            Về Thảo Susi Store
                         </h1>
                         <p className="mt-2 md:mt-4 text-lg md:text-xl font-medium drop-shadow-lg">
-                            Nơi giao thoa giữa nghệ thuật chăm sóc sức khỏe và vẻ đẹp tự nhiên
+                            Nơi giao thoa giữa nghệ thuật và phong cách
                         </p>
                     </div>
                 </div>

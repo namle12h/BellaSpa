@@ -1,4 +1,4 @@
-import { Breadcrumb, Button,  Rate, Spin, Tag } from "antd";
+import { Breadcrumb, Button, Rate, Spin, Tag } from "antd";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useProductDetail } from "../../../shared/services/productApi";
@@ -22,6 +22,7 @@ export interface Product {
   stockQty?: number;
   description?: string;
   category?: string;
+
 }
 
 
@@ -32,38 +33,65 @@ export default function ProductDetailView() {
 
   const { data: product, isLoading } = useProductDetail(Number(id));
   const [quantity, setQuantity] = useState(1);
-  const [size, setSize] = useState("M");
-  const [color, setColor] = useState("white");
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
+
+
+
+
   const [mainImage, setMainImage] = useState<string>("");
 
-    const { addToCart } = useCart();
+  const { addToCart } = useCart();
 
   // const images: ProductImage[] = product?.images ?? [];
   const images: ProductImage[] = Array.isArray(product?.images)
-  ? product.images
-  : [];
+    ? product.images
+    : [];
 
 
   const sortedImages = [...images].sort(
     (a, b) => a.sortOrder - b.sortOrder
   );
 
-useEffect(() => {
-  if (!product) return;
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
-  const primary = sortedImages.find(i => i.isPrimary)?.imageUrl;
-  setMainImage(primary || product.imageUrl || "");
-}, [product, sortedImages]);
+  useEffect(() => {
+    if (!product) return;
+
+    const primaryImage =
+      sortedImages.find(img => img.isPrimary)?.imageUrl ||
+      sortedImages[0]?.imageUrl ||
+      product.imageUrl;
+
+    setMainImage(primaryImage);
+  }, [product]);
 
 
-useEffect(() => {
-  console.log("IMAGES:", product?.images);
-}, [product]);
+  useEffect(() => {
+    console.log("IMAGES:", product?.images);
+  }, [product]);
 
+
+  useEffect(() => {
+    if (!product) return;
+
+    const sizes = product.size?.split(",").map((s: any) => s.trim()) ?? [];
+    const colors = product.color?.split(",").map((c: any) => c.trim()) ?? [];
+
+    if (!size && sizes.length > 0) {
+      setSize(sizes[0]);       // 👈 size đầu tiên từ DB
+    }
+
+    if (!color && colors.length > 0) {
+      setColor(colors[0]);     // 👈 màu đầu tiên từ DB
+    }
+  }, [product]);
 
   // const primaryThumbnail = sortedImages.find(img => img.isPrimary)?.imageUrl;
 
-   if (isLoading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center py-20">
         <Spin size="large" />
@@ -73,16 +101,20 @@ useEffect(() => {
 
   if (!product) return null;
 
- 
 
-  const COLORS = [
-    { label: "Trắng", value: "white" },
-    { label: "Đen", value: "black" },
-    { label: "Be", value: "beige" },
-    { label: "Hồng", value: "pink" },
-  ];
 
-  const SIZES = ["XS", "S", "M", "L", "XL"];
+  const SIZES = product?.size?.split(",").map((s: any) => s.trim()) ?? [];
+  const COLORS = product?.color?.split(",").map((c: any) => c.trim()) ?? [];
+
+  const COLOR_MAP: Record<string, string> = {
+    Trắng: "#ffffff",
+    Đen: "#000000",
+    Đỏ: "#ef4444",     // ✅ THÊM DÒNG NÀY
+    Be: "#f5f5dc",
+    Hồng: "#f472b6",
+    Xanh: "#3b82f6",
+  };
+
 
 
   return (
@@ -106,7 +138,6 @@ useEffect(() => {
               className="w-full h-[520px] object-cover"
               alt={product.name}
             />
-
             {product.discount && (
               <Tag color="red" className="absolute top-4 right-4 text-sm">
                 -{product.discount}%
@@ -146,21 +177,37 @@ useEffect(() => {
           {/* Rating */}
           <div className="flex items-center gap-3 mt-2">
             <Rate disabled defaultValue={5} />
-            <span className="text-sm text-gray-500"> ({product.reviewCount || 0} đánh giá)</span>
-            <span className="text-sm text-gray-500">| | Đã bán {product.sold || 0}</span>
+            <span className="text-sm text-gray-500"> ({product.reviewCount || 20} đánh giá)</span>
+            <span className="text-sm text-gray-500">| | Đã bán {product.sold || 20}</span>
           </div>
 
           {/* Price */}
-          <div className="flex items-center gap-3 mt-4">
-            <span className="text-3xl font-bold text-emerald-600">
-              {product.salePrice?.toLocaleString()}đ
-            </span>
-            {product.oldPrice && (
-              <span className="text-gray-400 line-through">
-                {product.oldPrice.toLocaleString()}đ
+          {/* Price */}
+          <div className="mt-4">
+            {product.discountPercent > 0 && product.discountPrice ? (
+              <>
+
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl font-bold text-emerald-600">
+                    {product.discountPrice.toLocaleString()}đ
+                  </span>
+
+                  <span className="text-gray-400 line-through text-lg">
+                    {product.salePrice?.toLocaleString()}đ
+                  </span>
+                </div>
+
+                <span className="inline-block mt-1 text-sm text-red-500 font-medium">
+                  Tiết kiệm {product.discountPercent}%
+                </span>
+              </>
+            ) : (
+              <span className="text-3xl font-bold text-emerald-600">
+                {product.salePrice?.toLocaleString()}đ
               </span>
             )}
           </div>
+
 
           {/* Description */}
           <p className="text-gray-600 mt-4 leading-relaxed">
@@ -171,23 +218,26 @@ useEffect(() => {
           {/* Color */}
           <div className="mt-6">
             <p className="font-medium mb-2">
-              Màu sắc: {COLORS.find(c => c.value === color)?.label}
+              Màu sắc: {color}
             </p>
 
             <div className="flex gap-3">
-              {COLORS.map((c) => (
+              {COLORS.map((c: any) => (
                 <button
-                  key={c.value}
-                  onClick={() => setColor(c.value)}
-                  className={`w-9 h-9 rounded-full border-2 transition ${color === c.value
-                    ? "border-emerald-500 scale-110"
-                    : "border-gray-300"
+                  key={c}
+                  onClick={() => setColor(c)}
+                  className={`w-9 h-9 rounded-full border-2 transition
+          ${color === c
+                      ? "border-emerald-500 scale-110"
+                      : "border-gray-300"
                     }`}
-                  style={{ backgroundColor: c.value }}
+                  style={{ backgroundColor: COLOR_MAP[c] || "#e5e7eb" }}
+                  title={c}
                 />
               ))}
             </div>
           </div>
+
 
 
 
@@ -198,7 +248,7 @@ useEffect(() => {
             </p>
 
             <div className="flex gap-2">
-              {SIZES.map((s) => (
+              {SIZES.map((s: any) => (
                 <button
                   key={s}
                   onClick={() => setSize(s)}
@@ -245,10 +295,10 @@ useEffect(() => {
               icon={<ShoppingCartOutlined />}
               size="large"
               className="flex-1 !bg-emerald-600 hover:!bg-emerald-700"
-               onClick={(e) => {
-                        e.stopPropagation();
-                        addToCart(product);
-                      }}
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(product);
+              }}
             >
               Thêm vào giỏ hàng
             </Button>

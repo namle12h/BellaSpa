@@ -14,8 +14,8 @@ import {
   type PopconfirmProps,
   type TableProps,
 } from "antd";
-import {  useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useMemo, useState } from "react";
 import ProductForm from "../components/ProductForm";
 import {
   useProducts,
@@ -23,13 +23,16 @@ import {
 } from "../../../shared/services/productApi"; // ✅ Gọi hook từ productApi
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "../../../shared/lib/axiosClient";
+import { useCategories } from "../../../shared/services/categoriesApi";
+import dayjs from "dayjs";
 
 interface DataType {
   id: number;
   name: string;
   sku?: string;
   uom?: string;
-  category?: string;
+  categoryId?: number;
+  categoryName?: string;
   brand?: string;
   description?: string;
   costPrice?: number;
@@ -47,7 +50,7 @@ export default function ProductsPage() {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
-  const [searchParams,setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
 
   const page = parseInt(searchParams.get("page") || "1");
@@ -60,6 +63,15 @@ export default function ProductsPage() {
   const productList = products?.content ?? [];
   const total = products?.totalElements ?? 0;
 
+  const { data: categories = [] } = useCategories();
+
+  const categoryMap = useMemo(() => {
+    const map: Record<number, string> = {};
+    categories.forEach((c: any) => {
+      map[c.id] = c.name;
+    });
+    return map;
+  }, [categories]);
 
 
   // ✅ thêm sản phẩm qua hook
@@ -90,6 +102,18 @@ export default function ProductsPage() {
     },
     onError: () => message.error("Không thể xóa sản phẩm ❌"),
   });
+
+  // 🔥 Check khuyến mãi còn hiệu lực không
+  const isDiscountActive = (r: any) => {
+    if (!r.discountStart || !r.discountEnd) return false;
+
+    const now = dayjs();
+    return (
+      now.isAfter(dayjs(r.discountStart)) &&
+      now.isBefore(dayjs(r.discountEnd))
+    );
+  };
+
 
   const handleAdd = () => {
     form.resetFields();
@@ -135,7 +159,7 @@ export default function ProductsPage() {
           <strong>{text}</strong>
           <div style={{ fontSize: 12, color: "#666" }}>
             {record.brand ? `${record.brand} • ` : ""}
-            {record.category ?? ""}
+            {record.categoryName ?? ""}
           </div>
         </div>
       ),
@@ -178,21 +202,73 @@ export default function ProductsPage() {
       render: (price) => <b>{formatCurrency(price)}</b>,
     },
     {
+      title: "Khuyến Mãi",
+      key: "discount",
+      render: (_: any, record: any) => {
+        if (!record.discountPercent) {
+          return <Tag>—</Tag>;
+        }
+
+        const active = isDiscountActive(record);
+
+        return (
+          <div>
+            <Tag color={active ? "red" : "default"}>
+              -{record.discountPercent}%
+            </Tag>
+
+            <div style={{ fontSize: 12, color: "#888" }}>
+              {record.discountStart} → {record.discountEnd}
+            </div>
+          </div>
+        );
+      },
+    },
+
+
+    {
       title: "Tồn kho",
       dataIndex: "stockQty",
       key: "stockQty",
       align: "center",
     },
     {
-      title: "Hạn Sử Dụng",
-      dataIndex: "expDate",
-      key: "expDate",
-      render: (date: string | null) => {
-        if (!date) return <span style={{ color: "#999" }}>Chưa có</span>;
-        const formatted = new Date(date).toLocaleDateString("vi-VN");
-        return <span>{formatted}</span>;
-      },
+      title: "Danh mục",
+      dataIndex: "categoryId",
+      key: "categoryId",
+      render: (id) => (
+        <span>{categoryMap[id] || "—"}</span>
+      ),
+    }
+
+    ,
+    {
+      title: "Size",
+      dataIndex: "size",
+      key: "size",
+      render: (sizes?: string) =>
+        sizes
+          ? sizes.split(",").map((s) => (
+            <Tag key={s} color="blue">
+              {s}
+            </Tag>
+          ))
+          : <Tag>—</Tag>,
     },
+    {
+      title: "Màu",
+      dataIndex: "color",
+      key: "color",
+      render: (colors?: string) =>
+        colors
+          ? colors.split(",").map((c) => (
+            <Tag key={c} color="purple">
+              {c}
+            </Tag>
+          ))
+          : <Tag>—</Tag>,
+    },
+
     {
       title: "Trạng thái",
       dataIndex: "active",
@@ -244,17 +320,17 @@ export default function ProductsPage() {
         </Button>
       }
     >
- 
+
 
       <Table<DataType>
-        
+
         columns={columns}
         // dataSource={products ?? []}  // ❌ Sai
         dataSource={productList}
         rowKey="id"
         loading={isLoading}
         pagination={false}
-         scroll={{ x: "max-content" }}
+        scroll={{ x: "max-content" }}
       />
 
       <Pagination
@@ -268,9 +344,9 @@ export default function ProductsPage() {
             setSearchParams({ page: String(newPage), limit: String(newLimit) });
           }
         }}
-        
+
       />
-      
+
 
       <Modal
         title={editingProduct ? "Cập nhật sản phẩm" : "Thêm sản phẩm"}

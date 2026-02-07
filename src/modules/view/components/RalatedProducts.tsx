@@ -1,48 +1,23 @@
-import { Card, Rate, Button } from "antd";
+import { Button, Card, Rate } from "antd";
+import { useRelatedProducts } from "../../../shared/services/productApi";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { useCart } from "../../../shared/context/CartContext";
 
-const products = [
-  {
-    id: 1,
-    name: "Serum Hyaluronic Acid Skinceuticals",
-    price: 1890000,
-    oldPrice: 2100000,
-    rating: 4,
-    reviews: 67,
-    image: "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760615488/spring_services/npbeco6aewh3vmqmgaea.jpg",
-  },
-  {
-    id: 2,
-    name: "Kem Chống Nắng Skinceuticals SPF 50",
-    price: 1650000,
-    oldPrice: 1850000,
-    rating: 4,
-    reviews: 123,
-    image:"https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760615488/spring_services/npbeco6aewh3vmqmgaea.jpg",
-  },
-  {
-    id: 3,
-    name: "Toner Vitamin C Brightening",
-    price: 1250000,
-    oldPrice: 1400000,
-    rating: 4,
-    reviews: 89,
-    image: "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760615488/spring_services/npbeco6aewh3vmqmgaea.jpg",
-  },
-  {
-    id: 4,
-    name: "Serum Retinol Anti-Aging",
-    price: 2150000,
-    oldPrice: 2350000,
-    rating: 5,
-    reviews: 156,
-    image: "https://res.cloudinary.com/dtxcwdf7r/image/upload/v1760615488/spring_services/npbeco6aewh3vmqmgaea.jpg",
-  },
-];
+export default function RelatedProducts({ productId }: { productId: number }) {
+  const { data: products = [], isLoading } = useRelatedProducts(productId);
 
-const formatVND = (v:any) =>
-  v.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+  if (isLoading) return null;
 
-export default function RelatedProducts() {
+  const formatVND = (value: number) => {
+    return value.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+  };
+
+
+  const { addToCart } = useCart();
+
   return (
     <div className="container mx-auto py-10 px-6">
       <h2 className="text-2xl font-bold text-gray-800 mb-8">
@@ -50,40 +25,51 @@ export default function RelatedProducts() {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((item) => (
+        {products.map((item: any) => (
           <Card
             key={item.id}
             hoverable
-            className="rounded-xl shadow-sm hover:shadow-lg transition-all duration-300"
             cover={
               <img
+                src={item.imageUrl}
                 alt={item.name}
-                src={item.image}
-                className="object-cover rounded-t-xl h-72 w-full"
+                className="h-72 w-full object-cover rounded-t-xl"
               />
             }
           >
             <div className="text-center space-y-2">
-              <h3 className="font-semibold text-gray-700">{item.name}</h3>
-              <div className="flex justify-center items-center gap-1">
-                <Rate disabled defaultValue={item.rating} />
-                <span className="text-sm text-gray-500">
-                  ({item.reviews})
-                </span>
+              <h3 className="font-semibold">{item.name}</h3>
+
+              <Rate disabled defaultValue={item.rating || 4} />
+
+              <div className="flex justify-center gap-2">
+                {item.discountPrice ? (
+                  <>
+                    <span className="text-pink-600 font-bold">
+                      {formatVND(item.discountPrice)}
+                    </span>
+                    <span className="line-through text-gray-400 text-sm">
+                      {formatVND(item.salePrice)}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-pink-600 font-bold">
+                    {formatVND(item.salePrice)}
+                  </span>
+                )}
               </div>
-              <div className="flex justify-center items-end gap-2">
-                <p className="text-pink-600 font-bold text-lg">
-                  {formatVND(item.price)}
-                </p>
-                <p className="line-through text-gray-400 text-sm">
-                  {formatVND(item.oldPrice)}
-                </p>
-              </div>
+
               <Button
                 type="primary"
-                className="!bg-pink-500 hover:bg-pink-600 border-none rounded-md w-full mt-2"
+                icon={<ShoppingCartOutlined />}
+                size="large"
+                className="flex-1 !bg-teal-600 hover:!bg-teal-700"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart(item);
+                }}
               >
-                Thêm vào giỏ
+                Thêm vào giỏ hàng
               </Button>
             </div>
           </Card>

@@ -1,4 +1,4 @@
-import { useProducts } from "../../../shared/services/productApi";
+import { useProducts, useProductsByCategory } from "../../../shared/services/productApi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "../../../shared/components/Header";
 import Footer from "../../../shared/components/Footer";
@@ -7,21 +7,31 @@ import FeaturedProducts from "../components/FeaturedProducts";
 import { useCart } from "../../../shared/context/CartContext";
 import PromoBanner from "../components/PromoBanner";
 import CollectionBanner from "../components/CollectionBanner";
+import { useCategories } from "../../../shared/services/categoriesApi";
 
 export default function ProductPageView() {
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const categoryParam = searchParams.get("category") || "all";
+
+  const categoryId =
+    categoryParam === "all" ? undefined : Number(categoryParam);
+
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "8");
-  const category = searchParams.get("category") || "all";
-  const sort = searchParams.get("sort") || "new";
+  const { data: categoriesData = [] } = useCategories();
+  const isAll = categoryParam === "all";
 
 
   const { addToCart } = useCart();
 
   // ✅ Gọi API
-  const { data: products, isLoading, isError } = useProducts(page, limit);
+  const productsQuery = isAll
+    ? useProducts(page, limit)
+    : useProductsByCategory(page, limit, categoryId!);
+
+  const { data: products, isLoading, isError } = productsQuery;
 
   // ✅ Lấy dữ liệu từ backend
   const productList = products?.content ?? [];
@@ -30,14 +40,19 @@ export default function ProductPageView() {
 
   const categories = [
     { label: "Tất cả", value: "all" },
-    { label: "Váy", value: "dress" },
-    { label: "Áo sơ mi", value: "shirt" },
-    { label: "Quần", value: "pants" },
-    { label: "Áo khoác", value: "jacket" },
+    ...categoriesData.map((cat: any) => ({
+      label: cat.name,
+      value: cat.id.toString(),
+    })),
   ];
 
+
   const handleCategoryChange = (value: string) => {
-    setSearchParams({ category: value, sort, page: "1" });
+    setSearchParams({
+      category: value,
+      page: "1",
+      limit: limit.toString(),
+    });
   };
 
 
@@ -91,7 +106,8 @@ export default function ProductPageView() {
                 <button
                   key={cat.value}
                   onClick={() => handleCategoryChange(cat.value)}
-                  className={`px-4 py-1 rounded-full border text-sm transition ${category === cat.value
+                  className={`px-4 py-1 rounded-full border text-sm transition ${categoryParam === cat.value
+
                     ? "bg-emerald-500 text-white border-emerald-500"
                     : "bg-white text-gray-600 hover:border-emerald-500"
                     }`}
@@ -111,12 +127,20 @@ export default function ProductPageView() {
 
                 onClick={() => navigate(`/products/${p.id}`)}
                 cover={
-                  <div className="relative">
+                  <div className="relative overflow-hidden rounded-t-xl">
                     <img
                       src={p.imageUrl || "/upload/product-default.jpg"}
                       alt={p.name}
                       className="h-56 w-full object-cover rounded-t-xl"
                     />
+                    {p.discountPercent > 0 && (
+                      <Tag
+                        color="red"
+                        className="!absolute top-3 left-3 z-10 font-semibold"
+                      >
+                        -{p.discountPercent}%
+                      </Tag>
+                    )}
                     {p.label && (
                       <Tag
                         color={
@@ -136,8 +160,8 @@ export default function ProductPageView() {
                   </div>
                 }
 
-              className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-full"
-              styles={{ body: { padding: "16px" } }}
+                className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-full"
+                styles={{ body: { padding: "16px" } }}
               >
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   {p.name}
@@ -156,16 +180,30 @@ export default function ProductPageView() {
 
                 <div className="mt-auto">
                   {/* Giá */}
-                  <span className="block mb-3 text-red-600 font-semibold text-base">
-                    {p.salePrice?.toLocaleString()} VND
-                  </span>
+                  <div className="mb-3">
+                    {p.discountPercent > 0 && p.discountPrice ? (
+                      <div className="flex items-center gap-2">
+                        <span className="text-red-600 font-semibold text-base">
+                          {p.discountPrice.toLocaleString()} VND
+                        </span>
+                        <span className="text-gray-400 line-through text-sm">
+                          {p.salePrice.toLocaleString()} VND
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-red-600 font-semibold text-base">
+                        {p.salePrice?.toLocaleString()} VND
+                      </span>
+                    )}
+                  </div>
+
 
                   {/* Buttons */}
                   <div className="flex gap-2 w-full min-w-0">
                     <Button
                       type="primary"
                       size="small"
-                      className="flex-1 min-w-0 !bg-pink-600 hover:!bg-pink-700 truncate"
+                      className="flex-1 min-w-0 !bg-teal-600 hover:!bg-teal-700 truncate"
                       onClick={(e) => {
                         e.stopPropagation();
                         addToCart(p);
@@ -177,7 +215,7 @@ export default function ProductPageView() {
                     <Button
                       type="default"
                       size="small"
-                      className="flex-1 min-w-0 border-pink-500 text-pink-500 truncate hover:bg-pink-50"
+                      className="flex-1 min-w-0 border-teal-500 text-teal-500 truncate hover:bg-teal-50"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/products/${p.id}`);
