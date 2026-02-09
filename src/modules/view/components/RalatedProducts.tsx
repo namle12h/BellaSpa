@@ -2,8 +2,11 @@ import { Button, Card, Rate } from "antd";
 import { useRelatedProducts } from "../../../shared/services/productApi";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useCart } from "../../../shared/context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function RelatedProducts({ productId }: { productId: number }) {
+  const navigate = useNavigate();
+
   const { data: products = [], isLoading } = useRelatedProducts(productId);
 
   if (isLoading) return null;
@@ -36,6 +39,7 @@ export default function RelatedProducts({ productId }: { productId: number }) {
                 className="h-72 w-full object-cover rounded-t-xl"
               />
             }
+            onClick={() => navigate(`/products/${item.id}`)}
           >
             <div className="text-center space-y-2">
               <h3 className="font-semibold">{item.name}</h3>

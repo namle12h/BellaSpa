@@ -6,16 +6,25 @@ import { useAuthStore } from "../stores/authStore";
 export interface CartItem {
   id: number;
   name: string;
-  price: number;
+  price: number; //giá sau giảm
   imageUrl: string;
   quantity: number;
+  color: string;
+  size: string;
+  originalPrice?: number; // ✅ GIÁ GỐC
+  discountPercent?: number;
 }
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: any) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, qty: number) => void;
+  addToCart: (product: any, color: string, size: string) => void;
+  removeFromCart: (id: number, color: string, size: string) => void;
+  updateQuantity: (
+    id: number,
+    color: string,
+    size: string,
+    qty: number
+  ) => void;
   clearCart: () => void;
   totalPrice: number;
 }
@@ -95,14 +104,19 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // 🛒 Thêm sản phẩm (giữ nguyên, đã chuẩn hóa giá trị price)
-  const addToCart = (product: any) => {
+  const addToCart = (product: any, color: string, size: string) => {
     if (!user) {
       message.warning("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng 🔒");
       return;
     }
 
+    if (!color || !size) {
+      message.warning("Vui lòng chọn màu và size 👕");
+      return;
+    }
+
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const existing = prev.find((item) => item.id === product.id && item.color === color && item.size === size);
       if (existing) {
         showMessageOnce(() =>
           message.info(`Đã tăng số lượng sản phẩm "${product.name}"`)
@@ -121,9 +135,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           {
             id: product.id,
             name: product.name,
-            price: product.salePrice ?? product.price ?? 0,
+            price: product.discountPrice ?? product.salePrice,
+            originalPrice: product.salePrice,
+            discountPercent: product.discountPercent,
             imageUrl: product.imageUrl,
             quantity: 1,
+            color,
+            size,
           },
         ];
       }
@@ -135,14 +153,23 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     showMessageOnce(() => message.info("Đã xóa sản phẩm khỏi giỏ hàng 🗑️"));
   };
 
-  const updateQuantity = (id: number, qty: number) => {
-    if (qty <= 0) return removeFromCart(id);
+  const updateQuantity = (
+    id: number,
+    color: string,
+    size: string,
+    qty: number
+  ) => {
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, quantity: qty } : item
+        item.id === id &&
+          item.color === color &&
+          item.size === size
+          ? { ...item, quantity: qty }
+          : item
       )
     );
   };
+
 
   const clearCart = () => {
     setCart([]);

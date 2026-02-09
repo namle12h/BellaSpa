@@ -323,6 +323,10 @@ export default function CheckoutPage() {
                                         quantity: item.quantity,
                                         price: item.price,
                                         imageUrl: item.imageUrl,
+                                        originalPrice: item.originalPrice,
+                                        discountPercent: item.discountPercent,
+                                        color: item.color,
+                                        size: item.size,
                                     }))}
                                     originalPrice={originalPrice}
                                     shippingFee={shippingFee}

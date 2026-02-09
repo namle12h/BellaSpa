@@ -16,34 +16,66 @@ import {
 import { useNavigate } from "react-router-dom";
 import Header from "../../../shared/components/Header";
 import { useCart } from "../../../shared/context/CartContext";
+import type { CartItem } from "../../../shared/context/CartContext";
+
+
 
 export default function CartPage() {
   const navigate = useNavigate();
   const { cart, removeFromCart, updateQuantity } = useCart();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const getCartKey = (item: CartItem) =>
+    `${item.id}_${item.color}_${item.size}`;
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+
 
   // 🧮 Tính tổng tiền của sản phẩm được chọn
   const selectedTotal = cart
-    .filter((item) => selectedRowKeys.includes(item.id))
-    .reduce((sum, item) => sum + item.price * item.quantity, 0);
+    .filter((item) =>
+      selectedRowKeys.includes(getCartKey(item))
+    )
+    .reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
 
-  // 🪄 Nếu chưa chọn gì -> hiển thị 0 và thông báo
-  const displayTotal = selectedRowKeys.length > 0 ? selectedTotal : 0;
+  const displayTotal =
+    selectedRowKeys.length > 0 ? selectedTotal : 0;
 
-  const handleSelect = (id: number, checked: boolean) => {
+
+  const handleSelect = (
+    item: CartItem,
+    checked: boolean
+  ) => {
+    const key = getCartKey(item);
+
     setSelectedRowKeys((prev) =>
-      checked ? [...prev, id] : prev.filter((key) => key !== id)
+      checked
+        ? [...prev, key]
+        : prev.filter((k) => k !== key)
     );
   };
 
-  const handleRemove = (id: number) => {
-    removeFromCart(id);
-    setSelectedRowKeys((prev) => prev.filter((key) => key !== id));
+  const handleRemove = (item: CartItem) => {
+    removeFromCart(item.id, item.color, item.size);
+
+    setSelectedRowKeys((prev) =>
+      prev.filter((k) => k !== getCartKey(item))
+    );
   };
 
-  const handleQuantityChange = (id: number, value: number) => {
-    updateQuantity(id, value || 1);
+
+  const handleQuantityChange = (
+    item: CartItem,
+    value: number
+  ) => {
+    updateQuantity(
+      item.id,
+      item.color,
+      item.size,
+      value || 1
+    );
   };
+
 
   const handleCheckout = () => {
     if (cart.length === 0) {
@@ -53,8 +85,12 @@ export default function CartPage() {
 
     const checkoutItems =
       selectedRowKeys.length > 0
-        ? cart.filter((i) => selectedRowKeys.includes(i.id))
+        ? cart.filter((item) =>
+          selectedRowKeys.includes(getCartKey(item))
+        )
         : [];
+
+
 
     if (checkoutItems.length === 0) {
       message.warning("Vui lòng chọn sản phẩm để thanh toán!");
@@ -105,13 +141,15 @@ export default function CartPage() {
 
               {cart.map((item) => (
                 <div
-                  key={item.id}
+                  key={getCartKey(item)}
                   className="flex flex-col sm:flex-row items-center justify-between gap-4 py-5 border-b border-gray-100"
                 >
                   <div className="flex items-center gap-4 w-full sm:w-auto">
                     <Checkbox
-                      checked={selectedRowKeys.includes(item.id)}
-                      onChange={(e) => handleSelect(item.id, e.target.checked)}
+                      checked={selectedRowKeys.includes(getCartKey(item))}
+                      onChange={(e) =>
+                        handleSelect(item, e.target.checked)
+                      }
                     />
                     <img
                       src={item.imageUrl || "/upload/product-default.jpg"}
@@ -122,12 +160,33 @@ export default function CartPage() {
                       <h3 className="font-semibold text-lg text-gray-800">
                         {item.name}
                       </h3>
-                      <p className="text-gray-500 text-sm line-clamp-1">
-                        Giá:{" "}
-                        <span className="text-pink-600 font-semibold">
-                          {item.price.toLocaleString()} ₫
-                        </span>
+
+                      <p className="text-gray-500 text-sm">
+                        Màu: <span className="font-medium">{item.color}</span> ·
+                        Size: <span className="font-medium">{item.size}</span>
                       </p>
+                      <p className="text-sm">
+                        {item.originalPrice && item.originalPrice > item.price ? (
+                          <>
+                            <span className="text-pink-600 font-semibold">
+                              {item.price.toLocaleString()} ₫
+                            </span>
+                            <span className="text-gray-400 line-through ml-2 text-xs">
+                              {item.originalPrice.toLocaleString()} ₫
+                            </span>
+                            {item.discountPercent && (
+                              <span className="ml-2 text-red-500 text-xs font-medium">
+                                -{item.discountPercent}%
+                              </span>
+                            )}
+                          </>
+                        ) : (
+                          <span className="text-pink-600 font-semibold">
+                            {item.price.toLocaleString()} ₫
+                          </span>
+                        )}
+                      </p>
+
                     </div>
                   </div>
 
@@ -135,20 +194,19 @@ export default function CartPage() {
                     <InputNumber
                       min={1}
                       value={item.quantity}
-                      onChange={(v) => handleQuantityChange(item.id, v || 1)}
+                      onChange={(v) =>
+                        handleQuantityChange(item, v || 1)
+                      }
                       className="!w-20"
                     />
-                    <div className="text-right">
-                      <p className="text-gray-800 font-semibold text-lg">
-                        {(item.price * item.quantity).toLocaleString()} ₫
-                      </p>
-                    </div>
+
                     <Button
                       icon={<DeleteOutlined />}
                       danger
                       shape="circle"
-                      onClick={() => handleRemove(item.id)}
+                      onClick={() => handleRemove(item)}
                     />
+
                   </div>
                 </div>
               ))}
@@ -226,7 +284,7 @@ export default function CartPage() {
                 Thanh toán ngay
               </Button>
 
-             
+
 
               <Divider />
               <div className="text-sm text-gray-500 space-y-1">

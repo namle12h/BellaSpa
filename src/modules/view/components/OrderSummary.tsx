@@ -7,6 +7,10 @@ interface OrderSummaryProps {
     name: string;
     quantity: number;
     price: number;
+    originalPrice?: number;     // giá gốc
+    discountPercent?: number;
+    color: string;
+    size: string;
     imageUrl?: string;
   }[];
   originalPrice: number;
@@ -41,8 +45,13 @@ export default function OrderSummary({
           name={item.name}
           quantity={item.quantity}
           price={item.price}
+          originalPrice={item.originalPrice}
+          discountPercent={item.discountPercent}
+          color={item.color}
+          size={item.size}
           image={item.imageUrl}
         />
+
       ))}
 
       {/* Tổng tiền và giảm giá */}

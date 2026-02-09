@@ -32,7 +32,6 @@ import AppointmentHistory from './modules/view/components/AppointmentHistory';
 import ProductPageView from './modules/view/pages/ProductPage';
 import ProductDetail from './modules/view/pages/ProductDetailPage';
 import CartPage from './modules/view/components/CartPage';
-import PaymentSuccess from './modules/view/components/PaymentSuccess';
 import CheckoutPage from './modules/view/pages/CheckoutPage';
 import PaymentReturnPage from './modules/dashboard/components/PaymentReturnPage';
 import SpinWheel from './modules/view/components/SpinWheel';
@@ -43,6 +42,7 @@ import StaffPage from './modules/dashboard/pages/StaffPage';
 import SerenitySpa from './modules/view/pages/About';
 import ContactPage from './modules/view/pages/Contact';
 import PromotionsPage from './modules/view/components/promotion';
+import PaymentSuccessPage from './modules/view/components/PaymentSuccessPage';
 
 
 
@@ -99,8 +99,8 @@ function App() {
               <Route path="/cart" element={<EmptyLayout />} >
                 <Route index element={<CartPage />} />
               </Route>
-              <Route path="/payment-success" element={<EmptyLayout />} >
-                <Route index element={<PaymentSuccess />} />
+              <Route path="/payment-success" element={<EmptyLayout />}>
+                <Route path=":txnRef" element={<PaymentSuccessPage />} />
               </Route>
               <Route path="/checkout" element={<EmptyLayout />} >
                 <Route index element={<CheckoutPage />} />

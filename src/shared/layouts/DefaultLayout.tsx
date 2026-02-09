@@ -183,7 +183,7 @@ const DefaultLayout: React.FC = () => {
 
         {/* FOOTER */}
         <Footer style={{ textAlign: 'center' }}>
-          Bella Spa ©{new Date().getFullYear()} — Dashboard System
+          Thảo Susi Store ©{new Date().getFullYear()} — Dashboard System
         </Footer>
       </Layout>
     </Layout>

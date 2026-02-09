@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Rate, Spin, Tag } from "antd";
+import { Breadcrumb, Button, message, Rate, Spin, Tag } from "antd";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useProductDetail } from "../../../shared/services/productApi";
@@ -55,7 +55,7 @@ export default function ProductDetailView() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (!product) return;
@@ -297,7 +297,12 @@ export default function ProductDetailView() {
               className="flex-1 !bg-emerald-600 hover:!bg-emerald-700"
               onClick={(e) => {
                 e.stopPropagation();
-                addToCart(product);
+                if (!size || !color) {
+                  message.warning("Vui lòng chọn màu sắc và kích thước");
+                  return;
+                }
+
+                addToCart(product, color, size);
               }}
             >
               Thêm vào giỏ hàng

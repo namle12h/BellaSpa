@@ -119,7 +119,15 @@ export default function ProductPageView() {
           </div>
 
           {/* Danh sách sản phẩm */}
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div
+            className="
+    grid grid-cols-2 gap-4
+    sm:grid-cols-2 sm:gap-6
+    md:grid-cols-3
+    lg:grid-cols-4 lg:gap-8
+  "
+          >
+
             {productList.map((p: any) => (
               <Card
                 key={p.id}
@@ -131,8 +139,13 @@ export default function ProductPageView() {
                     <img
                       src={p.imageUrl || "/upload/product-default.jpg"}
                       alt={p.name}
-                      className="h-56 w-full object-cover rounded-t-xl"
+                      className="
+    h-44 sm:h-56
+    w-full object-cover
+    rounded-t-xl
+  "
                     />
+
                     {p.discountPercent > 0 && (
                       <Tag
                         color="red"
@@ -163,35 +176,48 @@ export default function ProductPageView() {
                 className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-full"
                 styles={{ body: { padding: "16px" } }}
               >
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-1 line-clamp-2">
                   {p.name}
                 </h3>
 
-                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+
+                <p className="hidden sm:block text-gray-600 text-sm mb-3 line-clamp-2">
                   {p.description}
                 </p>
 
-                <div className="flex items-center gap-1 mb-2">
-                  <Rate disabled allowHalf defaultValue={p.rating || 4.5} />
-                  <span className="text-gray-500 text-xs">
+
+                <div className="flex items-center gap-1 mb-1 sm:mb-2">
+                  <Rate
+                    disabled
+                    allowHalf
+                    defaultValue={p.rating || 4.5}
+                    style={{ fontSize: 10 }}          // 📱 mobile nhỏ
+                    className="sm:[&_.ant-rate-star]:text-sm"
+                  />
+
+                  <span className="text-gray-500 text-[9px] sm:text-xs">
                     ({p.reviews || 0} đánh giá)
                   </span>
                 </div>
 
+
                 <div className="mt-auto">
                   {/* Giá */}
-                  <div className="mb-3">
+                  <div className="mb-2 sm:mb-3">
                     {p.discountPercent > 0 && p.discountPrice ? (
                       <div className="flex items-center gap-2">
-                        <span className="text-red-600 font-semibold text-base">
+                        {/* Giá sau giảm */}
+                        <span className="text-red-600 font-semibold text-sm sm:text-base">
                           {p.discountPrice.toLocaleString()} VND
                         </span>
-                        <span className="text-gray-400 line-through text-sm">
+
+                        {/* Giá gốc */}
+                        <span className="text-gray-400 line-through text-xs sm:text-sm">
                           {p.salePrice.toLocaleString()} VND
                         </span>
                       </div>
                     ) : (
-                      <span className="text-red-600 font-semibold text-base">
+                      <span className="text-red-600 font-semibold text-sm sm:text-base">
                         {p.salePrice?.toLocaleString()} VND
                       </span>
                     )}
@@ -200,30 +226,23 @@ export default function ProductPageView() {
 
                   {/* Buttons */}
                   <div className="flex gap-2 w-full min-w-0">
-                    <Button
-                      type="primary"
-                      size="small"
-                      className="flex-1 min-w-0 !bg-teal-600 hover:!bg-teal-700 truncate"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addToCart(p);
-                      }}
-                    >
-                      Thêm vào giỏ
-                    </Button>
-
+                    
                     <Button
                       type="default"
                       size="small"
-                      className="flex-1 min-w-0 border-teal-500 text-teal-500 truncate hover:bg-teal-50"
+                      className="flex-1 min-w-0 !bg-teal-500 border-teal-500 text-teal-500 truncate hover:bg-teal-50"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/products/${p.id}`);
                       }}
                     >
-                      Xem chi tiết
+                      <span className="block text-white  sm:hidden">Xem</span>
+
+                      {/* Desktop */}
+                      <span className="hidden text-white  sm:block">Xem chi tiết</span>
                     </Button>
                   </div>
+
                 </div>
 
               </Card>

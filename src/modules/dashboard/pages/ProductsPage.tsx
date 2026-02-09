@@ -25,6 +25,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "../../../shared/lib/axiosClient";
 import { useCategories } from "../../../shared/services/categoriesApi";
 import dayjs from "dayjs";
+import ProductImageModal from "../components/ProductImageForm";
 
 interface DataType {
   id: number;
@@ -57,6 +58,9 @@ export default function ProductsPage() {
   const limit = parseInt(searchParams.get("limit") || "5");
 
   const queryClient = useQueryClient();
+
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
 
   // ✅ gọi danh sách sản phẩm qua hook
   const { data: products, isLoading } = useProducts(page, limit);
@@ -303,6 +307,15 @@ export default function ProductsPage() {
           >
             <Button icon={<DeleteOutlined />} danger />
           </Popconfirm>
+          <Button
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setSelectedProductId(record.id);
+              setImageModalOpen(true);
+            }}
+          >
+            Ảnh phụ
+          </Button>
         </Space>
       ),
     },
@@ -360,6 +373,12 @@ export default function ProductsPage() {
           loading={mutationAdd.isPending || mutationUpdate.isPending}
         />
       </Modal>
+
+      <ProductImageModal
+        open={imageModalOpen}
+        productId={selectedProductId}
+        onClose={() => setImageModalOpen(false)}
+      />
     </Card>
   );
 }

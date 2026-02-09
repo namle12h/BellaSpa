@@ -55,7 +55,7 @@ export default function PaymentSuccess() {
   useEffect(() => {
     if (orderId) {
       setLoading(true);
-      fetch(`http://localhost:3001/orders/${orderId}`) // 👉 Thay URL API phù hợp
+      fetch(`http://localhost:8080/orders/${orderId}`) // 👉 Thay URL API phù hợp
         .then((res) => {
           if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
           return res.json();

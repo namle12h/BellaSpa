@@ -99,17 +99,17 @@ const LoginPage: React.FC = () => {
         <h2 className="text-2xl font-bold text-center mb-2">Đăng nhập tài khoản</h2>
         <p className="text-gray-500 text-center mb-6">
           Chào mừng bạn trở lại với{" "}
-          <span className="text-pink-500 font-semibold">Bella Spa</span>
+          <span className="text-teal-500 font-semibold">Thảo Susi Store</span>
         </p>
 
         <Form
           name="login"
           layout="vertical"
-          initialValues={{
-            remember: true,
-            email: "namle@gmail.com",
-            password: "123456",
-          }}
+          // initialValues={{
+          //   remember: true,
+          //   email: "namle@gmail.com",
+          //   password: "123456",
+          // }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"

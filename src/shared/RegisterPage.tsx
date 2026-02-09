@@ -84,8 +84,8 @@ const RegisterPage = ({ onSuccess }: RegisterFormProps) => {
         <Title level={2} className="text-center mb-1 !text-gray-800">
           Tạo tài khoản mới
         </Title>
-        <Text className="block text-center !text-pink-500 mb-6">
-          Tham gia cộng đồng Bella Spa
+        <Text className="block text-center !text-teal-500 mb-6">
+          Tham gia cộng đồng Thảo Susi Store
         </Text>
 
         <Form
@@ -227,7 +227,7 @@ const RegisterPage = ({ onSuccess }: RegisterFormProps) => {
               htmlType="submit"
               loading={loading}
               block
-              className="!bg-pink-500 hover:!bg-pink-600 h-11 rounded-lg font-medium"
+              className="!bg-teal-500 hover:!bg-teal-600 h-11 rounded-lg font-medium"
             >
               Đăng ký
             </Button>

@@ -54,7 +54,7 @@ export default function AboutSection() {
                 <div className="flex justify-center">
                     <img
                         src="/upload/z7504337376449_3fd70de8b702711a5c38fdbf96655231.jpg"
-                        alt="Bella Spa"
+                        alt="Thảo Susi Store"
                         width={350}
                         height={300}
                         className="rounded-2xl shadow-lg"

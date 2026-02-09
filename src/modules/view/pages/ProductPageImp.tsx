@@ -60,7 +60,7 @@ export default function FeaturedProducts() {
                 </div>
 
                 {/* Grid */}
-                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {products.map((p: any) => (
                         <Card
                             key={p.id}
@@ -70,28 +70,25 @@ export default function FeaturedProducts() {
                                 <img
                                     src={p.imageUrl || "/upload/product-default.jpg"}
                                     alt={p.name}
-                                    className="h-90 w-full object-cover"
+                                    className="h-[180px] sm:h-[220px] lg:h-[260px] w-full object-cover"
                                 />
                             }
-                            className="rounded-xl shadow-md hover:shadow-lg transition"
+                            className="rounded-lg sm:rounded-xl shadow-md hover:shadow-lg transition"
                             styles={{ body: { padding: "16px" } }}
                         >
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                            <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-gray-800 mb-2">
                                 {p.name}
                             </h3>
 
                             <div className="flex items-center justify-between">
-                                <span className="text-teal-600 font-bold text-lg">
+                                <span className="text-sm sm:text-base lg:text-lg text-teal-600 font-bold">
                                     {p.salePrice?.toLocaleString() || p.price?.toLocaleString()} VNĐ
                                 </span>
                             </div>
-
                         </Card>
-
-
                     ))}
-
                 </div>
+
                 <div className="flex justify-center mt-10">
                     <Button
                         type="primary"
