@@ -4,7 +4,6 @@ import Header from "../../../shared/components/Header";
 import Footer from "../../../shared/components/Footer";
 import { Button, Card, Pagination, Rate, Spin, Tag } from "antd";
 import FeaturedProducts from "../components/FeaturedProducts";
-import { useCart } from "../../../shared/context/CartContext";
 import PromoBanner from "../components/PromoBanner";
 import CollectionBanner from "../components/CollectionBanner";
 import { useCategories } from "../../../shared/services/categoriesApi";
@@ -24,7 +23,6 @@ export default function ProductPageView() {
   const isAll = categoryParam === "all";
 
 
-  const { addToCart } = useCart();
 
   // ✅ Gọi API
   const productsQuery = isAll

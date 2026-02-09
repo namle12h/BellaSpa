@@ -1,7 +1,6 @@
 import { Button, Card, Rate } from "antd";
 import { useRelatedProducts } from "../../../shared/services/productApi";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { useCart } from "../../../shared/context/CartContext";
 import { useNavigate } from "react-router-dom";
 
 export default function RelatedProducts({ productId }: { productId: number }) {
@@ -19,7 +18,6 @@ export default function RelatedProducts({ productId }: { productId: number }) {
   };
 
 
-  const { addToCart } = useCart();
 
   return (
     <div className="container mx-auto py-10 px-6">
@@ -70,7 +68,6 @@ export default function RelatedProducts({ productId }: { productId: number }) {
                 className="flex-1 !bg-teal-600 hover:!bg-teal-700"
                 onClick={(e) => {
                   e.stopPropagation();
-                  addToCart(item);
                 }}
               >
                 Thêm vào giỏ hàng
