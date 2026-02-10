@@ -198,7 +198,7 @@ quần áo không chỉ để mặc, mà còn để thể hiện con người b�
             {/* Nội dung Tabs */}
             <div className="mt-8 px-4 md:px-8 pb-12">
                 <TabContent tabKey={activeTab} />
-                <ExpertTeamSection />
+                {/* <ExpertTeamSection /> */}
 
             </div>
 
