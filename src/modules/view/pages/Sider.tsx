@@ -11,20 +11,7 @@ export const slides = [
         desc: 'Khám phá bộ sưu tập thời trang nữ hiện đại, thanh lịch và đầy quyến rũ',
         image: '/upload/bannerFashion.jpg'
     },
-    // {
-    //     id: 2,
-    //     title: 'Liệu Trình Chuyên Nghiệp',
-    //     accent: 'Chăm Sóc',
-    //     desc: 'Tận hưởng liệu trình chăm sóc da & cơ thể được cá nhân hoá bởi chuyên gia.',
-    //     image: '/upload/hero2.jpg'
-    // },
-    // {
-    //     id: 3,
-    //     title: 'Không Gian',
-    //     accent: 'Sang Trọng',
-    //     desc: 'Thiết kế hiện đại, ấm cúng giúp bạn thư giãn ngay từ bước đầu.',
-    //     image: '/upload/hero3.jpg'
-    // },
+
 ];
 
 
@@ -45,7 +32,7 @@ export default function HeroCarousel() {
                             <p className="mt-4 text-lg md:text-xl">{s.desc}</p>
                             <div className="mt-6 flex justify-center gap-4">
                                 <Button size="large" className="!bg-teal-700 opacity-70 "><span className='text-white'> Khám Phá Ngay</span></Button>
-                                <Button size="large" className='border !bg-white/10 border-while/10'><span className='text-white'> Về chúng tôi</span></Button>
+                                <Button size="large" className='border !bg-white/10 border-white/10' onClick={() => window.location.href = '/about'}><span className='text-white'> Về chúng tôi</span></Button>
                             </div>
                         </div>
                     </div>

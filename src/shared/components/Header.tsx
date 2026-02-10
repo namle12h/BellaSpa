@@ -121,7 +121,7 @@ export default function Header() {
           items={menuItems}
           className={`
     menu hidden md:flex flex-1 justify-center border-none
-    ${scrolled ? "text-gray-800" : "text-white"}
+    ${scrolled ? "text-white" : "text-white"}
   `}
         />
 
@@ -235,7 +235,7 @@ export default function Header() {
             overlayStyle={{ padding: 0 }}
           >
             <Badge count={unreadCount} size="small" offset={[-5, 5]}>
-              <BellOutlined className="text-xl cursor-pointer !text-pink-700 hover:!text-pink-600" />
+              <BellOutlined className="text-xl cursor-pointer !text-teal-700 hover:!text-teal-500" />
             </Badge>
           </Dropdown>
 

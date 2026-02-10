@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { StarOutlined, HeartOutlined, CheckCircleOutlined, SafetyCertificateOutlined, UserAddOutlined } from '@ant-design/icons';
 import Header from '../../../shared/components/Header';
 import Footer from '../../../shared/components/Footer';
-import { ExpertTeamSection } from '../components/ExperTeamSection';
 
 
 
@@ -33,10 +32,10 @@ const SerenitySpa = () => {
                             <h2 className="text-4xl font-extrabold text-gray-800">Câu chuyện của chúng tôi</h2>
                             <p className="text-lg text-gray-600 leading-relaxed">
                                 Chúng tôi bắt đầu hành trình thời trang với một niềm tin giản dị:
-quần áo không chỉ để mặc, mà còn để thể hiện con người bạn.
+                                quần áo không chỉ để mặc, mà còn để thể hiện con người bạn.
                             </p>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Ra đời từ niềm đam mê với thiết kế và chất liệu, thương hiệu được xây dựng với mong muốn mang đến những sản phẩm thời trang hiện đại, dễ ứng dụng trong đời sống hằng ngày nhưng vẫn giữ được nét tinh tế và cá tính riêng. 
+                                Ra đời từ niềm đam mê với thiết kế và chất liệu, thương hiệu được xây dựng với mong muốn mang đến những sản phẩm thời trang hiện đại, dễ ứng dụng trong đời sống hằng ngày nhưng vẫn giữ được nét tinh tế và cá tính riêng.
                             </p>
                             <p className="text-lg text-gray-600 leading-relaxed">
                                 Chúng tôi tin rằng thời trang đẹp nhất là khi bạn cảm thấy thoải mái và tự tin là chính mình.
@@ -46,7 +45,7 @@ quần áo không chỉ để mặc, mà còn để thể hiện con người b�
                         {/* Hình ảnh (phải/dưới) - Bắt chước hiệu ứng khung viền và ánh sáng ấm áp */}
                         <div className="md:w-1/2 w-full  order-1 md:order-2">
                             <img
-                                src="upload/about.jpg"
+                                src="https://i.pinimg.com/736x/d6/20/cf/d620cf73dfc1456a52a9d55578e3da4c.jpg"
                                 alt="Phòng thư giãn Serenity Spa"
                                 className="w-full h-auto rounded-xl shadow-2xl border-4 border-white object-cover transform hover:scale-[1.01] transition-transform duration-300"
                             />
@@ -109,7 +108,7 @@ quần áo không chỉ để mặc, mà còn để thể hiện con người b�
                                 <h3 className="text-2xl font-semibold text-gray-800">Lấy khách hàng làm trung tâm</h3>
                                 <p className="text-base text-gray-600 mt-1">
                                     Chúng tôi luôn lắng nghe và thấu hiểu nhu cầu của khách hàng để mang đến những sản phẩm phù hợp, dễ mặc và đáp ứng đúng phong cách cá nhân.
-                                    </p>
+                                </p>
                             </div>
                         </div>
 
