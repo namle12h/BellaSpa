@@ -140,7 +140,7 @@ export default function ProductPageView() {
                       className="
     h-44 sm:h-56
     w-full object-cover
-    rounded-t-xl
+    flex-shrink-0
   "
                     />
 
@@ -170,18 +170,46 @@ export default function ProductPageView() {
                     )}
                   </div>
                 }
+                className="
+                  rounded-xl shadow-md hover:shadow-lg transition-all duration-300
+                  h-full flex flex-col
+                "
 
-                className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-full"
-                styles={{ body: { padding: "16px" } }}
+                styles={{
+                  body: {
+                    padding: "16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    flex: 1,
+                  },
+                }}
+
               >
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-1 line-clamp-2">
+                <h3 className="
+  text-sm sm:text-base font-semibold mb-1
+  line-clamp-2
+  min-h-[40px]
+">
+
                   {p.name}
+
                 </h3>
 
 
-                <p className="hidden sm:block text-gray-600 text-sm mb-3 line-clamp-2">
+                <p
+                  className="
+                  hidden sm:block
+                  text-gray-600 text-sm mb-3
+                  max-h-[42px]      /* chiều cao ~ 2 dòng */
+                  overflow-hidden
+                  relative
+                "
+                >
                   {p.description}
                 </p>
+
+
+
 
 
                 <div className="flex items-center gap-1 mb-1 sm:mb-2">
@@ -224,7 +252,7 @@ export default function ProductPageView() {
 
                   {/* Buttons */}
                   <div className="flex gap-2 w-full min-w-0">
-                    
+
                     <Button
                       type="default"
                       size="small"

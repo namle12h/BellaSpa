@@ -2,6 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { message } from "antd";
 import { axiosClient } from "../lib/axiosClient";
+import { useMemo } from "react";
 
 // 🧴 Lấy danh sách sản phẩm
 export const fetchProducts = async (page: number, limit: number) => {
@@ -190,4 +191,25 @@ export const useRelatedProducts = (productId: number) => {
     queryFn: () => fetchRelatedProducts(productId),
     enabled: !!productId,
   });
+};
+
+
+function shuffleArray<T>(arr: T[]) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+export const useRandomProducts = (limit = 4) => {
+  // lấy nhiều hơn để random cho "đúng nghĩa"
+  const { data, isLoading, isError } = useProducts(1, 20);
+
+  const randomProducts = useMemo(() => {
+    if (!data?.content) return [];
+    return shuffleArray(data.content).slice(0, limit);
+  }, [data, limit]);
+
+  return {
+    products: randomProducts,
+    isLoading,
+    isError,
+  };
 };

@@ -1,45 +1,12 @@
-import { Rate } from "antd";
+import { Rate, Spin, Empty } from "antd";
 import { HeartOutlined } from "@ant-design/icons";
 import { useEffect, useRef } from "react";
-
-const products = [
-  {
-    id: 1,
-    name: "Váy Hoa Nhẹ Nhàng",
-    price: 450000,
-    image: "/upload/z7504336725356_e21b4056e59afdb9a3e43509411d386d.jpg",
-    isNew: true,
-    rating: 5,
-  },
-  {
-    id: 2,
-    name: "Áo Sơ Mi Trắng Thanh Lịch",
-    price: 320000,
-    image: "/upload/z7504337376449_3fd70de8b702711a5c38fdbf96655231.jpg",
-    isNew: false,
-    rating: 5,
-  },
-  {
-    id: 3,
-    name: "Quần Tây Công Sở",
-    price: 380000,
-    image: "/upload/z7505356921661_710487bde75057db253711b083819694.jpg",
-    isNew: true,
-    rating: 5,
-  },
-  {
-    id: 4,
-    name: "Áo Khoác Dạ Mùa Đông",
-    price: 890000,
-    image: "/upload/z7505356922098_be822a3ca9ae0d9ece3bd59bfb2b8248.jpg",
-    isNew: false,
-    rating: 5,
-  },
-];
+import { useRandomProducts } from "../../../shared/services/productApi";
+import { Link } from "react-router-dom";
 
 export default function FeaturedProducts() {
-
   const sliderRef = useRef<HTMLDivElement>(null);
+  const { products, isLoading, isError } = useRandomProducts(4);
 
   // 👉 Auto slide (mobile only)
   useEffect(() => {
@@ -51,8 +18,7 @@ export default function FeaturedProducts() {
     const total = cards.length;
 
     const interval = setInterval(() => {
-      // chỉ chạy ở mobile
-      if (window.innerWidth >= 640) return;
+      if (window.innerWidth >= 640 || total === 0) return;
 
       index = (index + 1) % total;
       const card = cards[index] as HTMLElement;
@@ -61,10 +27,27 @@ export default function FeaturedProducts() {
         left: card.offsetLeft,
         behavior: "smooth",
       });
-    }, 3000); // 3s đổi 1 lần
+    }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [products]);
+
+  if (isLoading) {
+    return (
+      <section className="py-16 text-center">
+        <Spin />
+      </section>
+    );
+  }
+
+  if (isError || products.length === 0) {
+    return (
+      <section className="py-16 text-center">
+        <Empty description="Không có sản phẩm nổi bật" />
+      </section>
+    );
+  }
+
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4">
@@ -90,51 +73,89 @@ export default function FeaturedProducts() {
             sm:overflow-visible
           "
         >
-          {products.map((p) => (
-            <div
-              key={p.id}
-              className="
-                min-w-[48%] sm:min-w-0
-                snap-start
-                bg-white rounded-xl shadow-md hover:shadow-xl transition
-                overflow-hidden relative
-              "
-            >
-              {/* Tag */}
-              {p.isNew && (
-                <span className="absolute top-3 left-3 bg-pink-500 text-white text-xs px-2 py-1 rounded-full z-10">
-                  Mới
-                </span>
-              )}
+          {products.map((p: any) => {
+  const hasDiscount =
+    p.salePrice && Number(p.salePrice) < Number(p.price);
 
-              {/* Wishlist */}
-              <button className="absolute top-3 right-3 bg-white rounded-full p-2 shadow z-10 hover:text-pink-500">
-                <HeartOutlined />
-              </button>
+  const discountPercent =
+    p.discountPercent ||
+    (hasDiscount
+      ? Math.round(
+          ((p.price - p.salePrice) / p.price) * 100
+        )
+      : 0);
 
-              {/* Image */}
-              <div className="h-[200px] sm:h-[260px] lg:h-[320px] overflow-hidden">
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  className="w-full h-full object-cover hover:scale-105 transition duration-300"
-                />
-              </div>
+  return (
+    <Link
+      to={`/products/${p.id}`}
+      key={p.id}
+      className="
+        min-w-[48%] sm:min-w-0
+        snap-start
+        bg-white rounded-xl shadow-md hover:shadow-xl transition
+        overflow-hidden relative
+        block
+      "
+    >
+      {/* Badge giảm giá */}
+      {hasDiscount && (
+        <span className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full z-10">
+          -{discountPercent}%
+        </span>
+      )}
 
-              {/* Content */}
-              <div className="p-3 sm:p-5 text-center">
-                <h3 className="text-sm sm:text-base font-medium text-gray-800 mb-1 line-clamp-2">
-                  {p.name}
-                </h3>
+      {/* Wishlist (chặn click lan ra ngoài) */}
+      <button
+        onClick={(e) => e.preventDefault()}
+        className="absolute top-3 right-3 bg-white rounded-full p-2 shadow z-10 hover:text-pink-500"
+      >
+        <HeartOutlined />
+      </button>
 
-                <Rate disabled defaultValue={p.rating} className="text-xs sm:text-sm" />
+      {/* Image */}
+      <div className="h-[200px] sm:h-[260px] lg:h-[320px] overflow-hidden">
+        <img
+          src={p.thumbnail || p.imageUrl}
+          alt={p.name}
+          className="w-full h-full object-cover hover:scale-105 transition duration-300"
+        />
+      </div>
 
-                <p className="mt-2 text-sm sm:text-base text-pink-500 font-semibold">
-                  {p.price.toLocaleString()} VND
-                </p>
-              </div>
+      {/* Content */}
+      <div className="p-3 sm:p-5 text-center">
+        <h3 className="text-sm sm:text-base font-medium text-gray-800 mb-1 line-clamp-2">
+          {p.name}
+        </h3>
+
+        <Rate
+          disabled
+          defaultValue={p.rating || 5}
+          className="text-xs sm:text-sm"
+        />
+
+        {/* Giá */}
+        <div className="mt-2">
+          {hasDiscount ? (
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-pink-500 font-semibold text-sm sm:text-base">
+                {Number(p.salePrice).toLocaleString()} VND
+              </span>
+              <span className="text-gray-400 line-through text-xs sm:text-sm">
+                {Number(p.price).toLocaleString()} VND
+              </span>
             </div>
-          ))}
+          ) : (
+            <p className="text-pink-500 font-semibold text-sm sm:text-base">
+              {Number(p.salePrice).toLocaleString()} VND
+            </p>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+})}
+
+   
         </div>
       </div>
     </section>

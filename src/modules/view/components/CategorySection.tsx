@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 export const CATEGORY_IMAGES: Record<string, string> = {
   "o-khoc": "https://cf.shopee.vn/file/4cc1fd1176b697d8bf8e3cfc9e62f539",
   "qun": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200",
-  "vy": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9BFvDxsAOoPed4yJaO4tOSyk1OQfVXvrMYw&s",
-  "o-s-mi": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200",
+  "vy": "https://cdn.kkfashion.vn/29652-home_default/dam-xoe-co-dan-tong-phoi-tui-mau-hong-hl27-09.jpg",
+  "o-s-mi": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREhhVEyNKjSxUQbemWnJBOpH2pWit0X7Lltg&s",
 };
 
 
