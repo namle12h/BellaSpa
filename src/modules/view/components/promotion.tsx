@@ -1,9 +1,8 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { Button } from 'antd';
-import {  ClockCircleOutlined, SearchOutlined, TagOutlined, FireOutlined, GiftOutlined, CalendarOutlined, HeartOutlined } from '@ant-design/icons';
+import {  SearchOutlined, TagOutlined, FireOutlined, GiftOutlined, CalendarOutlined, HeartOutlined } from '@ant-design/icons';
 import Header from '../../../shared/components/Header';
 import Footer from '../../../shared/components/Footer';
-
 
 const allPrograms = [
     {
@@ -11,75 +10,74 @@ const allPrograms = [
         category: 'Khuyến Mãi',
         tags: ['Khuyến Mãi'],
         discountTag: '-50%',
-        title: 'Khuyến Mãi Mừng Khai Trương - Giảm 50%',
-        description: 'Chào mừng khách hàng mới với ưu đãi đặc biệt giảm giá 50% cho tất cả các dịch vụ massage trị liệu cao cấp...',
-        duration: '90 phút',
+        title: 'SALE KHAI TRƯƠNG – GIẢM 50% TOÀN BỘ SẢN PHẨM',
+        description: 'Mừng khai trương cửa hàng thời trang, giảm ngay 50% tất cả quần áo, váy đầm, áo sơ mi và phụ kiện. Số lượng có hạn!',
+        duration: '01/03 - 10/03',
         oldPrice: '1.000.000đ',
         newPrice: '500.000đ',
-        img: 'upload/8af94b862c2b684d29bee575c59f9c81.jpg',
+        img: 'https://public.readdy.ai/ai/img_res/335ee3c2fdd764e1ea72ba6e1b5374ec.jpg',
         color: 'bg-red-500',
     },
     {
         id: 2,
-        category: 'Liệu Trình Mới',
-        tags: ['Liệu Trình Mới', 'Mới'],
-        title: 'Liệu Trình Trẻ Hóa Da Collagen 24K',
-        description: 'Công nghệ chăm sóc da tiên tiến nhất với collagen vàng 24K, giúp làn da trẻ hóa, săn chắc và rạng rỡ. Liệu trình độc quyền.',
-        duration: '120 phút',
-        oldPrice: '3.000.000đ',
-        newPrice: '2.500.000đ',
-        img: 'upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg',
+        category: 'Bộ Sưu Tập Mới',
+        tags: ['Bộ Sưu Tập Mới', 'Mới'],
+        title: 'BST SPRING SUMMER 2026',
+        description: 'Khám phá bộ sưu tập Xuân Hè với thiết kế trẻ trung, chất liệu cao cấp và gam màu thời thượng.',
+        duration: 'Ra mắt tháng 3/2026',
+        oldPrice: '1.500.000đ',
+        newPrice: '1.290.000đ',
+        img: 'https://readdy.ai/api/search-image?query=spring%20summer%20fashion%20collection%20display%20with%20light%20pastel%20colored%20feminine%20dresses%20and%20floral%20patterns%2C%20fresh%20bright%20women%20clothing%20on%20elegant%20mannequins%2C%20modern%20fashion%20boutique%20setting%20with%20natural%20sunlight%2C%20soft%20teal%20and%20pink%20tones%2C%20professional%20fashion%20photography%20with%20airy%20fresh%20aesthetic&width=800&height=600&seq=promo-spring-summer1&orientation=landscape',
         color: 'bg-teal-500',
     },
     {
         id: 3,
         category: 'Sự Kiện',
         tags: ['Sự Kiện'],
-        title: 'Serenity Wellness Weekend - Cuối Tuần Thư Giãn',
-        description: 'Tham gia sự kiện đặc biệt cuối tuần với các hoạt động yoga, thiền định, và trải nghiệm spa toàn diện, kết nối với thiên nhiên.',
-        duration: '2 ngày',
+        title: 'FASHION WEEKEND – MUA 2 TẶNG 1',
+        description: 'Sự kiện cuối tuần siêu hot: Mua 2 sản phẩm bất kỳ tặng 1 sản phẩm giá trị tương đương hoặc thấp hơn.',
+        duration: 'Thứ 7 & Chủ Nhật',
         oldPrice: '',
-        newPrice: '1.800.000đ',
-        img: 'upload/95332035d47d4f05e4ab35c79bd8cde9.jpg',
-
+        newPrice: 'Ưu đãi đặc biệt',
+        img: 'https://public.readdy.ai/ai/img_res/cdc55f557069f8acba4b362284a7c880.jpg',
         color: 'bg-purple-600',
     },
     {
         id: 4,
         category: 'Khuyến Mãi',
         tags: ['Khuyến Mãi'],
-        discountTag: '-22%',
-        title: 'Ưu Đãi Liệu Trình Trị Mụn Chuyên Sâu',
-        description: 'Gói chăm sóc da chuyên sâu, loại bỏ mụn trứng cá và thâm, mang lại làn da mịn màng, tự tin.',
-        duration: '60 phút',
+        discountTag: '-30%',
+        title: 'FLASH SALE ĐẦM DỰ TIỆC',
+        description: 'Giảm 30% các mẫu váy dự tiệc cao cấp, thiết kế sang trọng, tôn dáng hoàn hảo.',
+        duration: 'Chỉ hôm nay',
         oldPrice: '1.200.000đ',
-        newPrice: '936.000đ',
-        img: 'upload/8714beed03fd62887b73582017df0bc0.jpg',
+        newPrice: '840.000đ',
+        img: 'https://readdy.ai/api/search-image?query=elegant%20evening%20party%20dresses%20collection%20on%20mannequins%20with%20luxurious%20fabrics%20and%20sophisticated%20designs%2C%20glamorous%20women%20formal%20gowns%20in%20rich%20colors%2C%20upscale%20fashion%20boutique%20setting%20with%20dramatic%20lighting%2C%20professional%20fashion%20photography%20with%20elegant%20refined%20aesthetic%2C%20red%20flash%20sale%20promotional%20atmosphere&width=800&height=600&seq=promo-party-dress1&orientation=landscape',
         color: 'bg-red-500',
     },
     {
         id: 5,
-        category: 'Gói Dịch Vụ',
-        tags: ['Gói Dịch Vụ', 'Mới'],
+        category: 'Combo Ưu Đãi',
+        tags: ['Combo Ưu Đãi', 'Mới'],
         discountTag: '-40%',
-        title: 'Gói Combo Massage Toàn Thân & Detox',
-        description: 'Liệu trình kết hợp massage thư giãn cơ thể và thải độc tố, giúp cơ thể khỏe mạnh, tràn đầy năng lượng.',
-        duration: '120 phút',
-        oldPrice: '2.500.000đ',
-        newPrice: '1.500.000đ',
-        img: 'upload/b4180f7148c7f688eb4e74fb26cc23d9.jpg',
+        title: 'COMBO ÁO SƠ MI + QUẦN TÂY',
+        description: 'Set đồ công sở thanh lịch dành cho nữ, giảm 40% khi mua theo combo.',
+        duration: 'Áp dụng đến 31/03',
+        oldPrice: '2.000.000đ',
+        newPrice: '1.200.000đ',
+        img: 'https://public.readdy.ai/ai/img_res/dd63401431db2bb1f32d22cd71f574cd.jpg',
         color: 'bg-green-600',
     },
     {
         id: 6,
-        category: 'Liệu Trình Mới',
-        tags: ['Liệu Trình Mới', 'Mới'],
-        title: 'Liệu Trình Chăm Sóc Bà Bầu',
-        description: 'Massage nhẹ nhàng, an toàn dành cho mẹ bầu, giúp giảm đau nhức, thư giãn tinh thần và giảm căng thẳng.',
-        duration: '90 phút',
+        category: 'Bộ Sưu Tập Mới',
+        tags: ['Bộ Sưu Tập Mới', 'Mới'],
+        title: 'BST STREET STYLE',
+        description: 'Phong cách năng động, trẻ trung với hoodie, áo thun oversized và quần cargo cá tính.',
+        duration: 'Limited Edition',
         oldPrice: '',
-        newPrice: '850.000đ',
-        img: 'upload/efbd042cf6a7b54937abae2e5fd49c4f.jpg',
+        newPrice: 'Từ 450.000đ',
+        img: 'https://public.readdy.ai/ai/img_res/6828844127523205e5770ac5ec1995e2.jpg',
         color: 'bg-teal-500',
     },
 ];
@@ -93,60 +91,66 @@ const PromotionsPage = () => {
     const filterOptions = [
         { key: 'all', label: 'Tất Cả', icon: <HeartOutlined /> },
         { key: 'Khuyến Mãi', label: 'Khuyến Mãi', icon: <FireOutlined /> },
-        { key: 'Liệu Trình Mới', label: 'Liệu Trình Mới', icon: <TagOutlined /> },
+        { key: 'Bộ Sưu Tập Mới', label: 'Bộ Sưu Tập Mới', icon: <TagOutlined /> },
         { key: 'Sự Kiện', label: 'Sự Kiện', icon: <CalendarOutlined /> },
-        { key: 'Gói Dịch Vụ', label: 'Gói Dịch Vụ', icon: <GiftOutlined /> },
+        { key: 'Combo Ưu Đãi', label: 'Combo Ưu Đãi', icon: <GiftOutlined /> },
     ];
+
 
     const filteredPrograms = allPrograms.filter(program => {
         const categoryMatch = activeFilter === 'all' || program.category === activeFilter;
-        const searchMatch = program.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            program.description.toLowerCase().includes(searchTerm.toLowerCase());
+        const searchMatch = program.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            program.description.toLowerCase().includes(searchTerm.toLowerCase());
         return categoryMatch && searchMatch;
     });
 
-  interface Program {
-    id: number;
-    category: string;
-    tags: string[];
-    discountTag?: string; // Optional field
-    title: string;
-    description: string;
-    duration: string;
-    oldPrice: string;
-    newPrice: string;
-    img: string;
-    color: string;
-}
+    interface Program {
+        id: number;
+        category: string;
+        tags: string[];
+        discountTag?: string; // Optional field
+        title: string;
+        description: string;
+        duration: string;
+        oldPrice: string;
+        newPrice: string;
+        img: string;
+        color: string;
+    }
 
-interface ProgramCardProps {
-    program: Program; // Use the defined interface here
-}
-    const ProgramCard = ({ program} :ProgramCardProps) => (
-        <div 
-            className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-transform duration-300 hover:shadow-2xl hover:scale-[1.02] relative"
+    interface ProgramCardProps {
+        program: Program; // Use the defined interface here
+    }
+    const ProgramCard = ({ program }: ProgramCardProps) => (
+        <div
+            className="group bg-white rounded-2xl overflow-hidden border border-gray-200 
+  hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative"
         >
-            <div className="relative h-48 overflow-hidden">
-                <img 
-                    src={program.img} 
-                    alt={program.title} 
-                    className="w-full h-full object-cover" 
-                    onError={(e:any) => { e.target.onerror = null; e.target.src = "upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg"; }}
+
+            <div className="relative h-56 overflow-hidden">
+                <img
+                    src={program.img}
+                    alt={program.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                
-                {/* Discount Tag */}
+
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+                {/* Discount */}
                 {program.discountTag && (
-                    <span className={`absolute top-0 left-0 text-white font-bold px-3 py-1 rounded-br-lg ${program.color}`}>
+                    <span className="absolute top-4 left-4 bg-black text-white text-sm font-semibold px-3 py-1 rounded-full shadow-lg">
                         {program.discountTag}
                     </span>
                 )}
-                {/* Mới Tag */}
+
                 {program.tags.includes('Mới') && (
-                    <span className="absolute top-0 right-0 text-white font-bold bg-teal-500 px-3 py-1 rounded-bl-lg text-sm">
-                        Mới
+                    <span className="absolute top-4 right-4 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow">
+                        NEW
                     </span>
                 )}
             </div>
+
 
             <div className="p-4 flex flex-col h-full">
                 {/* Program Type */}
@@ -154,29 +158,34 @@ interface ProgramCardProps {
                     {program.category}
                 </span>
 
-                <h3 className="text-lg font-bold text-gray-800 mt-2">{program.title}</h3>
-                <p className="text-gray-600 mt-1 text-sm leading-relaxed flex-grow line-clamp-3">{program.description}</p>
-                
-                <div className="mt-3 pt-3 border-t border-gray-100 flex justify-between items-center">
+                <h3 className="text-xl font-semibold text-gray-900 mt-3 group-hover:text-black transition">
+                    {program.title}
+                </h3>
+
+                <p className="text-gray-500 mt-2 text-sm leading-relaxed flex-grow line-clamp-2">
+                    {program.description}</p>
+
+                {/* <div className="mt-3 pt-3 border-t border-gray-100 flex justify-between items-center">
                     <div className="flex items-center text-teal-600 font-semibold text-sm">
                         {program.category === 'Sự Kiện' ? <CalendarOutlined className="mr-1" /> : <ClockCircleOutlined className="mr-1" />}
                         {program.duration}
                     </div>
                     <div className="text-right">
                         {program.oldPrice && (
-                            <p className="text-xs text-gray-400 line-through">
+                            <p className="text-sm text-gray-400 line-through">
                                 {program.oldPrice}
                             </p>
                         )}
-                        <p className="text-lg font-bold text-red-500">
+                        <p className="text-xl font-bold text-black tracking-wide">
                             {program.newPrice}
                         </p>
                     </div>
-                </div>
 
-                <Button 
-                    type="primary" 
-                    size="large" 
+                </div> */}
+
+                <Button
+                    type="primary"
+                    size="large"
                     className="w-full bg-teal-600 border-none font-semibold rounded-lg px-8 py-2 h-auto text-base shadow-md mt-4 hover:bg-teal-700 transition duration-300"
                 >
                     Đăng ký ngay
@@ -191,27 +200,29 @@ interface ProgramCardProps {
 
             {/* Banner Section - Chương Trình & Ưu Đãi */}
             <div className="relative w-full h-[40vh] md:h-[55vh] overflow-hidden">
-                <img 
-                    src="upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg" 
-                    alt="Promotion Banner" 
-                    className="w-full h-full object-cover brightness-75" 
-                    onError={(e:any) => { e.target.onerror = null; e.target.src = "https://placehold.co/1920x800/E8F2F0/54A99B?text=Spa+Promotion+Background"; }}
+                <img
+                    src="upload/670fcca6c07b92ed0fd3e005f02fc9be.jpg"
+                    alt="Promotion Banner"
+                    className="w-full h-full object-cover brightness-75"
+                    onError={(e: any) => { e.target.onerror = null; e.target.src = "https://placehold.co/1920x800/E8F2F0/54A99B?text=Spa+Promotion+Background"; }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-opacity-30">
                     <div className="text-center text-white p-4">
                         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight drop-shadow-lg">
-                            Chương Trình & Ưu Đãi
+                            Ưu Đãi & Bộ Sưu Tập
                         </h1>
+
                         <p className="mt-2 md:mt-4 text-lg md:text-xl font-medium drop-shadow-lg">
-                            Khám phá các liệu trình mới, chương trình khuyến mãi đặc biệt và sự kiện độc quyền tại spa của chúng tôi
+                            Khám phá các chương trình khuyến mãi, bộ sưu tập mới và sự kiện thời trang nổi bật của chúng tôi
                         </p>
+
                     </div>
                 </div>
             </div>
 
             {/* Bộ lọc và Tìm kiếm */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-                
+
                 {/* Search Bar */}
                 <div className="flex justify-center mb-8">
                     <div className="relative w-full max-w-xl">
@@ -267,7 +278,7 @@ interface ProgramCardProps {
                     )}
                 </div>
             </div>
-            
+
             <Footer />
         </div>
     );
