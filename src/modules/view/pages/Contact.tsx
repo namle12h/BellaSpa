@@ -234,7 +234,7 @@ const ContactPage = () => {
                             Liên hệ với chúng tôi
                         </h1>
                         <p className="mt-2 md:mt-4 text-lg md:text-xl font-medium drop-shadow-lg">
-                            Đặt lịch hẹn hoặc liên hệ để được tư vấn về các dịch vụ spa tốt nhất
+                            Khám phá bộ sưu tập mới và liên hệ ngay để được tư vấn phong cách thời trang phù hợp với bạn.
                         </p>
                     </div>
                 </div>

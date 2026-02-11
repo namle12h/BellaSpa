@@ -22,7 +22,7 @@ export default function Footer() {
                         Thương hiệu thời trang hiện đại, mang đến những thiết kế tinh tế, dễ mặc và luôn bắt kịp xu hướng.
                     </p>
                     <div className="flex gap-4 text-teal-500 text-lg">
-                        <FacebookFilled />
+                        <FacebookFilled onClick={() => window.open("https://www.facebook.com/thao.susi.960312", "_blank")} />
                         <InstagramFilled />
                         <YoutubeFilled />
                         <FaTiktok />
