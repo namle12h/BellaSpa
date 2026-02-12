@@ -33,7 +33,7 @@ export default function Footer() {
                 <div>
                     <h4 className="text-lg font-semibold text-white mb-4">Thông Tin Liên Hệ</h4>
                     <p>📍 08 Đường Số 16, Phường Bình Hưng Hòa, Quận Bình Tân, TP. Hồ Chí Minh</p>
-                    <p>📞 0964980259</p>
+                    <p>📞 0707075599</p>
                     <p>📧 lienhe@thaosusi.com</p>
                 </div>
 
